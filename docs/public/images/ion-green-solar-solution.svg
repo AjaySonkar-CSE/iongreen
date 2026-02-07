@@ -1,0 +1,71 @@
+<svg width="400" height="300" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="solarGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#f59e0b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#d97706;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="greenGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#22c55e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16a34a;stop-opacity:1" />
+    </linearGradient>
+    <radialGradient id="sunGradient" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:1" />
+      <stop offset="70%" style="stop-color:#f59e0b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#d97706;stop-opacity:0.6" />
+    </radialGradient>
+  </defs>
+
+  <!-- Sky background -->
+  <rect width="400" height="300" fill="#e0f2fe" rx="20"/>
+
+  <!-- Sun -->
+  <circle cx="320" cy="80" r="40" fill="url(#sunGradient)"/>
+  <circle cx="320" cy="80" r="35" fill="none" stroke="#f59e0b" stroke-width="2" opacity="0.5"/>
+
+  <!-- Sun rays -->
+  <line x1="320" y1="40" x2="320" y2="20" stroke="#f59e0b" stroke-width="2"/>
+  <line x1="320" y1="120" x2="320" y2="140" stroke="#f59e0b" stroke-width="2"/>
+  <line x1="280" y1="80" x2="260" y2="80" stroke="#f59e0b" stroke-width="2"/>
+  <line x1="360" y1="80" x2="380" y2="80" stroke="#f59e0b" stroke-width="2"/>
+  <line x1="290" y1="50" x2="275" y2="35" stroke="#f59e0b" stroke-width="2"/>
+  <line x1="350" y1="50" x2="365" y2="35" stroke="#f59e0b" stroke-width="2"/>
+  <line x1="290" y1="110" x2="275" y2="125" stroke="#f59e0b" stroke-width="2"/>
+  <line x1="350" y1="110" x2="365" y2="125" stroke="#f59e0b" stroke-width="2"/>
+
+  <!-- Solar panel -->
+  <rect x="80" y="150" width="120" height="80" rx="5" fill="url(#solarGradient)" stroke="#d97706" stroke-width="2"/>
+  <rect x="200" y="150" width="120" height="80" rx="5" fill="url(#solarGradient)" stroke="#d97706" stroke-width="2"/>
+
+  <!-- Panel cells -->
+  <rect x="85" y="155" width="25" height="70" rx="2" fill="#fef3c7" opacity="0.8"/>
+  <rect x="115" y="155" width="25" height="70" rx="2" fill="#fef3c7" opacity="0.8"/>
+  <rect x="145" y="155" width="25" height="70" rx="2" fill="#fef3c7" opacity="0.8"/>
+  <rect x="175" y="155" width="25" height="70" rx="2" fill="#fef3c7" opacity="0.8"/>
+  <rect x="205" y="155" width="25" height="70" rx="2" fill="#fef3c7" opacity="0.8"/>
+  <rect x="235" y="155" width="25" height="70" rx="2" fill="#fef3c7" opacity="0.8"/>
+  <rect x="265" y="155" width="25" height="70" rx="2" fill="#fef3c7" opacity="0.8"/>
+  <rect x="295" y="155" width="25" height="70" rx="2" fill="#fef3c7" opacity="0.8"/>
+
+  <!-- Battery storage -->
+  <rect x="150" y="240" width="100" height="40" rx="5" fill="url(#greenGradient)" stroke="#16a34a" stroke-width="2"/>
+
+  <!-- Energy flow -->
+  <path d="M140 190 L140 240" stroke="#22c55e" stroke-width="3" marker-end="url(#arrowhead)">
+    <animate attributeName="opacity" values="0.5;1;0.5" dur="1.5s" repeatCount="indefinite"/>
+  </path>
+  <path d="M260 190 L260 240" stroke="#22c55e" stroke-width="3" marker-end="url(#arrowhead)">
+    <animate attributeName="opacity" values="0.5;1;0.5" dur="1.5s" repeatCount="indefinite"/>
+  </path>
+
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#22c55e"/>
+    </marker>
+  </defs>
+
+  <!-- ION GREEN SOLAR SOLUTION text -->
+  <text x="200" y="285" text-anchor="middle" fill="#16a34a" font-family="Arial, sans-serif" font-size="18" font-weight="bold">ION GREEN</text>
+  <text x="200" y="300" text-anchor="middle" fill="#15803d" font-family="Arial, sans-serif" font-size="12">SOLAR SOLUTION</text>
+</svg>

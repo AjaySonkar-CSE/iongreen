@@ -1,0 +1,40 @@
+<svg width="400" height="300" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="batteryGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#22c55e;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#16a34a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#15803d;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="glowGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#22c55e;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#16a34a;stop-opacity:0.4" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background glow -->
+  <rect width="400" height="300" fill="url(#glowGradient)" opacity="0.1" rx="20"/>
+
+  <!-- Battery body -->
+  <rect x="120" y="80" width="160" height="140" rx="15" fill="url(#batteryGradient)" stroke="#16a34a" stroke-width="3"/>
+
+  <!-- Battery terminals -->
+  <rect x="140" y="50" width="20" height="40" rx="5" fill="#166534"/>
+  <rect x="240" y="50" width="20" height="40" rx="5" fill="#166534"/>
+
+  <!-- Battery cells -->
+  <rect x="135" y="95" width="130" height="15" rx="2" fill="#dcfce7" opacity="0.8"/>
+  <rect x="135" y="115" width="130" height="15" rx="2" fill="#dcfce7" opacity="0.8"/>
+  <rect x="135" y="135" width="130" height="15" rx="2" fill="#dcfce7" opacity="0.8"/>
+  <rect x="135" y="155" width="130" height="15" rx="2" fill="#dcfce7" opacity="0.8"/>
+  <rect x="135" y="175" width="130" height="15" rx="2" fill="#dcfce7" opacity="0.8"/>
+  <rect x="135" y="195" width="130" height="15" rx="2" fill="#dcfce7" opacity="0.8"/>
+
+  <!-- Energy flow lines -->
+  <path d="M100 150 Q120 140 140 150 Q160 160 180 150 Q200 140 220 150 Q240 160 260 150 Q280 140 300 150" stroke="#22c55e" stroke-width="2" fill="none" opacity="0.6">
+    <animate attributeName="opacity" values="0.3;0.8;0.3" dur="2s" repeatCount="indefinite"/>
+  </path>
+
+  <!-- ION GREEN text -->
+  <text x="200" y="250" text-anchor="middle" fill="#16a34a" font-family="Arial, sans-serif" font-size="24" font-weight="bold">ION GREEN</text>
+  <text x="200" y="275" text-anchor="middle" fill="#15803d" font-family="Arial, sans-serif" font-size="16">LITHIUM BATTERY</text>
+</svg>

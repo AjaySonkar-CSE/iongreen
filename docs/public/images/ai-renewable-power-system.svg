@@ -1,0 +1,76 @@
+<svg width="600" height="400" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="powerBg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#E8F5E8;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#C8E6C9;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="cableGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FFA500;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="600" height="400" fill="url(#powerBg)"/>
+
+  <!-- Power grid network -->
+  <!-- Main power station -->
+  <rect x="250" y="150" width="100" height="80" fill="#424242" stroke="#212121" stroke-width="2"/>
+  <rect x="260" y="170" width="80" height="50" fill="#F5F5F5" stroke="#BDBDBD" stroke-width="1"/>
+  <text x="300" y="195" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#2E7D32" text-anchor="middle">POWER</text>
+
+  <!-- Transmission lines -->
+  <line x1="200" y1="190" x2="250" y2="190" stroke="url(#cableGradient)" stroke-width="4"/>
+  <line x1="350" y1="190" x2="400" y2="190" stroke="url(#cableGradient)" stroke-width="4"/>
+
+  <!-- Solar farm -->
+  <rect x="150" y="250" width="50" height="30" fill="#4CAF50" stroke="#2E7D32" stroke-width="1"/>
+  <rect x="180" y="240" width="20" height="40" fill="#FFD700"/>
+  <rect x="130" y="250" width="50" height="30" fill="#4CAF50" stroke="#2E7D32" stroke-width="1"/>
+  <rect x="160" y="240" width="20" height="40" fill="#FFD700"/>
+  <line x1="175" y1="230" x2="200" y2="190" stroke="url(#cableGradient)" stroke-width="3"/>
+
+  <!-- Wind farm -->
+  <rect x="400" y="220" width="3" height="40" fill="#616161"/>
+  <circle cx="401.5" cy="215" r="10" fill="#E8F5E8" stroke="#4CAF50" stroke-width="1"/>
+  <rect x="391.5" y="215" width="20" height="2" fill="#4CAF50" transform="rotate(45 401.5 216)"/>
+  <rect x="391.5" y="215" width="20" height="2" fill="#4CAF50" transform="rotate(135 401.5 216)"/>
+  <rect x="391.5" y="215" width="20" height="2" fill="#4CAF50" transform="rotate(-45 401.5 216)"/>
+
+  <rect x="430" y="230" width="3" height="40" fill="#616161"/>
+  <circle cx="431.5" cy="225" r="10" fill="#E8F5E8" stroke="#4CAF50" stroke-width="1"/>
+  <rect x="421.5" y="225" width="20" height="2" fill="#4CAF50" transform="rotate(45 431.5 226)"/>
+  <rect x="421.5" y="225" width="20" height="2" fill="#4CAF50" transform="rotate(135 431.5 226)"/>
+  <rect x="421.5" y="225" width="20" height="2" fill="#4CAF50" transform="rotate(-45 431.5 226)"/>
+  <line x1="401.5" y1="255" x2="350" y2="230" stroke="url(#cableGradient)" stroke-width="3"/>
+
+  <!-- Battery storage -->
+  <rect x="280" y="280" width="40" height="25" fill="#E8F5E8" stroke="#4CAF50" stroke-width="2" rx="3"/>
+  <rect x="285" y="285" width="30" height="3" fill="#4CAF50"/>
+  <rect x="285" y="290" width="30" height="3" fill="#66BB6A"/>
+  <rect x="285" y="295" width="30" height="3" fill="#81C784"/>
+  <line x1="300" y1="270" x2="300" y2="280" stroke="url(#cableGradient)" stroke-width="3"/>
+
+  <!-- Houses with solar panels -->
+  <polygon points="80,320 100,300 120,320" fill="#F5F5F5" stroke="#BDBDBD" stroke-width="1"/>
+  <rect x="90" y="320" width="20" height="20" fill="#F5F5F5" stroke="#BDBDBD" stroke-width="1"/>
+  <rect x="85" y="315" width="10" height="8" fill="#FFD700"/>
+  <line x1="95" y1="315" x2="95" y2="305" stroke="url(#cableGradient)" stroke-width="2"/>
+
+  <polygon points="480,320 500,300 520,320" fill="#F5F5F5" stroke="#BDBDBD" stroke-width="1"/>
+  <rect x="490" y="320" width="20" height="20" fill="#F5F5F5" stroke="#BDBDBD" stroke-width="1"/>
+  <rect x="485" y="315" width="10" height="8" fill="#FFD700"/>
+  <line x1="495" y1="315" x2="495" y2="305" stroke="url(#cableGradient)" stroke-width="2"/>
+
+  <!-- Ion Green logo -->
+  <text x="300" y="50" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#2E7D32" text-anchor="middle">ION GREEN</text>
+  <text x="300" y="75" font-family="Arial, sans-serif" font-size="16" fill="#4CAF50" text-anchor="middle">Renewable Power System</text>
+
+  <!-- Energy flow animation indicators -->
+  <circle cx="200" cy="190" r="2" fill="#FFD700" opacity="0.8"/>
+  <circle cx="220" cy="190" r="2" fill="#FFD700" opacity="0.6"/>
+  <circle cx="240" cy="190" r="2" fill="#FFD700" opacity="0.4"/>
+  <circle cx="350" cy="190" r="2" fill="#FFD700" opacity="0.8"/>
+  <circle cx="370" cy="190" r="2" fill="#FFD700" opacity="0.6"/>
+  <circle cx="390" cy="190" r="2" fill="#FFD700" opacity="0.4"/>
+</svg>

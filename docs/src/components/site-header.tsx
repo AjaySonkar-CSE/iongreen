@@ -1,0 +1,169 @@
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
+import { NavDropdown } from "./nav-dropdown";
+import { getSiteContent } from "@/lib/content";
+
+import Image from "next/image";
+
+interface NavItem {
+  label: string;
+  href: string;
+  items?: NavItem[];
+}
+
+const { navItems } = getSiteContent();
+
+export function SiteHeader() {
+  const pathname = usePathname();
+
+  return (
+    <header className="fixed top-0 left-0 right-0 z-[1000] bg-white/95 backdrop-blur-md shadow-lg border-b border-gray-100/50">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 md:px-6 lg:px-8">
+        <Link href="/" className="flex items-center gap-2 text-2xl font-bold text-slate-900 hover:text-green-600 transition-all duration-300 hover:scale-105 tracking-tight">
+          <Image
+            src="/logo.png"
+            alt="Logo"
+            width={160}
+            height={160}
+            className="object-contain"
+          />
+        </Link>
+
+        <nav className="hidden items-center space-x-2 lg:flex ml-auto mr-2">
+          {navItems.map((item) =>
+            item.items ? (
+              <NavDropdown
+                key={item.href}
+                item={item}
+                isActive={
+                  pathname === item.href ||
+                  (item.items?.some((subItem) => pathname === subItem.href) ?? false)
+                }
+              />
+            ) : (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={cn(
+                  "relative px-3 py-2.5 text-sm font-semibold text-slate-700 nav-item transition-all duration-300 hover:text-green-600 hover:bg-green-50/50 rounded-lg",
+                  pathname === item.href && "text-green-600 bg-green-50/50"
+                )}
+              >
+                {item.label}
+                <span className={cn(
+                  "absolute bottom-1 left-4 right-4 h-0.5 bg-green-600 transform scale-x-0 transition-transform duration-300 origin-left rounded-full",
+                  pathname === item.href ? 'scale-x-100' : 'group-hover:scale-x-100'
+                )}></span>
+              </Link>
+            )
+          )}
+        </nav>
+
+        <div className="hidden items-center lg:flex">
+          <Link
+            href="/contact"
+            className="rounded-lg bg-gradient-to-r from-green-600 to-green-700 px-6 py-2.5 text-sm font-semibold text-white shadow-lg hover:shadow-xl hover:from-green-700 hover:to-green-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600 transition-all duration-300 hover:scale-105"
+          >
+            Contact Us
+          </Link>
+        </div>
+
+        <MobileMenu navItems={navItems} />
+      </div>
+    </header>
+  );
+}
+
+interface MobileMenuProps {
+  navItems: NavItem[];
+}
+
+function MobileMenu({ navItems }: MobileMenuProps) {
+  const pathname = usePathname();
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div className="lg:hidden">
+      <button
+        type="button"
+        onClick={() => setOpen((prev) => !prev)}
+        className="rounded-lg border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-all duration-300"
+        aria-expanded={open}
+      >
+        <span className="flex items-center">
+          {open ? 'Close' : 'Menu'}
+          <svg
+            className={`ml-2 h-4 w-4 transform transition-transform duration-300 ${open ? 'rotate-180' : ''}`}
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          </svg>
+        </span>
+      </button>
+      {open && (
+        <div className="absolute inset-x-0 top-full border-b border-slate-200 bg-white/95 backdrop-blur-md shadow-xl px-4 py-6">
+          <div className="flex flex-col gap-2">
+            {navItems.map((item) => (
+              <div key={item.href} className="w-full">
+                {item.items ? (
+                  <div className="space-y-1">
+                    <div className="px-4 py-3 text-sm font-semibold text-slate-900 border-l-3 border-green-500 bg-green-50/50 rounded-r-lg">
+                      {item.label}
+                    </div>
+                    <div className="ml-4 space-y-1 border-l border-slate-200 pl-4">
+                      {item.items.map((subItem) => (
+                        <Link
+                          key={subItem.href}
+                          href={subItem.href}
+                          className={cn(
+                            "block w-full rounded-lg px-4 py-3 text-sm transition-all duration-300 hover:bg-slate-50 hover:translate-x-1",
+                            pathname === subItem.href ? "text-green-600 bg-green-50 font-semibold" : "text-slate-700 hover:text-green-600"
+                          )}
+                          onClick={() => setOpen(false)}
+                        >
+                          <div className="flex items-center justify-between">
+                            <span>{subItem.label}</span>
+                            <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                            </svg>
+                          </div>
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  <Link
+                    href={item.href}
+                    className={cn(
+                      "block w-full rounded-lg px-4 py-3 text-sm font-semibold transition-all duration-300 hover:bg-slate-50 hover:translate-x-1",
+                      pathname === item.href ? "text-green-600 bg-green-50" : "text-slate-700 hover:text-green-600"
+                    )}
+                    onClick={() => setOpen(false)}
+                  >
+                    {item.label}
+                  </Link>
+                )}
+              </div>
+            ))}
+            <div className="mt-6 pt-4 border-t border-slate-200">
+              <Link
+                href="/contact"
+                className="block w-full rounded-lg bg-gradient-to-r from-green-600 to-green-700 px-4 py-3 text-center text-sm font-semibold text-white shadow-lg hover:shadow-xl hover:from-green-700 hover:to-green-800 transition-all duration-300 hover:scale-105"
+                onClick={() => setOpen(false)}
+              >
+                Contact Us
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+

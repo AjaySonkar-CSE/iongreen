@@ -1,0 +1,106 @@
+<svg width="400" height="300" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="houseGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#fef3c7;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#fde68a;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="solarPanelGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#374151;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1f2937;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="batteryGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#22c55e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16a34a;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="skyGradient2" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#87CEEB;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#E0F6FF;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="400" height="300" fill="url(#skyGradient2)"/>
+
+  <!-- Sun -->
+  <circle cx="350" cy="50" r="20" fill="#fbbf24"/>
+  <g transform="translate(350, 50)">
+    <line x1="0" y1="-25" x2="0" y2="-35" stroke="#fbbf24" stroke-width="2"/>
+    <line x1="0" y1="25" x2="0" y2="35" stroke="#fbbf24" stroke-width="2"/>
+    <line x1="-25" y1="0" x2="-35" y2="0" stroke="#fbbf24" stroke-width="2"/>
+    <line x1="25" y1="0" x2="35" y2="0" stroke="#fbbf24" stroke-width="2"/>
+    <line x1="-18" y1="-18" x2="-25" y2="-25" stroke="#fbbf24" stroke-width="2"/>
+    <line x1="18" y1="-18" x2="25" y2="-25" stroke="#fbbf24" stroke-width="2"/>
+    <line x1="-18" y1="18" x2="-25" y2="25" stroke="#fbbf24" stroke-width="2"/>
+    <line x1="18" y1="18" x2="25" y2="25" stroke="#fbbf24" stroke-width="2"/>
+  </g>
+
+  <!-- House -->
+  <g transform="translate(80, 120)">
+    <!-- House Structure -->
+    <polygon points="0,60 50,20 100,60 100,120 0,120" fill="url(#houseGradient)" stroke="#d97706" stroke-width="2"/>
+    <rect x="15" y="80" width="25" height="25" fill="#3b82f6" opacity="0.8"/>
+    <rect x="45" y="80" width="25" height="25" fill="#3b82f6" opacity="0.8"/>
+
+    <!-- Door -->
+    <rect x="60" y="90" width="15" height="30" fill="#8b5cf6"/>
+    <circle cx="72" cy="105" r="2" fill="#fbbf24"/>
+  </g>
+
+  <!-- Solar Panels on Roof -->
+  <g transform="translate(90, 95)">
+    <rect x="0" y="0" width="60" height="4" fill="url(#solarPanelGradient)" rx="2"/>
+    <rect x="5" y="4" width="50" height="20" fill="#fbbf24" rx="1"/>
+    <rect x="10" y="6" width="40" height="2" fill="#f59e0b" opacity="0.8"/>
+    <rect x="10" y="10" width="40" height="2" fill="#f59e0b" opacity="0.8"/>
+    <rect x="10" y="14" width="40" height="2" fill="#f59e0b" opacity="0.8"/>
+    <rect x="10" y="18" width="40" height="2" fill="#f59e0b" opacity="0.8"/>
+  </g>
+
+  <!-- Battery Storage Unit -->
+  <g transform="translate(200, 180)">
+    <!-- Wall-mounted Battery -->
+    <rect x="0" y="0" width="60" height="80" fill="url(#batteryGradient)" rx="6"/>
+    <rect x="5" y="5" width="50" height="70" fill="#ffffff" opacity="0.95" rx="4"/>
+
+    <!-- Battery Cells -->
+    <rect x="10" y="15" width="15" height="8" fill="#dcfce7" rx="1"/>
+    <rect x="30" y="15" width="15" height="8" fill="#dcfce7" rx="1"/>
+    <rect x="10" y="28" width="15" height="8" fill="#dcfce7" rx="1"/>
+    <rect x="30" y="28" width="15" height="8" fill="#dcfce7" rx="1"/>
+    <rect x="10" y="41" width="15" height="8" fill="#dcfce7" rx="1"/>
+    <rect x="30" y="41" width="15" height="8" fill="#dcfce7" rx="1"/>
+    <rect x="10" y="54" width="15" height="8" fill="#dcfce7" rx="1"/>
+    <rect x="30" y="54" width="15" height="8" fill="#dcfce7" rx="1"/>
+
+    <!-- Status Indicator -->
+    <circle cx="45" cy="20" r="3" fill="#22c55e"/>
+    <rect x="42" cy="35" width="6" height="2" fill="#22c55e" rx="1"/>
+    <rect x="42" cy="40" width="6" height="2" fill="#22c55e" rx="1"/>
+    <rect x="42" cy="45" width="6" height="2" fill="#22c55e" rx="1"/>
+  </g>
+
+  <!-- Energy Flow -->
+  <path d="M140 140 Q170 130 200 140" stroke="#22c55e" stroke-width="2" fill="none" opacity="0.7"/>
+  <path d="M200 220 Q230 210 260 220" stroke="#22c55e" stroke-width="2" fill="none" opacity="0.7"/>
+
+  <!-- EV Charging Point -->
+  <g transform="translate(300, 200)">
+    <rect x="0" y="20" width="20" height="40" fill="#374151" rx="2"/>
+    <rect x="5" y="25" width="10" height="30" fill="#1f2937" rx="1"/>
+    <circle cx="10" cy="35" r="3" fill="#22c55e"/>
+    <circle cx="10" cy="45" r="3" fill="#fbbf24"/>
+  </g>
+
+  <!-- Electric Car -->
+  <g transform="translate(320, 230)">
+    <rect x="0" y="5" width="30" height="15" fill="#6b7280" rx="2"/>
+    <circle cx="8" cy="20" r="3" fill="#1f2937"/>
+    <circle cx="22" cy="20" r="3" fill="#1f2937"/>
+    <rect x="5" y="2" width="20" height="8" fill="#3b82f6" rx="1"/>
+  </g>
+
+  <!-- Title -->
+  <text x="200" y="30" text-anchor="middle" fill="#1f2937" font-family="Arial, sans-serif" font-size="16" font-weight="bold">
+    Residential All-in-One Solutions
+  </text>
+</svg>

@@ -1,0 +1,73 @@
+<svg width="600" height="400" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="techBg" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#E8F5E8;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#F1F8E9;stop-opacity:1" />
+    </radialGradient>
+    <linearGradient id="deviceGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#4CAF50;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2E7D32;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="600" height="400" fill="url(#techBg)"/>
+
+  <!-- Central energy hub -->
+  <circle cx="300" cy="200" r="60" fill="url(#deviceGradient)" stroke="#1B5E20" stroke-width="3"/>
+  <circle cx="300" cy="200" r="40" fill="#E8F5E8" stroke="#4CAF50" stroke-width="2"/>
+  <text x="300" y="210" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#2E7D32" text-anchor="middle">ION</text>
+
+  <!-- Connected devices -->
+  <!-- Solar inverter -->
+  <rect x="200" y="150" width="50" height="30" fill="#F5F5F5" stroke="#4CAF50" stroke-width="2" rx="5"/>
+  <text x="225" y="170" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="#2E7D32" text-anchor="middle">SOLAR</text>
+  <line x1="250" y1="165" x2="260" y2="200" stroke="#FFD700" stroke-width="3"/>
+  <polygon points="258,195 262,205 254,205" fill="#FFD700"/>
+
+  <!-- Battery system -->
+  <rect x="350" y="180" width="40" height="25" fill="#E8F5E8" stroke="#4CAF50" stroke-width="2" rx="3"/>
+  <rect x="355" y="185" width="30" height="3" fill="#4CAF50"/>
+  <rect x="355" y="190" width="30" height="3" fill="#66BB6A"/>
+  <rect x="355" y="195" width="30" height="3" fill="#81C784"/>
+  <line x1="340" y1="192.5" x2="340" y2="200" stroke="#FFD700" stroke-width="3"/>
+  <polygon points="335,195 345,205 335,215" fill="#FFD700"/>
+
+  <!-- Smart meter -->
+  <rect x="150" y="250" width="40" height="25" fill="#F5F5F5" stroke="#4CAF50" stroke-width="2" rx="3"/>
+  <circle cx="170" cy="262.5" r="8" fill="#E8F5E8" stroke="#4CAF50" stroke-width="1"/>
+  <text x="170" y="267" font-family="Arial, sans-serif" font-size="6" font-weight="bold" fill="#2E7D32" text-anchor="middle">METER</text>
+  <line x1="190" y1="262.5" x2="240" y2="200" stroke="#FFD700" stroke-width="3"/>
+  <polygon points="238,195 242,205 234,205" fill="#FFD700"/>
+
+  <!-- EV charger -->
+  <rect x="400" y="250" width="35" height="20" fill="#F5F5F5" stroke="#4CAF50" stroke-width="2" rx="3"/>
+  <circle cx="417.5" cy="260" r="6" fill="#FFD700"/>
+  <text x="417.5" y="264" font-family="Arial, sans-serif" font-size="6" font-weight="bold" fill="#2E7D32" text-anchor="middle">EV</text>
+  <line x1="382.5" y1="260" x2="360" y2="200" stroke="#FFD700" stroke-width="3"/>
+  <polygon points="355,195 365,205 355,215" fill="#FFD700"/>
+
+  <!-- Data flow indicators -->
+  <circle cx="280" cy="180" r="3" fill="#81C784" opacity="0.8"/>
+  <circle cx="290" cy="170" r="3" fill="#66BB6A" opacity="0.6"/>
+  <circle cx="300" cy="160" r="3" fill="#4CAF50" opacity="0.4"/>
+
+  <circle cx="320" cy="180" r="3" fill="#81C784" opacity="0.8"/>
+  <circle cx="330" cy="190" r="3" fill="#66BB6A" opacity="0.6"/>
+  <circle cx="340" cy="200" r="3" fill="#4CAF50" opacity="0.4"/>
+
+  <!-- Technology icons -->
+  <rect x="120" y="100" width="20" height="15" fill="#4CAF50" rx="2"/>
+  <text x="130" y="110" font-family="Arial, sans-serif" font-size="6" font-weight="bold" fill="white" text-anchor="middle">AI</text>
+
+  <circle cx="480" cy="120" r="10" fill="#E8F5E8" stroke="#4CAF50" stroke-width="1"/>
+  <text x="480" y="125" font-family="Arial, sans-serif" font-size="6" font-weight="bold" fill="#2E7D32" text-anchor="middle">IoT</text>
+
+  <!-- Ion Green logo -->
+  <text x="300" y="50" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#2E7D32" text-anchor="middle">ION GREEN</text>
+  <text x="300" y="75" font-family="Arial, sans-serif" font-size="16" fill="#4CAF50" text-anchor="middle">Sustainable Energy Tech</text>
+
+  <!-- Circuit pattern -->
+  <path d="M 100 350 Q 150 320 200 350 Q 250 380 300 350 Q 350 320 400 350 Q 450 380 500 350"
+        stroke="#4CAF50" stroke-width="2" fill="none" opacity="0.3"/>
+</svg>

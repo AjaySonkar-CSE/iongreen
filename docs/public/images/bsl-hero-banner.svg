@@ -1,0 +1,71 @@
+<svg width="1920" height="800" viewBox="0 0 1920 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="heroGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e40af;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#3b82f6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1e40af;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="sunGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:1" />
+    </linearGradient>
+    <radialGradient id="glowGradient" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:0.8" />
+      <stop offset="70%" style="stop-color:#f59e0b;stop-opacity:0.4" />
+      <stop offset="100%" style="stop-color:#d97706;stop-opacity:0.2" />
+    </radialGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1920" height="800" fill="url(#heroGradient)"/>
+
+  <!-- Sun glow effect -->
+  <circle cx="1600" cy="200" r="150" fill="url(#glowGradient)" opacity="0.3"/>
+  <circle cx="1600" cy="200" r="100" fill="url(#sunGradient)" opacity="0.6"/>
+
+  <!-- Sun -->
+  <circle cx="1600" cy="200" r="60" fill="url(#sunGradient)"/>
+  <circle cx="1600" cy="200" r="45" fill="none" stroke="#f59e0b" stroke-width="3" opacity="0.8"/>
+
+  <!-- Sun rays -->
+  <line x1="1600" y1="140" x2="1600" y2="110" stroke="#f59e0b" stroke-width="4"/>
+  <line x1="1600" y1="260" x2="1600" y2="290" stroke="#f59e0b" stroke-width="4"/>
+  <line x1="1540" y1="200" x2="1510" y2="200" stroke="#f59e0b" stroke-width="4"/>
+  <line x1="1660" y1="200" x2="1690" y2="200" stroke="#f59e0b" stroke-width="4"/>
+  <line x1="1555" y1="155" x2="1530" y2="130" stroke="#f59e0b" stroke-width="4"/>
+  <line x1="1645" y1="155" x2="1670" y2="130" stroke="#f59e0b" stroke-width="4"/>
+  <line x1="1555" y1="245" x2="1530" y2="270" stroke="#f59e0b" stroke-width="4"/>
+  <line x1="1645" y1="245" x2="1670" y2="270" stroke="#f59e0b" stroke-width="4"/>
+
+  <!-- Battery silhouette -->
+  <rect x="1300" y="450" width="80" height="120" rx="8" fill="#1f2937" opacity="0.8"/>
+  <rect x="1310" y="460" width="15" height="100" rx="2" fill="#fbbf24" opacity="0.9"/>
+  <rect x="1330" y="460" width="15" height="100" rx="2" fill="#f59e0b" opacity="0.9"/>
+  <rect x="1350" y="460" width="15" height="100" rx="2" fill="#d97706" opacity="0.9"/>
+  <rect x="1370" y="460" width="15" height="100" rx="2" fill="#22c55e" opacity="0.9"/>
+
+  <!-- Solar panel silhouette -->
+  <rect x="1200" y="400" width="80" height="100" rx="5" fill="#1f2937" opacity="0.8"/>
+  <rect x="1210" y="410" width="60" height="15" rx="2" fill="#fbbf24" opacity="0.9"/>
+  <rect x="1210" y="430" width="60" height="15" rx="2" fill="#fbbf24" opacity="0.9"/>
+  <rect x="1210" y="450" width="60" height="15" rx="2" fill="#fbbf24" opacity="0.9"/>
+  <rect x="1210" y="470" width="60" height="15" rx="2" fill="#fbbf24" opacity="0.9"/>
+
+  <!-- Energy flow lines -->
+  <path d="M1280 500 Q1300 480 1320 500 Q1340 520 1360 500 Q1380 480 1400 500" stroke="#22c55e" stroke-width="3" fill="none" opacity="0.7">
+    <animate attributeName="opacity" values="0.3;0.8;0.3" dur="2s" repeatCount="indefinite"/>
+  </path>
+
+  <!-- Decorative elements -->
+  <circle cx="200" cy="150" r="80" fill="#fbbf24" opacity="0.1"/>
+  <circle cx="1800" cy="600" r="100" fill="#22c55e" opacity="0.1"/>
+  <circle cx="400" cy="700" r="60" fill="#3b82f6" opacity="0.1"/>
+
+  <!-- Grid pattern overlay -->
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#ffffff" stroke-width="0.5" opacity="0.1"/>
+    </pattern>
+  </defs>
+  <rect width="1920" height="800" fill="url(#grid)"/>
+</svg>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Energy Storage Solutions - Products</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .hero-section {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            padding: 0 20px;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            position: relative;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-content h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-content p {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 15px 30px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .cta-button:hover {
+            background-color: #45a049;
+        }
+
+        /* Individual hero sections with different background images */
+        #commercial {
+            background-image: url('https://images.unsplash.com/photo-1509391366360-2e959784a276?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+        }
+
+        #large-scale {
+            background-image: url('https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+        }
+
+        #residential {
+            background-image: url('https://images.unsplash.com/photo-1518780664697-55eada23840d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+        }
+
+        #rack-mounted {
+            background-image: url('https://images.unsplash.com/photo-1597852074816-d933c7d2b988?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+        }
+
+        #hybrid {
+            background-image: url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+        }
+
+        #mobile-ev {
+            background-image: url('https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+        }
+    </style>
+</head>
+<body>
+    <section id="commercial" class="hero-section">
+        <div class="hero-content">
+            <h1>Commercial & Industrial ESS</h1>
+            <p>100kWh – 5.015MWh systems for businesses</p>
+            <a href="#" class="cta-button">Learn More</a>
+        </div>
+    </section>
+
+    <section id="large-scale" class="hero-section">
+        <div class="hero-content">
+            <h1>Large Scale Energy Storage</h1>
+            <p>1.2MWh – 5.015MWh for utility applications</p>
+            <a href="#" class="cta-button">Learn More</a>
+        </div>
+    </section>
+
+    <section id="residential" class="hero-section">
+        <div class="hero-content">
+            <h1>Residential Energy Storage</h1>
+            <p>5kWh – 35kWh for homes and small businesses</p>
+            <a href="#" class="cta-button">Learn More</a>
+        </div>
+    </section>
+
+    <section id="rack-mounted" class="hero-section">
+        <div class="hero-content">
+            <h1>Rack Mounted Batteries</h1>
+            <p>16kWh – 104kWh for data centers and telecom</p>
+            <a href="#" class="cta-button">Learn More</a>
+        </div>
+    </section>
+
+    <section id="hybrid" class="hero-section">
+        <div class="hero-content">
+            <h1>Hybrid Energy Storage Cabinets</h1>
+            <p>215kWh – 261kWh with integrated PCS and EMS</p>
+            <a href="#" class="cta-button">Learn More</a>
+        </div>
+    </section>
+
+    <section id="mobile-ev" class="hero-section">
+        <div class="hero-content">
+            <h1>Mobile & EV Charging Storage</h1>
+            <p>Portable energy solutions for electric vehicles and mobile applications</p>
+            <a href="#" class="cta-button">Learn More</a>
+        </div>
+    </section>
+</body>
+</html>

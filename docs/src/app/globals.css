@@ -1,0 +1,489 @@
+@import "tailwindcss";
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scaleUp {
+  from { transform: scale(0.95); }
+  to { transform: scale(1); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes blob {
+  0% { transform: translate(0px, 0px) scale(1); }
+  33% { transform: translate(30px, -50px) scale(1.1); }
+  66% { transform: translate(-20px, 20px) scale(0.9); }
+  100% { transform: translate(0px, 0px) scale(1); }
+}
+
+.animate-blob {
+  animation: blob 7s infinite;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4s;
+}
+
+/* Card hover effect */
+.card-hover {
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.card-hover:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Image Fade In Animation */
+.fade-in {
+  opacity: 0;
+  animation: fadeIn 0.8s ease-out forwards;
+  animation-delay: calc(var(--delay, 0) * 100ms);
+}
+
+/* Lazy Load Image Animation */
+img {
+  opacity: 0;
+  animation: fadeIn 1s forwards;
+}
+
+img[data-loaded="true"] {
+  opacity: 1;
+}
+
+/* Scroll Indicator */
+.scroll-indicator {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #10b981, #059669);
+  z-index: 1000;
+  transition: width 0.3s ease-out;
+}
+
+/* Active Navigation Menu Item */
+.nav-item {
+  position: relative;
+  transition: color 0.4s ease-in-out;
+}
+
+.nav-item::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #10b981;
+  transition: width 0.4s ease-in-out;
+}
+
+.nav-item:hover::after,
+.nav-item.active::after {
+  width: 100%;
+}
+
+/* Hover Effects */
+.hover-scale {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover-scale:hover {
+  transform: scale(1.05);
+}
+
+/* Enhanced Hover Effects */
+.hover-lift {
+  transition: all 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.hover-glow {
+  transition: all 0.3s ease;
+}
+
+.hover-glow:hover {
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
+}
+
+.hover-underline {
+  position: relative;
+}
+
+.hover-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #10b981;
+  transition: width 0.3s ease;
+}
+
+.hover-underline:hover::after {
+  width: 100%;
+}
+
+.btn-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px -5px rgba(16, 185, 129, 0.3);
+}
+
+/* Button Hover Effect */
+button:hover {
+  transform: scale(1.05);
+  transition: transform .3s ease;
+}
+
+/* Enhanced Button & Hover Animations */
+.btn-hover {
+  transition: all 0.3s ease;
+}
+
+.btn-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px -5px rgba(16, 185, 129, 0.3);
+}
+
+.nav-item {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.nav-item::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #10b981;
+  transition: width 0.3s ease;
+}
+
+.nav-item:hover::after {
+  width: 100%;
+}
+
+/* Text Hover Animations */
+.text-hover {
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.text-hover::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: currentColor;
+  transition: width 0.3s ease;
+}
+
+.text-hover:hover {
+  color: #10b981;
+}
+
+.text-hover:hover::after {
+  width: 100%;
+}
+
+/* Scale Effect */
+.scale-hover {
+  transition: transform 0.3s ease;
+}
+
+.scale-hover:hover {
+  transform: scale(1.05);
+}
+
+/* Color Transition */
+.color-hover {
+  transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+.color-hover:hover {
+  color: #10b981;
+  background-color: rgba(16, 185, 129, 0.1);
+}
+
+/* Scroll Snap */
+.snap-mandatory {
+  scroll-snap-type: y mandatory;
+}
+
+.snap-start {
+  scroll-snap-align: start;
+}
+
+.snap-center {
+  scroll-snap-align: center;
+}
+
+.snap-end {
+  scroll-snap-align: end;
+}
+
+.snap-always {
+  scroll-snap-stop: always;
+}
+
+/* Delayed Animations */
+.delay-100 { --delay: 1; }
+.delay-200 { --delay: 2; }
+.delay-300 { --delay: 3; }
+.delay-400 { --delay: 4; }
+
+/* Flip Card Animation */
+.flip-card {
+  perspective: 1000px;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border-radius: 1rem;
+}
+
+.flip-card-back {
+  transform: rotateY(180deg);
+}
+
+/* Utility classes for flip animation */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.transform-style-preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+}
+
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+
+/* Scroll Reveal Animations */
+.scroll-reveal-up {
+  opacity: 0;
+  transform: translateY(50px);
+}
+
+.scroll-reveal-down {
+  opacity: 0;
+  transform: translateY(-50px);
+}
+
+.scroll-reveal-left {
+  opacity: 0;
+  transform: translateX(-50px);
+}
+
+.scroll-reveal-right {
+  opacity: 0;
+  transform: translateX(50px);
+}
+
+.revealed {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+@layer base {
+  :root {
+    --background: #ffffff;
+    --foreground: #0f172a;
+    --section-pad: clamp(3rem, 7vw, 5rem);
+  }
+
+  html {
+    /* Modern corporate typography like Sungrow Power - Montserrat for headings, Roboto for body */
+    font-family: var(--font-roboto), sans-serif;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: inherit;
+    line-height: 1.6;
+  }
+
+  /* Typography hierarchy inspired by corporate websites like Sungrow Power */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-montserrat), sans-serif;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.025em;
+  }
+
+  p, span, a, button, input, textarea, select, label, li {
+    font-family: var(--font-roboto), sans-serif;
+  }
+  
+  /* Typography Styles - Corporate style like Sungrow Power */
+  h1 {
+    @apply text-4xl md:text-6xl font-bold leading-tight;
+    font-weight: 700;
+  }
+
+  h2 {
+    @apply text-3xl md:text-5xl font-bold leading-tight;
+    font-weight: 700;
+  }
+
+  h3 {
+    @apply text-2xl md:text-4xl font-semibold leading-snug;
+    font-weight: 600;
+  }
+
+  h4 {
+    @apply text-xl md:text-3xl font-semibold leading-snug;
+    font-weight: 600;
+  }
+
+  h5 {
+    @apply text-lg md:text-2xl font-medium leading-relaxed;
+    font-weight: 500;
+  }
+
+  h6 {
+    @apply text-base md:text-xl font-medium leading-relaxed;
+    font-weight: 500;
+  }
+  
+  p {
+    @apply text-base leading-relaxed;
+  }
+  
+  .text-sm { @apply text-sm leading-relaxed; }
+  .text-xs { @apply text-xs leading-relaxed; }
+  
+  /* Emphasis and Strong Text */
+  strong, b {
+    @apply font-bold;
+  }
+  
+  /* Links */
+  a {
+    @apply text-green-600 hover:text-green-700 underline;
+  }
+  
+  /* Buttons */
+  button {
+    @apply font-medium;
+  }
+
+  html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  main {
+    min-height: 100vh;
+    background: linear-gradient(180deg, #fff, #f8fafc);
+    overflow-x: hidden;
+  }
+  
+  /* Scroll Snap */
+  .snap-container {
+    scroll-snap-type: y mandatory;
+    overflow-y: scroll;
+    height: 100vh;
+  }
+  
+  .snap-section {
+    scroll-snap-align: start;
+  }
+
+  /* Sungrow Power Style Animations */
+  .sungrow-float {
+    animation: sungrowFloat 6s ease-in-out infinite;
+  }
+
+  @keyframes sungrowFloat {
+    0%, 100% {
+      transform: translateY(0px) translateX(0px) rotate(0deg);
+    }
+    25% {
+      transform: translateY(-15px) translateX(8px) rotate(2deg);
+    }
+    50% {
+      transform: translateY(-8px) translateX(-6px) rotate(-1deg);
+    }
+    75% {
+      transform: translateY(-20px) translateX(4px) rotate(1deg);
+    }
+  }
+
+  /* Corporate Card Hover Effects */
+  .corporate-card {
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .corporate-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow:
+      0 20px 40px rgba(34, 197, 94, 0.15),
+      0 10px 20px rgba(34, 197, 94, 0.1),
+      0 0 20px rgba(34, 197, 94, 0.05);
+  }
+
+  /* Green Theme Gradients */
+  .green-gradient-bg {
+    background: linear-gradient(135deg, #22c55e, #16a34a, #15803d, #166534);
+  }
+
+  .green-gradient-text {
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}

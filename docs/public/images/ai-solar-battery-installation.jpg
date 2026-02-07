@@ -1,0 +1,39 @@
+<svg width="600" height="400" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="skyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#87CEEB;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#E0F6FF;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="panelGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#4CAF50;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2E7D32;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Sky background -->
+  <rect width="600" height="400" fill="url(#skyGradient)"/>
+
+  <!-- Sun -->
+  <circle cx="500" cy="80" r="40" fill="#FFD700" opacity="0.8"/>
+  <circle cx="500" cy="80" r="25" fill="#FFA500" opacity="0.6"/>
+
+  <!-- Solar panels -->
+  <rect x="150" y="200" width="80" height="120" fill="url(#panelGradient)" stroke="#1B5E20" stroke-width="2"/>
+  <rect x="240" y="180" width="80" height="140" fill="url(#panelGradient)" stroke="#1B5E20" stroke-width="2"/>
+  <rect x="330" y="220" width="80" height="100" fill="url(#panelGradient)" stroke="#1B5E20" stroke-width="2"/>
+
+  <!-- Battery storage unit -->
+  <rect x="100" y="300" width="150" height="80" fill="#E8F5E8" stroke="#4CAF50" stroke-width="3" rx="10"/>
+  <rect x="110" y="310" width="130" height="15" fill="#4CAF50"/>
+  <rect x="110" y="330" width="130" height="15" fill="#66BB6A"/>
+  <rect x="110" y="350" width="130" height="15" fill="#81C784"/>
+
+  <!-- Ion Green logo -->
+  <text x="300" y="50" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#2E7D32" text-anchor="middle">ION GREEN</text>
+  <text x="300" y="70" font-family="Arial, sans-serif" font-size="14" fill="#4CAF50" text-anchor="middle">Solar Battery Solutions</text>
+
+  <!-- Energy flow lines -->
+  <path d="M 230 200 Q 200 250 150 300" stroke="#FFD700" stroke-width="3" fill="none" opacity="0.7"/>
+  <path d="M 320 180 Q 300 240 150 300" stroke="#FFD700" stroke-width="3" fill="none" opacity="0.7"/>
+  <path d="M 410 220 Q 380 260 250 300" stroke="#FFD700" stroke-width="3" fill="none" opacity="0.7"/>
+</svg>

@@ -1,0 +1,66 @@
+<svg width="400" height="300" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="houseGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#64748b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#475569;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="greenEnergyGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#22c55e;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#16a34a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#15803d;stop-opacity:1" />
+    </linearGradient>
+    <radialGradient id="sunGradient" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:0.8" />
+    </radialGradient>
+  </defs>
+
+  <!-- Background sky -->
+  <rect width="400" height="300" fill="#e0f2fe" rx="20"/>
+
+  <!-- Sun -->
+  <circle cx="80" cy="80" r="25" fill="url(#sunGradient)"/>
+  <circle cx="80" cy="80" r="20" fill="none" stroke="#f59e0b" stroke-width="1" opacity="0.7"/>
+
+  <!-- House -->
+  <polygon points="150,180 200,130 250,180 250,240 150,240" fill="url(#houseGradient)" stroke="#334155" stroke-width="2"/>
+  <polygon points="150,180 200,130 250,180" fill="#94a3b8" stroke="#334155" stroke-width="2"/>
+
+  <!-- Door -->
+  <rect x="185" y="200" width="30" height="40" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+  <circle cx="210" cy="220" r="3" fill="#fbbf24"/>
+
+  <!-- Windows -->
+  <rect x="165" y="190" width="15" height="20" fill="#e2e8f0" stroke="#334155" stroke-width="1"/>
+  <rect x="220" y="190" width="15" height="20" fill="#e2e8f0" stroke="#334155" stroke-width="1"/>
+
+  <!-- Solar panels on roof -->
+  <rect x="160" y="140" width="40" height="25" rx="2" fill="#fbbf24" stroke="#d97706" stroke-width="1"/>
+  <rect x="210" y="140" width="40" height="25" rx="2" fill="#fbbf24" stroke="#d97706" stroke-width="1"/>
+
+  <!-- Battery storage -->
+  <rect x="300" y="200" width="50" height="30" rx="3" fill="url(#greenEnergyGradient)" stroke="#16a34a" stroke-width="2"/>
+  <rect x="305" y="205" width="8" height="20" rx="1" fill="#dcfce7"/>
+  <rect x="316" y="205" width="8" height="20" rx="1" fill="#bbf7d0"/>
+  <rect x="327" y="205" width="8" height="20" rx="1" fill="#86efac"/>
+  <rect x="338" y="205" width="8" height="20" rx="1" fill="#4ade80"/>
+
+  <!-- Energy flow -->
+  <path d="M200 165 Q250 170 290 210" stroke="#22c55e" stroke-width="2" fill="none" marker-end="url(#arrowhead)">
+    <animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite"/>
+  </path>
+
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#22c55e"/>
+    </marker>
+  </defs>
+
+  <!-- Ground -->
+  <rect x="0" y="240" width="400" height="60" fill="#22c55e" opacity="0.1"/>
+
+  <!-- ION GREEN RESIDENTIAL text -->
+  <text x="200" y="275" text-anchor="middle" fill="#16a34a" font-family="Arial, sans-serif" font-size="18" font-weight="bold">ION GREEN</text>
+  <text x="200" y="290" text-anchor="middle" fill="#15803d" font-family="Arial, sans-serif" font-size="12">RESIDENTIAL SOLUTION</text>
+</svg>
