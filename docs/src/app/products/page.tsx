@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ScrollAnimate } from "@/components/scroll-animate";
 import { Button } from "@/components/ui/button";
 import { dbService } from "@/lib/db-service";
+import { PageHeroSlider } from "@/components/page-hero-slider";
 
 // Enable ISR (Incremental Static Regeneration) with a revalidation period
 export const revalidate = 60; // Revalidate at most every 60 seconds
@@ -12,71 +13,48 @@ export default async function ProductsPage() {
   const siteContent = getSiteContent();
   const featuredProducts = await dbService.getProducts(undefined, 2, true);
 
+  // Hero slider slides for products page
+  const heroSlides = [
+    {
+      id: 1,
+      title: "Advanced Energy Storage Solutions",
+      description: "Discover our comprehensive range of battery energy storage systems, from residential solutions to utility-scale installations. Built with cutting-edge LiFePO₄ technology for maximum safety and efficiency.",
+      ctaLabel: "Explore Products",
+      ctaHref: "#product-categories",
+      image: "/Enery storage System.jpeg"
+    },
+    {
+      id: 2,
+      title: "Residential & Commercial ESS",
+      description: "Smart energy storage solutions for homes and businesses. Reduce electricity costs, ensure backup power, and integrate seamlessly with solar systems.",
+      ctaLabel: "View Products",
+      ctaHref: "/products/residential-energy-storage",
+      image: "/Img/image1.png"
+    },
+    {
+      id: 3,
+      title: "Industrial & Utility Scale Systems",
+      description: "Large-scale energy storage solutions for industrial facilities and utility applications. Containerized BESS systems up to 5MWh capacity.",
+      ctaLabel: "Learn More",
+      ctaHref: "/products/commercial-industrial-ess",
+      image: "/Img/image2.png"
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-white">
-      {/* Hero Section - Professional Product Showcase */}
-      <section className="relative bg-gradient-to-br from-slate-900 via-green-900 to-slate-800 text-white overflow-hidden">
-        <div className="absolute inset-0 bg-black/20"></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <ScrollAnimate animation="fadeInUpElegant" delay={200}>
-                <h1 className="text-5xl lg:text-6xl font-bold mb-6">
-                  Advanced Energy
-                  <span className="text-green-400 block">Storage Solutions</span>
-                </h1>
-              </ScrollAnimate>
+      {/* Hero Section with Slider */}
+      <PageHeroSlider 
+        slides={heroSlides}
+        height="h-[80vh]"
+        showNavigation={true}
+        showIndicators={true}
+        autoPlay={true}
+        autoPlayInterval={5000}
+      />
 
-              <ScrollAnimate animation="fadeInUpElegant" delay={400}>
-                <p className="text-xl text-gray-300 mb-8 leading-relaxed">
-                  Discover our comprehensive range of battery energy storage systems,
-                  from residential solutions to utility-scale installations. Built with
-                  cutting-edge LiFePO₄ technology for maximum safety and efficiency.
-                </p>
-              </ScrollAnimate>
-
-              <ScrollAnimate animation="scaleInBounce" delay={600}>
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <Button
-                    asChild
-                    size="lg"
-                    className="bg-green-600 hover:bg-green-700 text-white px-8 py-4 text-lg font-semibold"
-                  >
-                    <Link href="#product-categories">
-                      Explore Products
-                    </Link>
-                  </Button>
-                  <Button
-                    asChild
-                    variant="outline"
-                    size="lg"
-                    className="border-white text-white hover:bg-white hover:text-slate-900 px-8 py-4 text-lg font-semibold"
-                  >
-                    <Link href="/contact">
-                      Request Quote
-                    </Link>
-                  </Button>
-                </div>
-              </ScrollAnimate>
-            </div>
-
-            <div className="relative">
-              <ScrollAnimate animation="slideInRightSmooth" delay={300}>
-                <div className="relative h-96 lg:h-[500px]">
-                  <Image
-                    src="/Enery storage System.jpeg"
-                    alt="Energy Storage System"
-                    fill
-                    className="object-cover rounded-2xl shadow-2xl"
-                    priority
-                  />
-                </div>
-              </ScrollAnimate>
-            </div>
-          </div>
-        </div>
-
-        {/* Stats Section */}
+      {/* Stats Section */}
+      <section className="relative bg-gradient-to-br from-slate-900 via-green-900 to-slate-800 text-white">
         <div className="border-t border-white/10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
@@ -153,11 +131,11 @@ export default async function ProductsPage() {
           <ScrollAnimate animation="fadeInUpElegant" delay={200}>
             <div className="text-center mb-16">
               <h2 className="text-4xl font-bold text-gray-900 mb-6">
-                Product Categories
+                Products
               </h2>
               <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                Comprehensive energy storage solutions designed for every application,
-                from residential homes to large-scale utility installations.
+                Comprehensive range of energy storage solutions, inverters, heat pumps, and EV charging infrastructure
+                for residential, commercial, and industrial applications.
               </p>
             </div>
           </ScrollAnimate>

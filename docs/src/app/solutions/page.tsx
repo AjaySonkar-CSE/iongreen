@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ScrollAnimate } from "@/components/scroll-animate";
 import { Button } from "@/components/ui/button";
+import { PageHeroSlider } from "@/components/page-hero-slider";
 
 // Enable ISR (Incremental Static Regeneration) with a revalidation period
 export const revalidate = 60; // Revalidate at most every 60 seconds
@@ -10,70 +11,45 @@ export const revalidate = 60; // Revalidate at most every 60 seconds
 export default async function SolutionsPage() {
   const solutions = await dbService.getSolutions();
 
+  // Hero slider slides for solutions page
+  const heroSlides = [
+    {
+      id: 1,
+      title: "Comprehensive Energy Solutions",
+      description: "Discover our complete range of energy storage and renewable integration solutions, from residential systems to utility-scale installations. Engineered for maximum efficiency, safety, and sustainability.",
+      ctaLabel: "Explore Solutions",
+      ctaHref: "#solution-categories",
+      image: "/Img/image1.png"
+    },
+    {
+      id: 2,
+      title: "Industry-Specific Solutions",
+      description: "Tailored energy solutions for Telecom, Data Centers, Commercial & Industrial, and Battery Backup applications. Customized to meet your specific requirements.",
+      ctaLabel: "View Solutions",
+      ctaHref: "#solution-categories",
+      image: "/Img/image2.png"
+    },
+    {
+      id: 3,
+      title: "Utility Scale & Microgrids",
+      description: "Large-scale energy storage for utilities and independent microgrid systems. Enabling renewable integration and grid stability with advanced BESS technology.",
+      ctaLabel: "Get Consultation",
+      ctaHref: "/contact",
+      image: "/Img/image3.png"
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-white">
-      {/* Hero Section - Professional Solutions Showcase */}
-      <section className="relative bg-gradient-to-br from-slate-900 via-green-900 to-slate-800 text-white overflow-hidden">
-        <div className="absolute inset-0 bg-black/20"></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <ScrollAnimate animation="fadeInUpElegant" delay={200}>
-                <h1 className="text-5xl lg:text-6xl font-bold mb-6">
-                  Comprehensive Energy
-                  <span className="text-green-400 block">Solutions</span>
-                </h1>
-              </ScrollAnimate>
-
-              <ScrollAnimate animation="fadeInUpElegant" delay={400}>
-                <p className="text-xl text-gray-300 mb-8 leading-relaxed">
-                  Discover our complete range of energy storage and renewable integration solutions,
-                  from residential systems to utility-scale installations. Engineered for maximum
-                  efficiency, safety, and sustainability.
-                </p>
-              </ScrollAnimate>
-
-              <ScrollAnimate animation="scaleInBounce" delay={600}>
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <Button
-                    asChild
-                    size="lg"
-                    className="bg-green-600 hover:bg-green-700 text-white px-8 py-4 text-lg font-semibold"
-                  >
-                    <Link href="#solution-categories">
-                      Explore Solutions
-                    </Link>
-                  </Button>
-                  <Button
-                    asChild
-                    variant="outline"
-                    size="lg"
-                    className="border-white text-white hover:bg-white hover:text-slate-900 px-8 py-4 text-lg"
-                  >
-                    <Link href="/contact">
-                      Get Consultation
-                    </Link>
-                  </Button>
-                </div>
-              </ScrollAnimate>
-            </div>
-
-            <div className="relative">
-              <ScrollAnimate animation="slideInRightSmooth" delay={300}>
-                <div className="relative h-96 w-full">
-                  <Image
-                    src="/1/ion1.png"
-                    alt="ION Green Energy Solutions"
-                    fill
-                    className="object-contain"
-                    priority
-                  />
-                </div>
-              </ScrollAnimate>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Hero Section with Slider */}
+      <PageHeroSlider 
+        slides={heroSlides}
+        height="h-[80vh]"
+        showNavigation={true}
+        showIndicators={true}
+        autoPlay={true}
+        autoPlayInterval={5000}
+      />
 
       {/* Solutions Categories Section */}
       <section id="solution-categories" className="py-20 bg-gray-50">
@@ -91,17 +67,24 @@ export default async function SolutionsPage() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {solutions.map((solution, index) => {
-               // Local images for solutions (fallback) matching the homepage component
-               const fallbackSolutionImages = [
-                 "/solution1.png",
-                 "/solution2.png",
-                 "/solution3.png",
-                 "/solution4.png",
-                 "/solution5.png",
-                 "/solution6.png"
+               // Use images from Img folder - prioritize database image, then fallback to Img folder images
+               const imgFolderImages = [
+                 "/Img/image1.png",
+                 "/Img/image2.png",
+                 "/Img/image3.png",
+                 "/Img/image4.png",
+                 "/Img/image5.png",
+                 "/Img/image6.png",
+                 "/Img/image7.png",
+                 "/Img/image8.png",
+                 "/Img/image9.png",
+                 "/Img/image11.png",
+                 "/Img/image12.png",
+                 "/Img/image13.png",
+                 "/Img/image14.png"
                ];
-               // Use database image if available, otherwise fallback to local images using index to cycle through
-               const imageUrl = solution.image_url || fallbackSolutionImages[index % fallbackSolutionImages.length];
+               // Use database image if available, otherwise fallback to Img folder images
+               const imageUrl = solution.image_url || imgFolderImages[index % imgFolderImages.length];
 
               return (
               <ScrollAnimate

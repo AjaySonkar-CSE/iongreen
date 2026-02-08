@@ -163,7 +163,10 @@ export const siteContent: SiteContent = {
         { label: "Commercial & Industrial", href: "/solutions/commercial-industrial" },
         { label: "Residential All-in-One", href: "/solutions/residential-all-in-one" },
         { label: "Microgrids", href: "/solutions/microgrids" },
-        { label: "Renewable Integration", href: "/solutions/renewable-integration" }
+        { label: "Renewable Integration", href: "/solutions/renewable-integration" },
+        { label: "Telecom Industry", href: "/solutions/telecom-industry" },
+        { label: "Data Centre Solutions", href: "/solutions/data-centre-solutions" },
+        { label: "Battery Backup", href: "/solutions/battery-backup" }
       ]
     },
     { label: "About", href: "/about" },

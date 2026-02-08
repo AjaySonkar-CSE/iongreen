@@ -4,71 +4,48 @@ import { ScrollAnimate } from "@/components/scroll-animate";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { PageHeroSlider } from "@/components/page-hero-slider";
 
 export default function ContactPage() {
+  // Hero slider slides for contact page
+  const heroSlides = [
+    {
+      id: 1,
+      title: "Get in Touch",
+      description: "Our global team is ready to discuss your energy storage needs and provide customized solutions. Contact us today to start your energy transformation journey.",
+      ctaLabel: "Send Message",
+      ctaHref: "#contact-form",
+      image: "/Img/image7.png"
+    },
+    {
+      id: 2,
+      title: "Expert Consultation Available",
+      description: "Speak with our energy storage experts to find the perfect solution for your residential, commercial, or industrial needs. We're here to help you every step of the way.",
+      ctaLabel: "Request Quote",
+      ctaHref: "#contact-form",
+      image: "/Img/image8.png"
+    },
+    {
+      id: 3,
+      title: "Global Support Network",
+      description: "With offices and partners across 100+ countries, we provide local support with global expertise. Reach out to our team for immediate assistance.",
+      ctaLabel: "Call Now",
+      ctaHref: "tel:+919202836627",
+      image: "/Img/image9.png"
+    }
+  ];
+
   return (
     <>
-      {/* Hero Section - Professional Contact Showcase */}
-      <section className="relative bg-gradient-to-br from-slate-900 via-green-900 to-slate-800 text-white overflow-hidden">
-        <div className="absolute inset-0 bg-black/20"></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <ScrollAnimate animation="fadeInUpElegant" delay={200}>
-                <h1 className="text-5xl lg:text-6xl font-bold mb-6">
-                  Get in
-                  <span className="text-green-400 block">Touch</span>
-                </h1>
-              </ScrollAnimate>
-
-              <ScrollAnimate animation="fadeInUpElegant" delay={400}>
-                <p className="text-xl text-gray-300 mb-8 leading-relaxed">
-                  Our global team is ready to discuss your energy storage needs and provide customized solutions. 
-                  Contact us today to start your energy transformation journey.
-                </p>
-              </ScrollAnimate>
-
-              <ScrollAnimate animation="scaleInBounce" delay={600}>
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <Button
-                    asChild
-                    size="lg"
-                    className="bg-green-600 hover:bg-green-700 text-white px-8 py-4 text-lg font-semibold"
-                  >
-                    <Link href="#contact-form">
-                      Send Message
-                    </Link>
-                  </Button>
-                  <Button
-                    asChild
-                    variant="outline"
-                    size="lg"
-                    className="border-white text-white hover:bg-white hover:text-slate-900 px-8 py-4 text-lg font-semibold"
-                  >
-                    <Link href="tel:9202636627">
-                      Call Now
-                    </Link>
-                  </Button>
-                </div>
-              </ScrollAnimate>
-            </div>
-
-            <div className="relative">
-              <ScrollAnimate animation="slideInRightSmooth" delay={300}>
-                <div className="relative h-96 lg:h-[500px]">
-                  <Image
-                    src="/1/ion1.png"
-                    alt="Contact ION Green"
-                    fill
-                    className="object-contain rounded-2xl shadow-2xl"
-                    priority
-                  />
-                </div>
-              </ScrollAnimate>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Hero Section with Slider */}
+      <PageHeroSlider 
+        slides={heroSlides}
+        height="h-[80vh]"
+        showNavigation={true}
+        showIndicators={true}
+        autoPlay={true}
+        autoPlayInterval={5000}
+      />
       <ScrollAnimate animation="fadeInUpElegant" delay={400}>
         <section id="contact-form" className="bg-white py-20">
           <div className="mx-auto grid max-w-5xl gap-10 px-4 md:grid-cols-2 md:px-6">

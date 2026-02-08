@@ -70,7 +70,8 @@ export const dbService = {
       specifications: { capacity: '10kWh', weight: '120kg', warranty: '10 years' },
       applications: ['Home backup', 'Solar integration', 'Load shifting'],
       benefits: ['Energy independence', 'Cost savings', 'Reduced carbon footprint'],
-      is_featured: true
+      is_featured: true,
+      is_active: true
     },
     // Add more mock products as needed
   ],

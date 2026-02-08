@@ -9,6 +9,8 @@
     "lint": "eslint",
     "db:init": "ts-node --project tsconfig.scripts.json scripts/init-db.ts",
     "db:reset": "ts-node --project tsconfig.scripts.json scripts/init-db.ts --reset",
+    "db:migrate": "ts-node --project tsconfig.scripts.json scripts/migrate.ts",
+    "db:add-solutions": "ts-node --project tsconfig.scripts.json scripts/add-solutions.ts",
     "admin:create": "ts-node --project tsconfig.scripts.json scripts/create-admin-user.ts"
   },
   "dependencies": {
@@ -36,6 +38,7 @@
     "react-intersection-observer": "^10.0.0",
     "react-quill": "^2.0.0",
     "react-scroll-parallax": "^3.5.0",
+    "server-only": "^0.0.1",
     "sonner": "^2.0.7",
     "tailwind-merge": "^3.4.0"
   },

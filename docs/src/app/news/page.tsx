@@ -4,6 +4,7 @@ import { dbService } from "@/lib/db-service";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { PageHeroSlider } from "@/components/page-hero-slider";
 
 export default async function NewsPage() {
   // Fetch news data on the server side
@@ -17,69 +18,45 @@ export default async function NewsPage() {
     image: item.image_url
   }));
   
+  // Hero slider slides for news page
+  const heroSlides = [
+    {
+      id: 1,
+      title: "Company News & Events",
+      description: "Stay informed with the latest news, events, product launches, and industry insights. Get updates on ION Green innovations, exhibitions, and strategic partnerships.",
+      ctaLabel: "View News",
+      ctaHref: "#news-feed",
+      image: "/Img/image4.png"
+    },
+    {
+      id: 2,
+      title: "Latest Updates & Announcements",
+      description: "Discover our latest product launches, industry exhibitions, strategic partnerships, and technological innovations in energy storage solutions.",
+      ctaLabel: "Read More",
+      ctaHref: "#news-feed",
+      image: "/Img/image5.png"
+    },
+    {
+      id: 3,
+      title: "Industry Insights & Trends",
+      description: "Stay ahead with expert analysis, market trends, and insights into the evolving energy storage industry and renewable energy technologies.",
+      ctaLabel: "Subscribe",
+      ctaHref: "/contact",
+      image: "/Img/image6.png"
+    }
+  ];
+
   return (
     <>
-      {/* Hero Section - Professional News Showcase */}
-      <section className="relative bg-gradient-to-br from-slate-900 via-green-900 to-slate-800 text-white overflow-hidden">
-        <div className="absolute inset-0 bg-black/20"></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <ScrollAnimate animation="fadeInUpElegant" delay={200}>
-                <h1 className="text-5xl lg:text-6xl font-bold mb-6">
-                  Company News
-                  <span className="text-green-400 block">& Events</span>
-                </h1>
-              </ScrollAnimate>
-
-              <ScrollAnimate animation="fadeInUpElegant" delay={400}>
-                <p className="text-xl text-gray-300 mb-8 leading-relaxed">
-                  Stay current with exhibitions, product launches, and strategic partnerships. 
-                  Get the latest updates on ION Green innovations and industry developments.
-                </p>
-              </ScrollAnimate>
-
-              <ScrollAnimate animation="scaleInBounce" delay={600}>
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <Button
-                    asChild
-                    size="lg"
-                    className="bg-green-600 hover:bg-green-700 text-white px-8 py-4 text-lg font-semibold"
-                  >
-                    <Link href="#news-feed">
-                      View News
-                    </Link>
-                  </Button>
-                  <Button
-                    asChild
-                    variant="outline"
-                    size="lg"
-                    className="border-white text-white hover:bg-white hover:text-slate-900 px-8 py-4 text-lg font-semibold"
-                  >
-                    <Link href="/contact">
-                      Subscribe
-                    </Link>
-                  </Button>
-                </div>
-              </ScrollAnimate>
-            </div>
-
-            <div className="relative">
-              <ScrollAnimate animation="slideInRightSmooth" delay={300}>
-                <div className="relative h-96 lg:h-[500px]">
-                  <Image
-                    src="/1/ion1.png"
-                    alt="ION Green News & Events"
-                    fill
-                    className="object-contain rounded-2xl shadow-2xl"
-                    priority
-                  />
-                </div>
-              </ScrollAnimate>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Hero Section with Slider */}
+      <PageHeroSlider 
+        slides={heroSlides}
+        height="h-[80vh]"
+        showNavigation={true}
+        showIndicators={true}
+        autoPlay={true}
+        autoPlayInterval={5000}
+      />
       <ScrollAnimate animation="fadeInUpElegant" delay={400}>
         <div id="news-feed">
           <NewsFeed news={news} />

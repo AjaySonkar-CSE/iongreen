@@ -39,7 +39,7 @@ npm start
 
 ### Database Setup
 1. Ensure MySQL is running and create the `green_db` database.
-2. Provide credentials via environment variables (see below). Defaults assume `root/Pravin2005@127.0.0.1:3306`.
+2. Provide credentials via environment variables (see below). Defaults assume `root` user with empty password at `127.0.0.1:3306`.
 3. The first POST to `/api/contact` will auto-create the `contact_requests` table if it does not exist:
    ```sql
    CREATE TABLE contact_requests (
@@ -57,7 +57,7 @@ npm start
 | `MYSQL_HOST` | `127.0.0.1` |
 | `MYSQL_PORT` | `3306` |
 | `MYSQL_USER` | `root` |
-| `MYSQL_PASSWORD` | `Pravin2005` |
+| `MYSQL_PASSWORD` | `` (empty) |
 | `MYSQL_DATABASE` | `green_db` |
 
 ### API Endpoints
