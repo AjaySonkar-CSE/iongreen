@@ -6,23 +6,25 @@ async function main() {
   try {
     console.log("Initializing full database...");
 
+    const database = process.env.MYSQL_DATABASE ?? "green_db";
+    
     const config = {
       host: process.env.MYSQL_HOST ?? "127.0.0.1",
       port: Number(process.env.MYSQL_PORT ?? "3306"),
       user: process.env.MYSQL_USER ?? "root",
-      password: process.env.MYSQL_PASSWORD ?? "Pravin2005",
+      password: process.env.MYSQL_PASSWORD ?? "",
       multipleStatements: true,
     };
 
     // Create database if not exists
     const tempConnection = await mysql.createConnection(config);
-    await tempConnection.query(`CREATE DATABASE IF NOT EXISTS green_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;`);
-    console.log("✅ Database 'green_db' created or already exists");
+    await tempConnection.query(`CREATE DATABASE IF NOT EXISTS \`${database}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;`);
+    console.log(`✅ Database '${database}' created or already exists`);
     await tempConnection.end();
 
     const pool = mysql.createPool({
       ...config,
-      database: 'green_db'
+      database: database
     });
 
     // 1. Users Table
@@ -57,7 +59,13 @@ async function main() {
         description TEXT,
         image_url VARCHAR(255),
         category VARCHAR(100),
+        features JSON,
+        specifications JSON,
+        applications JSON,
+        benefits JSON,
+        is_featured BOOLEAN DEFAULT false,
         is_active BOOLEAN DEFAULT true,
+        price DECIMAL(10,2),
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
       );
@@ -73,7 +81,8 @@ async function main() {
         summary TEXT,
         content TEXT,
         image_url VARCHAR(255),
-        published_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        publish_date DATE,
+        is_published BOOLEAN DEFAULT false,
         is_active BOOLEAN DEFAULT true,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
@@ -175,6 +184,51 @@ async function main() {
       );
     `);
     console.log("✅ Table 'newsletter_subscribers' created.");
+
+    // Migrate existing tables to add missing columns
+    try {
+      // Check and add missing columns to products table
+      const [productColumns] = await pool.query('DESCRIBE products');
+      const productColNames = (productColumns as any[]).map((c: any) => c.Field);
+      
+      if (!productColNames.includes('features')) {
+        await pool.query('ALTER TABLE products ADD COLUMN features JSON NULL AFTER category');
+      }
+      if (!productColNames.includes('specifications')) {
+        await pool.query('ALTER TABLE products ADD COLUMN specifications JSON NULL AFTER features');
+      }
+      if (!productColNames.includes('applications')) {
+        await pool.query('ALTER TABLE products ADD COLUMN applications JSON NULL AFTER specifications');
+      }
+      if (!productColNames.includes('benefits')) {
+        await pool.query('ALTER TABLE products ADD COLUMN benefits JSON NULL AFTER applications');
+      }
+      if (!productColNames.includes('is_featured')) {
+        await pool.query('ALTER TABLE products ADD COLUMN is_featured BOOLEAN DEFAULT false AFTER benefits');
+      }
+      if (!productColNames.includes('price')) {
+        await pool.query('ALTER TABLE products ADD COLUMN price DECIMAL(10,2) NULL AFTER is_featured');
+      }
+      
+      // Check and add missing columns to news table
+      const [newsColumns] = await pool.query('DESCRIBE news');
+      const newsColNames = (newsColumns as any[]).map((c: any) => c.Field);
+      
+      if (!newsColNames.includes('is_published')) {
+        await pool.query('ALTER TABLE news ADD COLUMN is_published BOOLEAN DEFAULT false AFTER image_url');
+      }
+      if (!newsColNames.includes('publish_date')) {
+        await pool.query('ALTER TABLE news ADD COLUMN publish_date DATE NULL AFTER image_url');
+      }
+      if (!newsColNames.includes('is_active')) {
+        await pool.query('ALTER TABLE news ADD COLUMN is_active BOOLEAN DEFAULT true AFTER is_published');
+      }
+      
+      console.log("✅ Database migration completed successfully");
+    } catch (error) {
+      console.error("Migration error:", error);
+      // Don't throw error, just log it
+    }
 
     // Seed Data (Minimal examples)
     // Products

@@ -38,7 +38,7 @@ Each secondary page reuses shared sections and reads from centralized content.
 
 ### Backend Considerations
 - `/api/site-content` serves cached JSON for any future client consumption.
-- `/api/contact` validates payloads, auto-creates `contact_requests`, and inserts rows into MySQL (`green_db`) using environment-configured credentials (default password `Pravin2005`).
+- `/api/contact` validates payloads, auto-creates `contact_requests`, and inserts rows into MySQL (`green_db`) using environment-configured credentials (default: `root` user with empty password).
 
 ### Testing & Verification
 - `npm run lint`

@@ -6,11 +6,11 @@ async function main() {
     
     // Database configuration
     const config = {
-      host: 'localhost',
-      port: 3306,
-      user: 'root',
-      password: 'Pravin2005',
-      database: 'green_db'
+      host: process.env.MYSQL_HOST || 'localhost',
+      port: Number(process.env.MYSQL_PORT || '3306'),
+      user: process.env.MYSQL_USER || 'root',
+      password: process.env.MYSQL_PASSWORD || '',
+      database: process.env.MYSQL_DATABASE || 'green_db'
     };
     
     // Create connection

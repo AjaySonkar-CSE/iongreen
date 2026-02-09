@@ -4,71 +4,48 @@ import { CTAPanel } from "@/components/cta-panel";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { PageHeroSlider } from "@/components/page-hero-slider";
 
 export default function AboutPage() {
+  // Hero slider slides for about page
+  const heroSlides = [
+    {
+      id: 1,
+      title: "About ION Green Energy",
+      description: "Leading innovator in energy storage solutions, committed to sustainable energy transformation worldwide. We deliver advanced battery energy storage systems to 100+ countries with a focus on sustainability and efficiency.",
+      ctaLabel: "Our Story",
+      ctaHref: "#our-story",
+      image: "/image5.png"
+    },
+    {
+      id: 2,
+      title: "25+ Years of Excellence",
+      description: "With over 25 years of experience, 5000+ employees, and 5+ production bases, we are a global leader in clean energy technology and energy storage solutions.",
+      ctaLabel: "Learn More",
+      ctaHref: "#manufacturing-strength",
+      image: "/image2.png"
+    },
+    {
+      id: 3,
+      title: "Global Presence & Innovation",
+      description: "Operating across 100+ countries with headquarters in UAE, engineering centers in India, and strategic partners worldwide. Delivering localized execution with global expertise.",
+      ctaLabel: "Contact Us",
+      ctaHref: "/contact",
+      image: "/Img/image3.png"
+    }
+  ];
+
   return (
     <>
-      {/* Hero Section - Professional About Showcase */}
-      <section className="relative bg-gradient-to-br from-slate-900 via-green-900 to-slate-800 text-white overflow-hidden">
-        <div className="absolute inset-0 bg-black/20"></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <ScrollAnimate animation="fadeInUpElegant" delay={200}>
-                <h1 className="text-5xl lg:text-6xl font-bold mb-6">
-                  About ION Green
-                  <span className="text-green-400 block">Energy</span>
-                </h1>
-              </ScrollAnimate>
-
-              <ScrollAnimate animation="fadeInUpElegant" delay={400}>
-                <p className="text-xl text-gray-300 mb-8 leading-relaxed">
-                  Leading innovator in energy storage solutions, committed to sustainable energy transformation worldwide. 
-                  We deliver advanced battery energy storage systems to 100+ countries with a focus on sustainability and efficiency.
-                </p>
-              </ScrollAnimate>
-
-              <ScrollAnimate animation="scaleInBounce" delay={600}>
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <Button
-                    asChild
-                    size="lg"
-                    className="bg-green-600 hover:bg-green-700 text-white px-8 py-4 text-lg font-semibold"
-                  >
-                    <Link href="#our-story">
-                      Our Story
-                    </Link>
-                  </Button>
-                  <Button
-                    asChild
-                    variant="outline"
-                    size="lg"
-                    className="border-white text-white hover:bg-white hover:text-slate-900 px-8 py-4 text-lg font-semibold"
-                  >
-                    <Link href="/contact">
-                      Contact Us
-                    </Link>
-                  </Button>
-                </div>
-              </ScrollAnimate>
-            </div>
-
-            <div className="relative">
-              <ScrollAnimate animation="slideInRightSmooth" delay={300}>
-                <div className="relative h-96 lg:h-[500px]">
-                  <Image
-                    src="/image5.png"
-                    alt="About ION Green Energy"
-                    fill
-                    className="object-cover rounded-2xl shadow-2xl"
-                    priority
-                  />
-                </div>
-              </ScrollAnimate>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Hero Section with Slider */}
+      <PageHeroSlider 
+        slides={heroSlides}
+        height="h-[80vh]"
+        showNavigation={true}
+        showIndicators={true}
+        autoPlay={true}
+        autoPlayInterval={5000}
+      />
 
       {/* Company Story Section */}
       <ScrollAnimate animation="fadeInUpElegant" delay={400}>
@@ -421,10 +398,146 @@ export default function AboutPage() {
         </section>
       </ScrollAnimate>
 
-      <ScrollAnimate animation="cascadeDown" delay={2300}>
+      {/* Manufacturing Strength Section - Similar to Reference Sites */}
+      <ScrollAnimate animation="fadeInUpElegant" delay={3500}>
+        <section id="manufacturing-strength" className="py-20 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <ScrollAnimate animation="smoothReveal" delay={3600}>
+                <h2 className="text-4xl font-bold text-gray-900 mb-4">Manufacturing Strength</h2>
+              </ScrollAnimate>
+              <ScrollAnimate animation="fadeInUpElegant" delay={3700}>
+                <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                  ION Green owns 25+ years' experience in solar thermal, heat pump and energy storage production. 
+                  We have established multiple production bases and boast significant annual production capacity for energy storage systems.
+                </p>
+              </ScrollAnimate>
+            </div>
+
+            {/* Manufacturing Stats */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
+              {[
+                { value: "25+", label: "Years Experience", helper: "Since 1999" },
+                { value: "5000+", label: "Employees", helper: "Global Team" },
+                { value: "2GWh+", label: "Annual Production", helper: "Energy Storage Capacity" },
+                { value: "5+", label: "Production Bases", helper: "Across India & UAE" }
+              ].map((stat, index) => (
+                <ScrollAnimate
+                  key={stat.label}
+                  animation="scaleInBounce"
+                  delay={3800 + (index * 100)}
+                >
+                  <div className="bg-gradient-to-br from-green-50 to-white p-6 rounded-xl shadow-lg text-center border border-green-100 hover:shadow-xl transition-shadow duration-300">
+                    <div className="text-4xl md:text-5xl font-bold text-green-600 mb-2">{stat.value}</div>
+                    <div className="text-sm md:text-base text-gray-700 font-semibold uppercase tracking-wide mb-1">
+                      {stat.label}
+                    </div>
+                    {stat.helper && (
+                      <div className="text-xs text-gray-500">{stat.helper}</div>
+                    )}
+                  </div>
+                </ScrollAnimate>
+              ))}
+            </div>
+
+            {/* Production Bases */}
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[
+                {
+                  name: "Raipur Manufacturing Base",
+                  location: "Chhattisgarh, India",
+                  description: "Primary production facility for residential and commercial energy storage systems with advanced assembly lines and quality control systems.",
+                  image: "/Img/image1.png"
+                },
+                {
+                  name: "Mumbai Engineering Center",
+                  location: "Maharashtra, India",
+                  description: "R&D and engineering hub for product development, system integration, and technical innovation in battery technology.",
+                  image: "/Img/image2.png"
+                },
+                {
+                  name: "Delhi Distribution Center",
+                  location: "Delhi, India",
+                  description: "Strategic distribution and logistics hub serving North India with comprehensive inventory and fast delivery capabilities.",
+                  image: "/Img/image3.png"
+                },
+                {
+                  name: "Bangalore Tech Center",
+                  location: "Karnataka, India",
+                  description: "Software development and smart energy management systems with IoT integration and cloud-based monitoring solutions.",
+                  image: "/Img/image4.png"
+                },
+                {
+                  name: "UAE Headquarters",
+                  location: "United Arab Emirates",
+                  description: "International headquarters for global operations, commercial management, and strategic partnerships across Middle East and Africa.",
+                  image: "/Img/image5.png"
+                },
+                {
+                  name: "Chennai Assembly Plant",
+                  location: "Tamil Nadu, India",
+                  description: "Specialized facility for large-scale commercial and industrial energy storage systems with containerized BESS production.",
+                  image: "/Img/image6.png"
+                }
+              ].map((base, index) => (
+                <ScrollAnimate
+                  key={base.name}
+                  animation="scaleInBounce"
+                  delay={4200 + (index * 100)}
+                >
+                  <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 border border-gray-100 transform hover:-translate-y-2">
+                    <div className="relative h-48">
+                      <Image
+                        src={base.image}
+                        alt={base.name}
+                        fill
+                        className="object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                      <div className="absolute bottom-4 left-4 right-4">
+                        <h3 className="text-white font-bold text-lg mb-1">{base.name}</h3>
+                        <p className="text-green-300 text-sm">{base.location}</p>
+                      </div>
+                    </div>
+                    <div className="p-6">
+                      <p className="text-gray-600 leading-relaxed">{base.description}</p>
+                    </div>
+                  </div>
+                </ScrollAnimate>
+              ))}
+            </div>
+
+            {/* Manufacturing Capabilities */}
+            <ScrollAnimate animation="fadeInUpElegant" delay={4800}>
+              <div className="mt-16 bg-gradient-to-r from-green-50 to-white p-8 rounded-xl border border-green-200">
+                <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">Manufacturing Capabilities</h3>
+                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                  {[
+                    "Advanced Assembly & Testing Infrastructure",
+                    "Automated Module Integration",
+                    "Robust Quality Management & Control",
+                    "Alignment with Global Standards (UL, IEC, CE)"
+                  ].map((capability, index) => (
+                    <div key={capability} className="flex items-start">
+                      <div className="flex-shrink-0 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center mr-3 mt-1">
+                        <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                      </div>
+                      <p className="text-gray-700 font-medium">{capability}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </ScrollAnimate>
+          </div>
+        </section>
+      </ScrollAnimate>
+
+      <ScrollAnimate animation="cascadeDown" delay={4900}>
         <CertificationBar />
       </ScrollAnimate>
-      <ScrollAnimate animation="slideInRightSmooth" delay={2400}>
+      <ScrollAnimate animation="slideInRightSmooth" delay={5000}>
         <CTAPanel />
       </ScrollAnimate>
     </>
