@@ -91,7 +91,7 @@ export function HeroCarousel({ slides, categories = [] }: { slides: Slide[]; cat
           </AnimatePresence>
 
           {/* Dark overlay for text readability */}
-          <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-black/50 to-black/70"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/30 to-black/10"></div>
 
           {/* Animated accent elements */}
           <div className="absolute inset-0 opacity-20">
