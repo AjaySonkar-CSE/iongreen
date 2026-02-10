@@ -34,7 +34,7 @@ export default async function MobileEVChargingStoragePage() {
       id: "emergency-backup",
       title: "Emergency Response",
       description: "Rapid deployment backup power for disaster recovery",
-      image: "/hybrid solor system.jpeg",
+      image: "/hybrid_solar_system.jpg",
       capacity: "1MWh - 3.34MWh"
     }
   ];

@@ -17,7 +17,7 @@ export default async function NewsPage() {
     summary: item.summary,
     image: item.image_url
   }));
-  
+
   // Hero slider slides for news page
   const heroSlides = [
     {
@@ -49,7 +49,7 @@ export default async function NewsPage() {
   return (
     <>
       {/* Hero Section with Slider */}
-      <PageHeroSlider 
+      <PageHeroSlider
         slides={heroSlides}
         height="h-[80vh]"
         showNavigation={true}

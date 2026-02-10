@@ -296,34 +296,15 @@ export default async function CasePage() {
                 key={highlight.title}
                 animation="scaleInBounce"
                 delay={300 + (index * 100)}
-                className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:border-green-200 block h-64"
               >
-                {/* Full-size image background */}
-                <div className="absolute inset-0">
-                  <Image
-                    src={highlight.image}
-                    alt={highlight.title}
-                    fill
-                    className="object-cover group-hover:scale-110 transition-transform duration-500"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                    priority
-                  />
-                </div>
-
-                {/* Dark overlay */}
-                <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-
-                {/* Content overlay - appears on hover */}
-                <div className="absolute inset-0 flex flex-col justify-center items-center p-6 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0">
-                  <div className="bg-white/95 backdrop-blur-sm rounded-xl p-4 text-center">
-                    <div className="text-2xl mb-3">{highlight.icon}</div>
-                    <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-green-600 transition-colors duration-300">
-                      {highlight.title}
-                    </h3>
-                    <p className="text-gray-700 text-sm">
-                      {highlight.description}
-                    </p>
-                  </div>
+                <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:border-green-200 p-6 h-64 flex flex-col items-center justify-center text-center">
+                  <div className="text-4xl mb-4">{highlight.icon}</div>
+                  <h3 className="text-lg font-bold text-gray-900 mb-2">
+                    {highlight.title}
+                  </h3>
+                  <p className="text-gray-700 text-sm">
+                    {highlight.description}
+                  </p>
                 </div>
               </ScrollAnimate>
             ))}

@@ -114,7 +114,7 @@ const StatCard = ({ stat, index }: { stat: typeof stats[0]; index: number }) => 
   );
 
   return (
-    <div 
+    <div
       ref={ref}
       className="w-full h-64 md:h-72"
       onMouseEnter={() => setIsHovered(true)}
@@ -142,8 +142,8 @@ export const StatsGrid = () => {
           </h2>
           <div className="w-20 h-1 bg-red-600 mx-auto"></div>
         </div>
-        
-        <motion.div 
+
+        <motion.div
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
           initial="hidden"
           whileInView="visible"
@@ -164,10 +164,10 @@ export const StatsGrid = () => {
               key={index}
               variants={{
                 hidden: { opacity: 0, y: 20 },
-                visible: { 
-                  opacity: 1, 
+                visible: {
+                  opacity: 1,
                   y: 0,
-                  transition: { 
+                  transition: {
                     type: 'spring',
                     stiffness: 100,
                     damping: 15

@@ -80,7 +80,7 @@ export const dbService = {
   async getPageBySlug(slug: string): Promise<Page | null> {
     const pool = getDbPool();
     const [rows] = await pool.query(
-      'SELECT * FROM pages WHERE slug = ? AND is_active = TRUE', 
+      'SELECT * FROM pages WHERE slug = ? AND is_active = TRUE',
       [slug]
     ) as unknown as [Page[]];
     return rows && rows.length > 0 ? rows[0] : null;
@@ -193,41 +193,41 @@ export const dbService = {
     // Use mock data when not using database or when database is not available
     if (!USE_DATABASE) {
       let products = [...this.mockProducts];
-      
+
       if (category) {
         products = products.filter(p => p.category === category);
       }
-      
+
       if (isFeatured !== undefined) {
         products = products.filter(p => p.is_featured === isFeatured);
       }
-      
+
       return products.slice(0, limit);
     }
-    
+
     // Try to get data from database if available
     try {
       const pool = getDbPool();
       let query = 'SELECT * FROM products';
       const params: any[] = [];
-      
+
       // Add active filter only if activeOnly is true
       if (activeOnly) {
         query += ' WHERE is_active = 1';
       } else {
         query += ' WHERE 1=1'; // Always true condition to allow adding other filters
       }
-      
+
       if (category) {
         query += ' AND category = ?';
         params.push(category);
       }
-      
+
       if (isFeatured !== undefined) {
         query += ' AND is_featured = ?';
         params.push(isFeatured ? 1 : 0);
       }
-      
+
       query += ' ORDER BY created_at DESC LIMIT ?';
       params.push(limit);
 
@@ -248,7 +248,7 @@ export const dbService = {
         created_at: string;
         updated_at: string;
       }>];
-      
+
       return rows.map(row => ({
         ...row,
         features: row.features ? JSON.parse(row.features) : [],
@@ -259,15 +259,15 @@ export const dbService = {
     } catch (error) {
       console.warn('Database error, using mock data instead:', error);
       let products = [...this.mockProducts];
-      
+
       if (category) {
         products = products.filter(p => p.category === category);
       }
-      
+
       if (isFeatured !== undefined) {
         products = products.filter(p => p.is_featured === isFeatured);
       }
-      
+
       return products.slice(0, limit);
     }
   },
@@ -297,7 +297,7 @@ export const dbService = {
         brochure_url: undefined
       } : null;
     }
-    
+
     try {
       const pool = getDbPool();
       const [rows] = await pool.query(
@@ -355,7 +355,7 @@ export const dbService = {
         brochure_url: undefined
       } : null;
     }
-    
+
     try {
       const pool = getDbPool();
       const [rows] = await pool.query(
@@ -454,7 +454,7 @@ export const dbService = {
         }
       ];
     }
-    
+
     try {
       const pool = getDbPool();
       const [rows] = await pool.query(
@@ -631,7 +631,7 @@ export const dbService = {
       const item = equipment.find(e => e.slug === slug);
       return item || null;
     }
-    
+
     try {
       const pool = getDbPool();
       const [rows] = await pool.query(
@@ -697,7 +697,7 @@ export const dbService = {
       const item = equipment.find(e => e.id === id);
       return item || null;
     }
-    
+
     try {
       const pool = getDbPool();
       const [rows] = await pool.query(
@@ -804,22 +804,22 @@ export const dbService = {
         }
       ];
     }
-    
+
     try {
       const pool = getDbPool();
       let query = 'SELECT * FROM news';
       const params: any[] = [];
-      
+
       // Add active filter only if activeOnly is true
       if (activeOnly) {
         query += ' WHERE is_published = TRUE';
       } else {
         query += ' WHERE 1=1'; // Always true condition to allow adding other filters
       }
-      
+
       query += ' ORDER BY publish_date DESC, created_at DESC LIMIT ?';
       params.push(limit);
-      
+
       const [rows] = await pool.query(query, params) as unknown as [Array<{
         id: number;
         title: string;
@@ -831,7 +831,7 @@ export const dbService = {
         created_at: Date;
         is_active: boolean;
       }>];
-      
+
       return rows || [];
     } catch (error) {
       console.warn('Database error fetching news, using mock data instead:', error);
@@ -903,7 +903,7 @@ export const dbService = {
       const article = news.find(n => n.slug === slug && n.is_active);
       return article || null;
     }
-    
+
     try {
       const pool = getDbPool();
       const [rows] = await pool.query(
@@ -993,7 +993,7 @@ export const dbService = {
       const article = news.find(n => n.id === id);
       return article || null;
     }
-    
+
     try {
       const pool = getDbPool();
       const [rows] = await pool.query(
@@ -1132,7 +1132,7 @@ export const dbService = {
       const solution = solutions.find(s => s.slug === slug && s.is_active);
       return solution || null;
     }
-    
+
     try {
       const pool = getDbPool();
       const [rows] = await pool.query(
@@ -1153,7 +1153,7 @@ export const dbService = {
         created_at: string;
         updated_at: string;
       }>];
-    
+
       return rows && rows.length > 0 ? rows[0] : null;
     } catch (error) {
       console.warn('Database error fetching solution by slug, using mock data:', error);
@@ -1247,7 +1247,7 @@ export const dbService = {
       const solution = solutions.find(s => s.id === id);
       return solution || null;
     }
-    
+
     try {
       const pool = getDbPool();
       const [rows] = await pool.query(
@@ -1268,7 +1268,7 @@ export const dbService = {
         created_at: string;
         updated_at: string;
       }>];
-    
+
       return rows && rows.length > 0 ? rows[0] : null;
     } catch (error) {
       console.warn('Database error fetching solution by ID, using mock data:', error);
@@ -1343,7 +1343,7 @@ export const dbService = {
       created_at: string;
       updated_at: string;
     }>];
-  
+
     // Transform the data to match what the frontend expects
     const caseStudies = rows.map(caseStudy => ({
       id: caseStudy.id,
@@ -1360,7 +1360,7 @@ export const dbService = {
       created_at: caseStudy.created_at,
       updated_at: caseStudy.updated_at
     }));
-  
+
     return caseStudies as any;
   },
 

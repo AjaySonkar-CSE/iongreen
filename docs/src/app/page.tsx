@@ -20,8 +20,8 @@ export default async function HomePage() {
       {/* Hero with modern carousel and product categories */}
       <Hero slides={heroSlides} />
 
-      {/* Key stats overlapping hero slightly for premium feel */}
-      <div className="relative z-10 -mt-20">
+      {/* Key stats below hero for clean separation */}
+      <div className="relative z-10">
         <StatsSection />
       </div>
 

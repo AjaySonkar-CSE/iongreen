@@ -4,7 +4,7 @@ import { dbService } from "@/lib/db-service";
 
 export default async function RackMountedBatteriesPage() {
   const product = await dbService.getProductBySlug("rack-mounted-batteries");
-  const heroImage = product?.image_url || "/solor solution.jpeg";
+  const heroImage = product?.image_url || "/solar_solution.jpg";
   const brochureUrl = product?.brochure_url || product?.image_url || "/images/ai-solar-battery-installation.jpg";
   const specs = [
     { label: "Capacity Range", value: "16kWh – 104kWh" },

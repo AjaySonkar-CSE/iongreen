@@ -89,7 +89,7 @@ export function StatsSection() {
         <div className="absolute -bottom-20 -left-20 w-96 h-96 bg-green-100 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
       </div>
       
-      <div className="container mx-auto px-4 relative">
+      <div className="mx-auto max-w-[1600px] px-4 md:px-6 lg:px-10 relative">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}

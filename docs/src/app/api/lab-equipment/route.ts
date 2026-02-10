@@ -1,6 +1,7 @@
 
 import { NextResponse } from "next/server";
 import { dbService } from "@/lib/db-service";
+import { getDbPool } from "@/lib/db";
 
 export async function GET(request: Request) {
   try {
@@ -10,7 +11,7 @@ export async function GET(request: Request) {
     // Get lab equipment using the dbService which handles database availability
     // When database is not available, it falls back to mock data
     let equipment;
-    
+
     if (all) {
       // For now, just use the dbService as it's more reliable when DB is unavailable
       // The dbService will handle fallback to mock data internally
@@ -24,11 +25,11 @@ export async function GET(request: Request) {
     return NextResponse.json({ success: true, data: equipment || [] });
   } catch (error: any) {
     console.error("Failed to fetch lab equipment:", error);
-    
+
     // Return safe response with empty array
     return NextResponse.json(
-      { 
-        success: true, 
+      {
+        success: true,
         message: "Using mock data due to service unavailability",
         data: [],
         count: 0
@@ -43,10 +44,10 @@ export async function POST(request: Request) {
   let connection;
   try {
     pool = getDbPool();
-    
+
     // Test connection first
     connection = await pool.getConnection();
-    
+
     const body = await request.json();
     const { name, slug, description, image_url, category, is_active } = body;
 
@@ -70,10 +71,10 @@ export async function POST(request: Request) {
     });
   } catch (error: any) {
     console.error("Failed to create lab equipment:", error);
-    
+
     return NextResponse.json(
-      { 
-        success: false, 
+      {
+        success: false,
         message: "Failed to create lab equipment",
         error: error.message,
         details: process.env.NODE_ENV === 'development' ? error.stack : undefined

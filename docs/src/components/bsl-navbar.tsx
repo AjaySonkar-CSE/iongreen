@@ -78,12 +78,12 @@ export function BSLNavbar() {
         <div className="flex justify-between h-20">
           <div className="flex items-center">
             <Link href="/" className="block h-16 w-auto transition-all duration-300 hover:scale-105">
-              <Image 
-                src="/logo.png" 
-                alt="ION Green Logo" 
-                width={180} 
-                height={64} 
-                className="h-full w-auto object-contain"
+              <Image
+                src="/logo_final3.png"
+                alt="ION Green Logo"
+                width={180}
+                height={64}
+                className="h-full w-auto object-contain object-left"
                 priority
               />
             </Link>
@@ -99,9 +99,8 @@ export function BSLNavbar() {
                 >
                   <Link
                     href={item.href}
-                    className={`text-sm font-medium transition-all duration-300 ${
-                      isHovered === item.label ? 'text-green-600 scale-105' : 'text-gray-700 hover:text-green-600'
-                    }`}
+                    className={`text-sm font-medium transition-all duration-300 ${isHovered === item.label ? 'text-green-600 scale-105' : 'text-gray-700 hover:text-green-600'
+                      }`}
                     onClick={(e) => {
                       if (item.href.startsWith('#')) {
                         e.preventDefault();
@@ -113,9 +112,8 @@ export function BSLNavbar() {
                   </Link>
                   {item.items && (
                     <svg
-                      className={`ml-1 h-4 w-4 transform transition-all duration-300 ${
-                        isHovered === item.label ? 'rotate-180 text-green-600' : 'text-gray-500 group-hover:text-gray-700'
-                      }`}
+                      className={`ml-1 h-4 w-4 transform transition-all duration-300 ${isHovered === item.label ? 'rotate-180 text-green-600' : 'text-gray-500 group-hover:text-gray-700'
+                        }`}
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -127,11 +125,10 @@ export function BSLNavbar() {
 
                 {item.items && (
                   <div
-                    className={`absolute left-0 mt-2 w-72 rounded-xl shadow-xl bg-white/95 backdrop-blur-sm ring-1 ring-black/5 py-3 z-10 transition-all duration-300 border border-gray-100/50 ${
-                      activeDropdown === item.label
-                        ? 'opacity-100 translate-y-0 visible scale-100'
-                        : 'opacity-0 -translate-y-3 invisible scale-95'
-                    }`}
+                    className={`absolute left-0 mt-2 w-72 rounded-xl shadow-xl bg-white/95 backdrop-blur-sm ring-1 ring-black/5 py-3 z-10 transition-all duration-300 border border-gray-100/50 ${activeDropdown === item.label
+                      ? 'opacity-100 translate-y-0 visible scale-100'
+                      : 'opacity-0 -translate-y-3 invisible scale-95'
+                      }`}
                     onMouseEnter={handleDropdownMouseEnter}
                     onMouseLeave={handleDropdownMouseLeave}
                   >

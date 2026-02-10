@@ -4,7 +4,7 @@ import { dbService } from "@/lib/db-service";
 
 export default async function LargeScaleEnergyStoragePage() {
   const product = await dbService.getProductBySlug("large-scale-energy-storage");
-  const heroImage = product?.image_url || "/hybrid solor system.jpeg";
+  const heroImage = product?.image_url || "/hybrid_solar_system.jpg";
   const brochureUrl = product?.brochure_url || product?.image_url || "/data2.jpg.jpg";
   const specs = [
     { label: "Capacity Range", value: "1.2MWh – 5.015MWh" },
@@ -34,7 +34,7 @@ export default async function LargeScaleEnergyStoragePage() {
       id: "renewable-integration",
       title: "Renewable Integration",
       description: "Solar and wind farm energy storage solutions",
-      image: "/hybrid solor system.jpeg",
+      image: "/hybrid_solar_system.jpg",
       capacity: "1.5MWh - 5MWh"
     }
   ];

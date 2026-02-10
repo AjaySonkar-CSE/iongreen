@@ -7,6 +7,7 @@ import Image from "next/image";
 import { DetailModal } from "@/components/detail-modal";
 import { ScrollAnimate } from "@/components/scroll-animate";
 import { Button } from "@/components/ui/button";
+import { Hero } from "@/components/hero";
 
 // Lab equipment images from public folder
 const labEquipmentImages = [
@@ -307,67 +308,47 @@ export function LabEquipmentClient({ equipmentItems = [], error }: LabEquipmentC
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Hero Section - Professional Lab Equipment Showcase */}
-      <section className="relative bg-gradient-to-br from-slate-900 via-green-900 to-slate-800 text-white overflow-hidden">
-        <div className="absolute inset-0 bg-black/20"></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <div>
-                <h1 className="text-5xl lg:text-6xl font-bold mb-6">
-                  Lab Equipment
-                  <span className="text-green-400 block">& Batteries</span>
-                </h1>
-              </div>
+      <Hero page="lab-equipment">
+        <div className="text-center">
+          <ScrollAnimate animation="fadeInUpElegant" delay={200}>
+            <h1 className="text-5xl lg:text-7xl font-bold mb-6">
+              Lab Equipment
+              <span className="text-green-400 block">& Batteries</span>
+            </h1>
+          </ScrollAnimate>
 
-              <div>
-                <p className="text-xl text-gray-300 mb-8 leading-relaxed">
-                  As a direct manufacturer of high quality LiFePO4 solar batteries, we are proud to offer energy storage 
-                  batteries with efficient, safe, and long-lasting performance from our in-house factory.
-                </p>
-              </div>
+          <ScrollAnimate animation="fadeInUpElegant" delay={400}>
+            <p className="text-xl text-gray-300 mb-10 max-w-3xl mx-auto leading-relaxed">
+              As a direct manufacturer of high quality LiFePO4 solar batteries, we are proud to offer energy storage
+              batteries with efficient, safe, and long-lasting performance from our in-house factory.
+            </p>
+          </ScrollAnimate>
 
-              <div>
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <Button
-                    asChild
-                    size="lg"
-                    className="bg-green-600 hover:bg-green-700 text-white px-8 py-4 text-lg font-semibold"
-                  >
-                    <Link href="#products">
-                      View Products
-                    </Link>
-                  </Button>
-                  <Button
-                    asChild
-                    variant="outline"
-                    size="lg"
-                    className="border-white text-white hover:bg-white hover:text-slate-900 px-8 py-4 text-lg font-semibold"
-                  >
-                    <Link href="/contact">
-                      Request Quote
-                    </Link>
-                  </Button>
-                </div>
-              </div>
+          <ScrollAnimate animation="scaleInBounce" delay={600}>
+            <div className="flex flex-col sm:flex-row gap-6 justify-center">
+              <Button
+                asChild
+                size="lg"
+                className="bg-green-600 hover:bg-green-500 text-white px-10 py-5 text-lg font-bold rounded-full transition-all shadow-lg hover:shadow-green-500/30"
+              >
+                <Link href="#products">
+                  View Products
+                </Link>
+              </Button>
+              <Button
+                asChild
+                variant="outline"
+                size="lg"
+                className="border-white/30 text-white hover:bg-white hover:text-slate-900 px-10 py-5 text-lg font-bold rounded-full transition-all backdrop-blur-md"
+              >
+                <Link href="/contact">
+                  Request Quote
+                </Link>
+              </Button>
             </div>
-
-            <div className="relative">
-              <div>
-                <div className="relative h-96 lg:h-[500px]">
-                  <Image
-                    src="/1/ion1.png"
-                    alt="Lab Equipment & Batteries"
-                    fill
-                    className="object-contain rounded-2xl shadow-2xl"
-                    priority
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
+          </ScrollAnimate>
         </div>
-      </section>
+      </Hero>
 
       {/* If no items to display, show the static lab equipment */}
       {displayItems.length === 0 ? (
@@ -381,43 +362,48 @@ export function LabEquipmentClient({ equipmentItems = [], error }: LabEquipmentC
         <div className="container mx-auto p-4">
           <div id="products" className="pt-8">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {displayItems.map((item) => (
-                <Link
+              {displayItems.map((item, index) => (
+                <ScrollAnimate
                   key={item.id}
-                  href={`/lab-equipment/${item.slug}`}
-                  className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:border-green-200 block h-96"
+                  animation={index % 2 === 0 ? "slideInLeftSmooth" : "slideInRightSmooth"}
+                  delay={200 + (index * 100)}
                 >
-                  {/* Full-size image background */}
-                  <div className="absolute inset-0">
-                    <Image
-                      src={item.image_url}
-                      alt={item.name}
-                      fill
-                      className="object-cover group-hover:scale-110 transition-transform duration-500"
-                    />
-                  </div>
+                  <Link
+                    href={`/lab-equipment/${item.slug}`}
+                    className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:border-green-200 block h-96"
+                  >
+                    {/* Full-size image background */}
+                    <div className="absolute inset-0">
+                      <Image
+                        src={item.image_url}
+                        alt={item.name}
+                        fill
+                        className="object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                    </div>
 
-                  {/* Dark overlay */}
-                  <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    {/* Dark overlay */}
+                    <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
-                  {/* Content overlay - appears on hover */}
-                  <div className="absolute inset-0 flex flex-col justify-end p-6 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0">
-                    <div className="bg-white/95 backdrop-blur-sm rounded-xl p-4">
-                      <h2 className="text-xl font-bold text-gray-900 mb-2">
-                        {item.name}
-                      </h2>
-                      <p className="text-gray-700 text-sm mb-3 line-clamp-3">
-                        {item.description}
-                      </p>
-                      <div className="flex items-center text-green-600 font-medium group-hover:text-green-700 transition-colors duration-300">
-                        <span>View Details</span>
-                        <svg className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                        </svg>
+                    {/* Content overlay - appears on hover */}
+                    <div className="absolute inset-0 flex flex-col justify-end p-6 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0">
+                      <div className="bg-white/95 backdrop-blur-sm rounded-xl p-4">
+                        <h2 className="text-xl font-bold text-gray-900 mb-2">
+                          {item.name}
+                        </h2>
+                        <p className="text-gray-700 text-sm mb-3 line-clamp-3">
+                          {item.description}
+                        </p>
+                        <div className="flex items-center text-green-600 font-medium group-hover:text-green-700 transition-colors duration-300">
+                          <span>View Details</span>
+                          <svg className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                          </svg>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </Link>
+                  </Link>
+                </ScrollAnimate>
               ))}
             </div>
           </div>
@@ -476,67 +462,47 @@ export function BatteryProductsClient({ error }: BatteryProductsClientProps = {}
     <>
       <BSLNavbar />
 
-      {/* Hero Section - Professional Lab Equipment Showcase */}
-      <section className="relative bg-gradient-to-br from-slate-900 via-green-900 to-slate-800 text-white overflow-hidden">
-        <div className="absolute inset-0 bg-black/20"></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <ScrollAnimate animation="fadeInUpElegant" delay={200}>
-                <h1 className="text-5xl lg:text-6xl font-bold mb-6">
-                  Lab Equipment
-                  <span className="text-green-400 block">& Batteries</span>
-                </h1>
-              </ScrollAnimate>
+      <Hero page="lab-equipment">
+        <div className="text-center">
+          <ScrollAnimate animation="fadeInUpElegant" delay={200}>
+            <h1 className="text-5xl lg:text-7xl font-bold mb-6">
+              Lab Equipment
+              <span className="text-green-400 block">& Batteries</span>
+            </h1>
+          </ScrollAnimate>
 
-              <ScrollAnimate animation="fadeInUpElegant" delay={400}>
-                <p className="text-xl text-gray-300 mb-8 leading-relaxed">
-                  As a direct manufacturer of high quality LiFePO4 solar batteries, we are proud to offer energy storage 
-                  batteries with efficient, safe, and long-lasting performance from our in-house factory.
-                </p>
-              </ScrollAnimate>
+          <ScrollAnimate animation="fadeInUpElegant" delay={400}>
+            <p className="text-xl text-gray-300 mb-10 max-w-3xl mx-auto leading-relaxed">
+              As a direct manufacturer of high quality LiFePO4 solar batteries, we are proud to offer energy storage
+              batteries with efficient, safe, and long-lasting performance from our in-house factory.
+            </p>
+          </ScrollAnimate>
 
-              <ScrollAnimate animation="scaleInBounce" delay={600}>
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <Button
-                    asChild
-                    size="lg"
-                    className="bg-green-600 hover:bg-green-700 text-white px-8 py-4 text-lg font-semibold"
-                  >
-                    <Link href="#products">
-                      View Products
-                    </Link>
-                  </Button>
-                  <Button
-                    asChild
-                    variant="outline"
-                    size="lg"
-                    className="border-white text-white hover:bg-white hover:text-slate-900 px-8 py-4 text-lg font-semibold"
-                  >
-                    <Link href="/contact">
-                      Request Quote
-                    </Link>
-                  </Button>
-                </div>
-              </ScrollAnimate>
+          <ScrollAnimate animation="scaleInBounce" delay={600}>
+            <div className="flex flex-col sm:flex-row gap-6 justify-center">
+              <Button
+                asChild
+                size="lg"
+                className="bg-green-600 hover:bg-green-500 text-white px-10 py-5 text-lg font-bold rounded-full transition-all shadow-lg hover:shadow-green-500/30"
+              >
+                <Link href="#products">
+                  View Products
+                </Link>
+              </Button>
+              <Button
+                asChild
+                variant="outline"
+                size="lg"
+                className="border-white/30 text-white hover:bg-white hover:text-slate-900 px-10 py-5 text-lg font-bold rounded-full transition-all backdrop-blur-md"
+              >
+                <Link href="/contact">
+                  Request Quote
+                </Link>
+              </Button>
             </div>
-
-            <div className="relative">
-              <ScrollAnimate animation="slideInRightSmooth" delay={300}>
-                <div className="relative h-96 lg:h-[500px]">
-                  <Image
-                    src="/1/ion1.png"
-                    alt="Lab Equipment & Batteries"
-                    fill
-                    className="object-contain rounded-2xl shadow-2xl"
-                    priority
-                  />
-                </div>
-              </ScrollAnimate>
-            </div>
-          </div>
+          </ScrollAnimate>
         </div>
-      </section>
+      </Hero>
 
       {/* Our Lab Title Section */}
       <section className="py-12 bg-white text-center">
@@ -558,8 +524,8 @@ export function BatteryProductsClient({ error }: BatteryProductsClientProps = {}
                 key={category}
                 onClick={() => setSelectedCategory(category)}
                 className={`px-6 py-3 border rounded-lg transition-colors font-medium ${selectedCategory === category
-                    ? "bg-blue-600 text-white border-blue-600"
-                    : "bg-white border-gray-200 hover:bg-blue-50 hover:border-blue-300 text-gray-700 hover:text-blue-600"
+                  ? "bg-blue-600 text-white border-blue-600"
+                  : "bg-white border-gray-200 hover:bg-blue-50 hover:border-blue-300 text-gray-700 hover:text-blue-600"
                   }`}
               >
                 {category}

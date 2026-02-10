@@ -1,4 +1,4 @@
- "use client";
+"use client";
 
 import Image from "next/image";
 import { AnimatedSection } from "@/components/ui/animated-section";
@@ -46,17 +46,18 @@ export function CompanyProfileText() {
             </div>
           </ScrollAnimate>
 
-          {/* Right: Hero-style image with right slide animation */}
           <ScrollAnimate animation="slideInRightSmooth" delay={300}>
             <div className="relative h-80 md:h-96 rounded-2xl overflow-hidden shadow-2xl">
-              <Image
-                src="/image5.png"
-                alt="ION Green Energy Storage Systems"
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                priority
-              />
+              <video
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="absolute inset-0 w-full h-full object-cover"
+              >
+                <source src="/Cinematic_Renewable_Energy_Ecosystem_Video.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
               <div className="absolute bottom-4 left-4 right-4">
                 <h3 className="text-white text-xl md:text-2xl font-semibold mb-1">

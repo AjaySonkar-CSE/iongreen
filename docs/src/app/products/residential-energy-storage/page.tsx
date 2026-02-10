@@ -34,7 +34,7 @@ export default async function ResidentialEnergyStoragePage() {
       id: "all-in-one-system",
       title: "All-in-One Systems",
       description: "Complete solar-plus-storage solutions",
-      image: "/hybrid solor system.jpeg",
+      image: "/hybrid_solar_system.jpg",
       capacity: "5kWh - 20kWh"
     }
   ];

@@ -47,7 +47,7 @@ const scrollItems: ScrollAnimationItem[] = [
     id: 2,
     title: "Sustainable Energy Storage",
     description: "ION Green batteries provide clean, sustainable power storage solutions for residential and commercial applications.",
-    image: "/hybrid solor system.jpeg",
+    image: "/hybrid_solar_system.jpg",
     position: 'right',
     animationType: 'slideInRight'
   },

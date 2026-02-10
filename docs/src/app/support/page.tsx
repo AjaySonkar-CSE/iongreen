@@ -4,71 +4,52 @@ import { ScrollAnimate } from "@/components/scroll-animate";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { Hero } from "@/components/hero";
 
 export default function SupportPage() {
   return (
     <>
-      {/* Hero Section - Professional Support Showcase */}
-      <section className="relative bg-gradient-to-br from-slate-900 via-green-900 to-slate-800 text-white overflow-hidden">
-        <div className="absolute inset-0 bg-black/20"></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <ScrollAnimate animation="fadeInUpElegant" delay={200}>
-                <h1 className="text-5xl lg:text-6xl font-bold mb-6">
-                  ION-GREEN
-                  <span className="text-green-400 block">Support Center</span>
-                </h1>
-              </ScrollAnimate>
+      <Hero page="support">
+        <div className="text-center">
+          <ScrollAnimate animation="fadeInUpElegant" delay={200}>
+            <h1 className="text-5xl lg:text-7xl font-bold mb-6">
+              ION-GREEN
+              <span className="text-green-400 block mt-2">Support Center</span>
+            </h1>
+          </ScrollAnimate>
 
-              <ScrollAnimate animation="fadeInUpElegant" delay={400}>
-                <p className="text-xl text-gray-300 mb-8 leading-relaxed">
-                  Your trusted partner for energy storage solutions. Access product manuals, technical specifications, 
-                  and 24/7 expert support for all ION-GREEN systems.
-                </p>
-              </ScrollAnimate>
+          <ScrollAnimate animation="fadeInUpElegant" delay={400}>
+            <p className="text-xl text-gray-300 mb-10 max-w-3xl mx-auto leading-relaxed">
+              Your trusted partner for energy storage solutions. Access product manuals, technical specifications,
+              and 24/7 expert support for all ION-GREEN systems.
+            </p>
+          </ScrollAnimate>
 
-              <ScrollAnimate animation="scaleInBounce" delay={600}>
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <Button
-                    asChild
-                    size="lg"
-                    className="bg-green-600 hover:bg-green-700 text-white px-8 py-4 text-lg font-semibold"
-                  >
-                    <Link href="#support-resources">
-                      View Resources
-                    </Link>
-                  </Button>
-                  <Button
-                    asChild
-                    variant="outline"
-                    size="lg"
-                    className="border-white text-white hover:bg-white hover:text-slate-900 px-8 py-4 text-lg font-semibold"
-                  >
-                    <Link href="/contact">
-                      Contact Support
-                    </Link>
-                  </Button>
-                </div>
-              </ScrollAnimate>
+          <ScrollAnimate animation="scaleInBounce" delay={600}>
+            <div className="flex flex-col sm:flex-row gap-6 justify-center">
+              <Button
+                asChild
+                size="lg"
+                className="bg-green-600 hover:bg-green-500 text-white px-10 py-5 text-lg font-bold rounded-full transition-all shadow-lg hover:shadow-green-500/30"
+              >
+                <Link href="#support-resources">
+                  View Resources
+                </Link>
+              </Button>
+              <Button
+                asChild
+                variant="outline"
+                size="lg"
+                className="border-white/30 text-white hover:bg-white hover:text-slate-900 px-10 py-5 text-lg font-bold rounded-full transition-all backdrop-blur-md"
+              >
+                <Link href="/contact">
+                  Contact Support
+                </Link>
+              </Button>
             </div>
-
-            <div className="relative">
-              <ScrollAnimate animation="slideInRightSmooth" delay={300}>
-                <div className="relative h-96 lg:h-[500px]">
-                  <Image
-                    src="/1/ion8.png"
-                    alt="ION-GREEN Support"
-                    fill
-                    className="object-contain rounded-2xl shadow-2xl"
-                    priority
-                  />
-                </div>
-              </ScrollAnimate>
-            </div>
-          </div>
+          </ScrollAnimate>
         </div>
-      </section>
+      </Hero>
 
       {/* ION Green Supported Title Section */}
       <ScrollAnimate animation="fadeInUpElegant" delay={400}>
@@ -82,7 +63,7 @@ export default function SupportPage() {
           </div>
         </section>
       </ScrollAnimate>
-      
+
       {/* Vertical Layout - Text First, Image Below */}
       <ScrollAnimate animation="slideInRightSmooth" delay={600}>
         <section className="py-16 bg-slate-50">
@@ -132,7 +113,7 @@ export default function SupportPage() {
                   </div>
                 </ScrollAnimate>
               </div>
-      
+
               {/* Image Below Text */}
               <div className="w-full flex items-center justify-center">
                 <ScrollAnimate animation="scaleInBounce" delay={1200}>
@@ -151,7 +132,7 @@ export default function SupportPage() {
           </div>
         </section>
       </ScrollAnimate>
-      
+
       <ScrollAnimate animation="fadeInUpElegant" delay={1300}>
         <div id="support-resources">
           <SupportResources />

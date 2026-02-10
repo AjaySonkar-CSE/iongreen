@@ -6,17 +6,61 @@ import { useEffect, useState } from "react";
 import { getSiteContent } from "@/lib/content";
 import { cn } from "@/lib/utils";
 import { ScrollReveal } from "@/components/enhanced-scroll-reveal";
+import { ScrollAnimate } from "@/components/scroll-animate";
 
-const hero = getSiteContent().hero;
+const heroContent = getSiteContent().hero;
 
 // Background images for each section
-const sectionBackgrounds = {
-  'hydrogen-pules': 'https://images.unsplash.com/photo-1518780664697-55eada23840d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
-  'energy-storage-system': 'https://images.unsplash.com/photo-1509391366360-2e959784a276?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
-  'hybrid-solar-system': 'https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
-  'solar-solution': 'https://images.unsplash.com/photo-1597852074816-d933c7d2b988?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
-  'ev-vehicles': 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
-  'drone': 'https://images.unsplash.com/photo-1473968512647-3e447244af8f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80'
+const sectionBackgrounds: Record<string, string> = {
+  'products': '/pro2.jpg',
+  'solutions': '/data2.jpg.jpg',
+  'about': '/factory1.jpeg',
+  'case': '/case1.jpg',
+  'lab-equipment': '/lab2.jpg',
+  'support': '/ss1.jpg',
+  'news': '/data3.jpg.jpg',
+  'hydrogen-pules': '/hydrogen_pules.png',
+  'energy-storage-system': '/energy_storage_system.jpg',
+  'hybrid-solar-system': '/hybrid_solar_system.jpg',
+  'solar-solution': '/solar_solution.jpg',
+  'ev-vehicles': '/ev_vehicles.png',
+  'drone': '/drone.jpg',
+  'residential-energy-storage': '/pro1.jpg',
+  'large-scale-energy-storage': '/data2.jpg.jpg',
+  'rack-mounted-batteries': '/images/ai-solar-battery-installation.svg',
+  'mobile-ev-charging-storage': '/data1.jpg.jpg'
+};
+
+// Automatic Headings for Top-Level Pages
+const pageHeadings: Record<string, { title: string; description: string }> = {
+  'products': {
+    title: 'Energy Storage Products',
+    description: 'Explore our comprehensive range of advanced lithium battery solutions for every application.'
+  },
+  'solutions': {
+    title: 'Integrated Energy Solutions',
+    description: 'Customized energy storage systems designed for utility, commercial, and residential sectors.'
+  },
+  'about': {
+    title: 'About ION Green',
+    description: 'Pioneering the future of sustainable energy with innovative battery technology and global expertise.'
+  },
+  'case': {
+    title: 'Case Studies & Projects',
+    description: 'Discover how ION Green deployments are transforming energy landscapes worldwide.'
+  },
+  'lab-equipment': {
+    title: 'Lab & Research Equipment',
+    description: 'State-of-the-art testing and research facilities for battery technology development.'
+  },
+  'support': {
+    title: 'Sales & Support',
+    description: 'Global assistance and technical expertise to help you optimize your energy storage systems.'
+  },
+  'news': {
+    title: 'Latest News & Insights',
+    description: 'Stay updated with ION Green innovations, climate summits, and industry breakthroughs.'
+  }
 };
 
 // Product categories with section IDs for smooth scrolling
@@ -26,42 +70,42 @@ const productCategories = [
     icon: "🏠",
     href: "/products/energy-storage-system",
     sectionId: "energy-storage-system",
-    image: "/Enery storage System.jpeg"
+    image: "/energy_storage_system.jpg"
   },
   {
     name: "Solar Solution",
     icon: "🔋",
     href: "/products/solar-solution",
     sectionId: "solar-solution",
-    image: "/solor solution.jpeg"
+    image: "/solar_solution.jpg"
   },
   {
     name: "Hybrid Solar System",
     icon: "🏢",
     href: "/products/hybrid-solar-system",
     sectionId: "hybrid-solar-system",
-    image: "/hybrid solor system.jpeg"
+    image: "/hybrid_solar_system.jpg"
   },
   {
-    name: "Hydrogen pules",
+    name: "Hydrogen pulses",
     icon: "🏭",
     href: "/products/hydrogen-pules",
     sectionId: "hydrogen-pules",
-    image: "/banner.zip - LITHOTRIPSY (1).png"
+    image: "/hydrogen_pules.png"
   },
   {
     name: "EV Vehicles",
     icon: "🚗",
     href: "/products/ev-vehicles",
     sectionId: "ev-vehicles",
-    image: "/banner.zip - STACK MOUNT BATTERY (1).png"
+    image: "/ev_vehicles.png"
   },
   {
     name: "Drone",
     icon: "🚁",
     href: "/products/drone",
     sectionId: "drone",
-    image: "/drone.jpg.jpg"
+    image: "/drone.jpg"
   }
 ];
 
@@ -87,6 +131,8 @@ type HeroSlide = StaticHeroSlide | DynamicHeroSlide;
 
 interface HeroProps extends React.HTMLAttributes<HTMLElement> {
   page?: string;
+  title?: string;
+  description?: string;
   children?: React.ReactNode;
   slides?: DynamicHeroSlide[]; // Add slides prop for dynamic content
 }
@@ -98,46 +144,56 @@ function isDynamicSlide(slide: HeroSlide): slide is DynamicHeroSlide {
 
 import { HeroCarousel } from './hero-carousel';
 
-export function Hero({ page = 'home', children, className, slides: externalSlides, ...props }: HeroProps) {
+export function Hero({
+  page = 'home',
+  title,
+  description,
+  children,
+  className,
+  slides: externalSlides,
+  ...props
+}: HeroProps) {
   // Show carousel on home page with hardcoded herogreen images, show images for other pages
   const isHomePage = page === 'home';
-  const [currentImage, setCurrentImage] = useState(0);
-  
+
+  // Resolve title and description
+  const displayTitle = title || pageHeadings[page]?.title;
+  const displayDescription = description || pageHeadings[page]?.description;
+
   // Hardcoded hero slides with the two specified images from public folder
   const hardcodedSlides = [
-    // inside hardcodedSlides in Hero
-{
-  id: 1,
-  title: 'Advanced Energy Storage Solutions',
-  description: 'Discover cutting-edge battery technology designed for maximum efficiency and reliability.',
-  cta_label: 'Learn More',
-  cta_href: '/products',
-  image_url: '/sss.jpeg',
-},
-{
-  id: 2,
-  title: 'Renewable Energy Integration',
-  description: 'Seamlessly integrate solar and wind power with intelligent energy storage systems.',
-  cta_label: 'Explore Solutions',
-  cta_href: '/solutions',
-  image_url: '/hero3.jpeg',
-},
-{
-  id: 3,
-  title: 'Utility & Commercial ESS',
-  description: 'Containerized energy storage systems engineered for industrial and utility applications.',
-  cta_label: 'View Products',
-  cta_href: '/products/energy-storage-system',
-  image_url: '/hero2.jpeg',
-},
-{
-  id: 4,
-  title: 'Solar Solution',
-  description: 'Solar Solution',
-  cta_label: 'View Products',
-  cta_href: '/products/solar-solution',
-  image_url: '/hero1.jpeg',
-},
+    {
+      id: 1,
+      title: 'Advanced Energy Storage Solutions',
+      description: 'Discover cutting-edge battery technology designed for maximum efficiency and reliability.',
+      cta_label: 'Learn More',
+      cta_href: '/products',
+      image_url: '/sss.jpeg',
+    },
+    {
+      id: 2,
+      title: 'Renewable Energy Integration',
+      description: 'Seamlessly integrate solar and wind power with intelligent energy storage systems.',
+      cta_label: 'Explore Solutions',
+      cta_href: '/solutions',
+      image_url: '/hero3.jpeg',
+    },
+    {
+      id: 3,
+      title: 'Utility & Commercial ESS',
+      description: 'Containerized energy storage systems engineered for industrial and utility applications.',
+      cta_label: 'View Products',
+      cta_href: '/products/energy-storage-system',
+      image_url: '/hero2.jpeg',
+    },
+    {
+      id: 4,
+      title: 'Solar Solution',
+      description: 'Solar Solution',
+      cta_label: 'View Products',
+      cta_href: '/products/solar-solution',
+      image_url: '/hero1.jpeg',
+    },
   ];
 
   // Format hardcoded slides for HeroCarousel component
@@ -170,51 +226,88 @@ export function Hero({ page = 'home', children, className, slides: externalSlide
           </div>
         )
       ) : (
-        // Dynamic Background for Product Pages
+        // Dynamic Background for Other Pages
         <div className="relative min-h-screen overflow-hidden">
           <div className="absolute inset-0">
-            {productCategories.map((category) => (
-              <div
-                key={category.sectionId}
-                className={`absolute inset-0 transition-opacity duration-1000 ${page === category.sectionId ? 'opacity-100' : 'opacity-0 pointer-events-none'
-                  }`}
-              >
+            {/* Background for specific pages */}
+            {(sectionBackgrounds[page] || sectionBackgrounds[page.toLowerCase()]) && (
+              <div className="absolute inset-0">
                 <Image
-                  src={sectionBackgrounds[category.sectionId as keyof typeof sectionBackgrounds]}
-                  alt={category.name}
+                  src={sectionBackgrounds[page] || sectionBackgrounds[page.toLowerCase()]}
+                  alt={page}
                   fill
                   className="object-cover"
                   priority
                 />
 
-                {/* Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent"></div>
+                {/* Standardized Premium Overlays */}
+                <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-black/80"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-transparent"></div>
 
-                {/* Overlay Pattern - Sungrow Style */}
-                <div className="absolute inset-0 bg-gradient-to-br from-green-900/20 via-transparent to-green-800/10"></div>
-                <div className="absolute inset-0" style={{
+                {/* HUD Graphic Pattern Overlay */}
+                <div className="absolute inset-0 opacity-10 pointer-events-none" style={{
                   backgroundImage: `
                     radial-gradient(circle at 20% 30%, rgba(34,197,94,0.15) 1px, transparent 1px),
-                    radial-gradient(circle at 80% 70%, rgba(34,197,94,0.1) 1px, transparent 1px),
-                    radial-gradient(circle at 60% 20%, rgba(22,163,74,0.12) 1px, transparent 1px)
+                    radial-gradient(circle at 80% 70%, rgba(34,197,94,0.1) 1px, transparent 1px)
                   `,
-                  backgroundSize: '120px 120px'
+                  backgroundSize: '100px 100px'
                 }}></div>
               </div>
+            )}
+
+            {/* Product Category matching backgrounds (Fallback) */}
+            {productCategories.map((category) => (
+              page === category.sectionId && (
+                <div
+                  key={category.sectionId}
+                  className="absolute inset-0"
+                >
+                  <Image
+                    src={sectionBackgrounds[category.sectionId] || category.image}
+                    alt={category.name}
+                    fill
+                    className="object-cover"
+                    priority
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent"></div>
+                </div>
+              )
             ))}
           </div>
 
-          {/* Floating Elements - Enhanced */}
+          {/* Floating Neon Elements */}
           <div className="absolute inset-0 pointer-events-none overflow-hidden">
-            <div className="absolute top-20 left-10 w-40 h-40 bg-green-400/10 rounded-full blur-2xl animate-gentle-float"></div>
-            <div className="absolute bottom-32 right-16 w-56 h-56 bg-green-300/8 rounded-full blur-3xl animate-gentle-float" style={{ animationDelay: '3s' }}></div>
-            <div className="absolute top-1/3 left-1/4 w-32 h-32 bg-green-500/6 rounded-full blur-xl animate-enhanced-glow" style={{ animationDelay: '6s' }}></div>
-            <div className="absolute top-2/3 right-1/3 w-24 h-24 bg-green-400/12 rounded-full blur-lg animate-gentle-float" style={{ animationDelay: '9s' }}></div>
+            <div className="absolute top-20 left-10 w-64 h-64 bg-green-500/5 rounded-full blur-[100px] animate-pulse"></div>
+            <div className="absolute bottom-32 right-16 w-96 h-96 bg-green-400/5 rounded-full blur-[120px] animate-pulse" style={{ animationDelay: '2s' }}></div>
           </div>
 
-          {/* Content for product pages */}
-          <div className="relative z-10 mx-auto max-w-7xl px-4 pt-[35rem] pb-20 md:px-6 lg:px-8">
-            {/* Hero Header - Content removed as requested */}
+          {/* Hero Content Area */}
+          <div className="relative z-10 mx-auto max-w-7xl px-4 flex flex-col items-center justify-center text-center min-h-screen pt-20">
+            {(displayTitle || displayDescription) && (
+              <div className="mb-12 max-w-4xl">
+                {displayTitle && (
+                  <ScrollAnimate animation="fadeInUpElegant" delay={200}>
+                    <h1 className="text-5xl md:text-7xl font-black text-white mb-6 uppercase tracking-tighter drop-shadow-2xl">
+                      {displayTitle}
+                    </h1>
+                  </ScrollAnimate>
+                )}
+                {displayDescription && (
+                  <ScrollAnimate animation="fadeInUpElegant" delay={300}>
+                    <p className="text-xl md:text-2xl text-white/80 font-light leading-relaxed max-w-3xl mx-auto drop-shadow-lg">
+                      {displayDescription}
+                    </p>
+                  </ScrollAnimate>
+                )}
+                <ScrollAnimate animation="fadeInUpElegant" delay={400}>
+                  <div className="w-24 h-1 bg-green-500 mx-auto rounded-full mt-8" />
+                </ScrollAnimate>
+              </div>
+            )}
+
+            <div className="w-full">
+              {children}
+            </div>
           </div>
         </div>
       )}

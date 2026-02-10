@@ -29,20 +29,20 @@ export default async function SolutionsPage() {
       ctaHref: "#solution-categories",
       image: "/Img/image2.png"
     },
-    {
-      id: 3,
-      title: "Utility Scale & Microgrids",
-      description: "Large-scale energy storage for utilities and independent microgrid systems. Enabling renewable integration and grid stability with advanced BESS technology.",
-      ctaLabel: "Get Consultation",
-      ctaHref: "/contact",
-      image: "/Img/image3.png"
-    }
+    // {
+    //   id: 3,
+    //   title: "Utility Scale & Microgrids",
+    //   description: "Large-scale energy storage for utilities and independent microgrid systems. Enabling renewable integration and grid stability with advanced BESS technology.",
+    //   ctaLabel: "Get Consultation",
+    //   ctaHref: "/contact",
+    //   image: "/Img/image3.png"
+    // }
   ];
 
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section with Slider */}
-      <PageHeroSlider 
+      <PageHeroSlider
         slides={heroSlides}
         height="h-[80vh]"
         showNavigation={true}
@@ -67,62 +67,63 @@ export default async function SolutionsPage() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {solutions.map((solution, index) => {
-               // Use images from Img folder - prioritize database image, then fallback to Img folder images
-               const imgFolderImages = [
-                 "/Img/image1.png",
-                 "/Img/image2.png",
-                 "/Img/image3.png",
-                 "/Img/image4.png",
-                 "/Img/image5.png",
-                 "/Img/image6.png",
-                 "/Img/image7.png",
-                 "/Img/image8.png",
-                 "/Img/image9.png",
-                 "/Img/image11.png",
-                 "/Img/image12.png",
-                 "/Img/image13.png",
-                 "/Img/image14.png"
-               ];
-               // Use database image if available, otherwise fallback to Img folder images
-               const imageUrl = solution.image_url || imgFolderImages[index % imgFolderImages.length];
+              // Use images from Img folder - prioritize database image, then fallback to Img folder images
+              const imgFolderImages = [
+                "/Img/image1.png",
+                "/Img/image2.png",
+                "/Img/image3.png",
+                "/Img/image4.png",
+                "/Img/image5.png",
+                "/Img/image6.png",
+                "/Img/image7.png",
+                "/Img/image8.png",
+                "/Img/image9.png",
+                "/Img/image11.png",
+                "/Img/image12.png",
+                "/Img/image13.png",
+                "/Img/image14.png"
+              ];
+              // Use database image if available, otherwise fallback to Img folder images
+              const imageUrl = solution.image_url || imgFolderImages[index % imgFolderImages.length];
 
               return (
-              <ScrollAnimate
-                key={solution.id}
-                animation={index % 2 === 0 ? "slideInLeftSmooth" : "slideInRightSmooth"}
-                delay={200 + (index * 100)}
-              >
-                <Link
-                  href={`/solutions/${solution.slug}`}
-                  className="group bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden block transform hover:-translate-y-2"
+                <ScrollAnimate
+                  key={solution.id}
+                  animation={index % 2 === 0 ? "slideInLeftSmooth" : "slideInRightSmooth"}
+                  delay={200 + (index * 100)}
                 >
-                  <div className="relative h-48">
-                    <Image
-                      src={imageUrl}
-                      alt={solution.title}
-                      fill
-                      className="object-cover group-hover:scale-110 transition-transform duration-500"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                  </div>
-
-                  <div className="p-6">
-                    <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-green-600 transition-colors">
-                      {solution.title}
-                    </h3>
-                    <p className="text-gray-600 mb-4 line-clamp-3">
-                      {solution.summary}
-                    </p>
-                    <div className="flex items-center text-green-600 font-medium group-hover:text-green-700">
-                      <span>Learn More</span>
-                      <svg className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
+                  <Link
+                    href={`/solutions/${solution.slug}`}
+                    className="group bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden block transform hover:-translate-y-2"
+                  >
+                    <div className="relative h-48">
+                      <Image
+                        src={imageUrl}
+                        alt={solution.title}
+                        fill
+                        className="object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                     </div>
-                  </div>
-                </Link>
-              </ScrollAnimate>
-            )})}
+
+                    <div className="p-6">
+                      <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-green-600 transition-colors">
+                        {solution.title}
+                      </h3>
+                      <p className="text-gray-600 mb-4 line-clamp-3">
+                        {solution.summary}
+                      </p>
+                      <div className="flex items-center text-green-600 font-medium group-hover:text-green-700">
+                        <span>Learn More</span>
+                        <svg className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                      </div>
+                    </div>
+                  </Link>
+                </ScrollAnimate>
+              )
+            })}
           </div>
         </div>
       </section>

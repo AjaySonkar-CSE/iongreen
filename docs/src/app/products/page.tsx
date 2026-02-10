@@ -15,16 +15,16 @@ export default async function ProductsPage() {
 
   // Hero slider slides for products page
   const heroSlides = [
+    // {
+    //   id: 1,
+    //   title: "Advanced Energy Storage Solutions",
+    //   description: "Discover our comprehensive range of battery energy storage systems, from residential solutions to utility-scale installations. Built with cutting-edge LiFePO₄ technology for maximum safety and efficiency.",
+    //   ctaLabel: "Explore Products",
+    //   ctaHref: "#product-categories",
+    //   image: "/Enery storage System.jpeg"
+    // },
     {
       id: 1,
-      title: "Advanced Energy Storage Solutions",
-      description: "Discover our comprehensive range of battery energy storage systems, from residential solutions to utility-scale installations. Built with cutting-edge LiFePO₄ technology for maximum safety and efficiency.",
-      ctaLabel: "Explore Products",
-      ctaHref: "#product-categories",
-      image: "/Enery storage System.jpeg"
-    },
-    {
-      id: 2,
       title: "Residential & Commercial ESS",
       description: "Smart energy storage solutions for homes and businesses. Reduce electricity costs, ensure backup power, and integrate seamlessly with solar systems.",
       ctaLabel: "View Products",
@@ -32,7 +32,7 @@ export default async function ProductsPage() {
       image: "/Img/image1.png"
     },
     {
-      id: 3,
+      id: 2,
       title: "Industrial & Utility Scale Systems",
       description: "Large-scale energy storage solutions for industrial facilities and utility applications. Containerized BESS systems up to 5MWh capacity.",
       ctaLabel: "Learn More",
@@ -44,7 +44,7 @@ export default async function ProductsPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section with Slider */}
-      <PageHeroSlider 
+      <PageHeroSlider
         slides={heroSlides}
         height="h-[80vh]"
         showNavigation={true}
@@ -262,88 +262,88 @@ export default async function ProductsPage() {
               </div>
             ))
           ) : (
-          <>
-          <div className="grid lg:grid-cols-2 gap-12 items-center mb-20">
-            <ScrollAnimate animation="slideInLeftSmooth" delay={300}>
-              <div>
-                <h3 className="text-3xl font-bold text-gray-900 mb-6">
-                  Energy Storage System
-                </h3>
-                <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-                  Modular cabinet and containerized systems for industrial parks, hospitals,
-                  data centers, and municipal infrastructure. Featuring air-cooled & liquid-cooled
-                  options with peak shaving and load shifting capabilities.
-                </p>
-                <div className="grid grid-cols-2 gap-4 mb-8">
-                  <div className="bg-green-50 p-4 rounded-lg">
-                    <div className="text-2xl font-bold text-green-600">100kWh</div>
-                    <div className="text-sm text-gray-600">Minimum Capacity</div>
+            <>
+              <div className="grid lg:grid-cols-2 gap-12 items-center mb-20">
+                <ScrollAnimate animation="slideInLeftSmooth" delay={300}>
+                  <div>
+                    <h3 className="text-3xl font-bold text-gray-900 mb-6">
+                      Energy Storage System
+                    </h3>
+                    <p className="text-lg text-gray-600 mb-6 leading-relaxed">
+                      Modular cabinet and containerized systems for industrial parks, hospitals,
+                      data centers, and municipal infrastructure. Featuring air-cooled & liquid-cooled
+                      options with peak shaving and load shifting capabilities.
+                    </p>
+                    <div className="grid grid-cols-2 gap-4 mb-8">
+                      <div className="bg-green-50 p-4 rounded-lg">
+                        <div className="text-2xl font-bold text-green-600">100kWh</div>
+                        <div className="text-sm text-gray-600">Minimum Capacity</div>
+                      </div>
+                      <div className="bg-green-50 p-4 rounded-lg">
+                        <div className="text-2xl font-bold text-green-600">5.015MWh</div>
+                        <div className="text-sm text-gray-600">Maximum Capacity</div>
+                      </div>
+                    </div>
+                    <Button asChild size="lg" className="bg-green-600 hover:bg-green-700">
+                      <Link href="/products/energy-storage-system">
+                        View Details
+                      </Link>
+                    </Button>
                   </div>
-                  <div className="bg-green-50 p-4 rounded-lg">
-                    <div className="text-2xl font-bold text-green-600">5.015MWh</div>
-                    <div className="text-sm text-gray-600">Maximum Capacity</div>
-                  </div>
-                </div>
-                <Button asChild size="lg" className="bg-green-600 hover:bg-green-700">
-                  <Link href="/products/energy-storage-system">
-                    View Details
-                  </Link>
-                </Button>
-              </div>
-            </ScrollAnimate>
+                </ScrollAnimate>
 
-            <ScrollAnimate animation="slideInRightSmooth" delay={400}>
-              <div className="relative h-96">
-                <Image
-                  src="/pro2.jpg"
-                  alt="Energy Storage System"
-                  fill
-                  className="object-cover rounded-2xl shadow-xl"
-                />
-              </div>
-            </ScrollAnimate>
-          </div>
-
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <ScrollAnimate animation="slideInLeftSmooth" delay={500}>
-              <div className="relative h-96 lg:order-2">
-                <Image
-                  src="/pro1.jpg"
-                  alt="Hydrogen Pules"
-                  fill
-                  className="object-cover rounded-2xl shadow-xl"
-                />
-              </div>
-            </ScrollAnimate>
-
-            <ScrollAnimate animation="slideInRightSmooth" delay={600}>
-              <div className="lg:order-1">
-                <h3 className="text-3xl font-bold text-gray-900 mb-6">
-                  Hydrogen Pules
-                </h3>
-                <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-                  Wall-mounted, stack-mounted, and all-in-one ESS for homes and small businesses
-                  with hybrid inverter options. Featuring seamless solar integration and backup power capabilities.
-                </p>
-                <div className="grid grid-cols-2 gap-4 mb-8">
-                  <div className="bg-blue-50 p-4 rounded-lg">
-                    <div className="text-2xl font-bold text-blue-600">5kWh</div>
-                    <div className="text-sm text-gray-600">Minimum Capacity</div>
+                <ScrollAnimate animation="slideInRightSmooth" delay={400}>
+                  <div className="relative h-96">
+                    <Image
+                      src="/pro2.jpg"
+                      alt="Energy Storage System"
+                      fill
+                      className="object-cover rounded-2xl shadow-xl"
+                    />
                   </div>
-                  <div className="bg-blue-50 p-4 rounded-lg">
-                    <div className="text-2xl font-bold text-blue-600">35kWh</div>
-                    <div className="text-sm text-gray-600">Maximum Capacity</div>
-                  </div>
-                </div>
-                <Button asChild size="lg" className="bg-blue-600 hover:bg-blue-700">
-                  <Link href="/products/hydrogen-pules">
-                    View Details
-                  </Link>
-                </Button>
+                </ScrollAnimate>
               </div>
-            </ScrollAnimate>
-          </div>
-          </>
+
+              <div className="grid lg:grid-cols-2 gap-12 items-center">
+                <ScrollAnimate animation="slideInLeftSmooth" delay={500}>
+                  <div className="relative h-96 lg:order-2">
+                    <Image
+                      src="/pro1.jpg"
+                      alt="Hydrogen Pules"
+                      fill
+                      className="object-cover rounded-2xl shadow-xl"
+                    />
+                  </div>
+                </ScrollAnimate>
+
+                <ScrollAnimate animation="slideInRightSmooth" delay={600}>
+                  <div className="lg:order-1">
+                    <h3 className="text-3xl font-bold text-gray-900 mb-6">
+                      Hydrogen Pules
+                    </h3>
+                    <p className="text-lg text-gray-600 mb-6 leading-relaxed">
+                      Wall-mounted, stack-mounted, and all-in-one ESS for homes and small businesses
+                      with hybrid inverter options. Featuring seamless solar integration and backup power capabilities.
+                    </p>
+                    <div className="grid grid-cols-2 gap-4 mb-8">
+                      <div className="bg-blue-50 p-4 rounded-lg">
+                        <div className="text-2xl font-bold text-blue-600">5kWh</div>
+                        <div className="text-sm text-gray-600">Minimum Capacity</div>
+                      </div>
+                      <div className="bg-blue-50 p-4 rounded-lg">
+                        <div className="text-2xl font-bold text-blue-600">35kWh</div>
+                        <div className="text-sm text-gray-600">Maximum Capacity</div>
+                      </div>
+                    </div>
+                    <Button asChild size="lg" className="bg-blue-600 hover:bg-blue-700">
+                      <Link href="/products/hydrogen-pules">
+                        View Details
+                      </Link>
+                    </Button>
+                  </div>
+                </ScrollAnimate>
+              </div>
+            </>
           )}
         </div>
       </section>

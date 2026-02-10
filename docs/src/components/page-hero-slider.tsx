@@ -24,8 +24,8 @@ interface PageHeroSliderProps {
   autoPlayInterval?: number;
 }
 
-export function PageHeroSlider({ 
-  slides, 
+export function PageHeroSlider({
+  slides,
   height = "h-[80vh]",
   showNavigation = true,
   showIndicators = true,
@@ -50,7 +50,7 @@ export function PageHeroSlider({
   // Auto-scroll effect with pause on hover
   useEffect(() => {
     if (!autoPlay || isPaused) return;
-    
+
     const timer = setInterval(() => {
       nextSlide();
     }, autoPlayInterval);
@@ -61,7 +61,7 @@ export function PageHeroSlider({
   if (slides.length === 0) return null;
 
   return (
-    <div 
+    <div
       className={`relative w-full ${height} overflow-hidden`}
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
@@ -69,13 +69,12 @@ export function PageHeroSlider({
       {/* Carousel Items */}
       <div className="relative w-full h-full">
         {slides.map((slide, index) => (
-          <div 
+          <div
             key={slide.id}
-            className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${
-              index === currentIndex 
-                ? 'opacity-100 z-10' 
-                : 'opacity-0 pointer-events-none z-0'
-            }`}
+            className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${index === currentIndex
+              ? 'opacity-100 z-10'
+              : 'opacity-0 pointer-events-none z-0'
+              }`}
           >
             <Image
               src={slide.image}
@@ -85,9 +84,9 @@ export function PageHeroSlider({
               priority={index === 0}
               sizes="100vw"
             />
-            <div className="absolute inset-0 bg-gradient-to-br from-slate-900/80 via-green-900/70 to-slate-800/80"></div>
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-            
+            <div className="absolute inset-0 bg-gradient-to-br from-slate-900/40 via-green-900/30 to-slate-800/40"></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
+
             {/* Floating Elements */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden">
               <div className="absolute top-20 left-10 w-40 h-40 bg-green-400/10 rounded-full blur-2xl animate-pulse"></div>
@@ -151,11 +150,10 @@ export function PageHeroSlider({
             <button
               key={index}
               onClick={() => goToSlide(index)}
-              className={`h-2 rounded-full transition-all duration-300 ${
-                index === currentIndex 
-                  ? 'w-8 bg-green-500' 
-                  : 'w-2 bg-white/50 hover:bg-white/70'
-              }`}
+              className={`h-2 rounded-full transition-all duration-300 ${index === currentIndex
+                ? 'w-8 bg-green-500'
+                : 'w-2 bg-white/50 hover:bg-white/70'
+                }`}
               aria-label={`Go to slide ${index + 1}`}
             />
           ))}

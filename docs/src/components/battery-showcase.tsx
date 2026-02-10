@@ -63,7 +63,7 @@ export function BatteryShowcase() {
   }, []);
 
   const goToNext = useCallback(() => {
-    setCurrentIndex((prevIndex) => 
+    setCurrentIndex((prevIndex) =>
       prevIndex === batteryProducts.length - 1 ? 0 : prevIndex + 1
     );
   }, []);
@@ -99,7 +99,7 @@ export function BatteryShowcase() {
               <p className="text-gray-300 text-lg mb-8">
                 {currentProduct.description}
               </p>
-              
+
               <div className="grid grid-cols-2 gap-6 mb-8">
                 <div className="bg-gray-800 p-4 rounded-lg">
                   <div className="text-red-500 text-2xl font-bold mb-1">01</div>
@@ -135,7 +135,7 @@ export function BatteryShowcase() {
                 priority
               />
             </div>
-            
+
             {/* Product details */}
             <div className="bg-gray-800 p-6 rounded-lg mt-6">
               <h3 className="text-2xl font-bold text-white mb-4">{currentProduct.title}</h3>
@@ -167,9 +167,8 @@ export function BatteryShowcase() {
             <button
               key={index}
               onClick={() => goToSlide(index)}
-              className={`w-3 h-3 rounded-full transition-colors ${
-                index === currentIndex ? 'bg-red-600 w-8' : 'bg-gray-600 hover:bg-gray-500'
-              }`}
+              className={`w-3 h-3 rounded-full transition-colors ${index === currentIndex ? 'bg-red-600 w-8' : 'bg-gray-600 hover:bg-gray-500'
+                }`}
               aria-label={`Go to slide ${index + 1}`}
             />
           ))}

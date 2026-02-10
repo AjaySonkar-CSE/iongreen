@@ -16,9 +16,10 @@ interface NavItem {
 interface NavDropdownProps {
   item: NavItem;
   isActive: boolean;
+  isScrolled: boolean;
 }
 
-export function NavDropdown({ item, isActive }: NavDropdownProps) {
+export function NavDropdown({ item, isActive, isScrolled }: NavDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -64,8 +65,12 @@ export function NavDropdown({ item, isActive }: NavDropdownProps) {
         <Link
           href={item.href}
           className={cn(
-            "px-3 py-2.5 text-sm font-semibold transition-all duration-300 relative rounded-lg hover:bg-green-50/50 no-underline",
-            isActive || isOpen ? "text-green-600 bg-green-50/50" : "text-slate-700 hover:text-green-600"
+            "px-3 py-2.5 text-sm font-semibold transition-all duration-300 relative no-underline",
+            (isActive || isOpen)
+              ? "text-green-600"
+              : isScrolled
+                ? "text-slate-700 hover:text-green-600"
+                : "text-white hover:text-green-400"
           )}
         >
           {item.label}
@@ -79,7 +84,11 @@ export function NavDropdown({ item, isActive }: NavDropdownProps) {
             <svg
               className={cn(
                 "h-4 w-4 transform transition-all duration-300 rounded-full p-0.5",
-                isOpen ? 'rotate-180 text-green-600 bg-green-50' : 'text-slate-500 group-hover:text-green-600 group-hover:bg-green-50/50'
+                isOpen
+                  ? 'rotate-180 text-green-600'
+                  : isScrolled
+                    ? 'text-slate-500 group-hover:text-green-600'
+                    : 'text-white/80 group-hover:text-white'
               )}
               fill="none"
               viewBox="0 0 24 24"

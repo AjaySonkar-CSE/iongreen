@@ -79,11 +79,11 @@ export function Navbar() {
           <div className="flex items-center">
             <Link href="/" className="flex items-center">
               <Image
-                src="/logo.png"
+                src="/logo_final3.png"
                 alt="Ion Green Logo"
                 width={120}
                 height={40}
-                className="h-10 w-auto object-contain"
+                className="h-10 w-auto object-contain object-left"
               />
             </Link>
           </div>
@@ -98,9 +98,8 @@ export function Navbar() {
                 >
                   <Link
                     href={item.href}
-                    className={`text-sm font-medium transition-all duration-300 ${
-                      isHovered === item.label ? 'text-green-600 scale-105' : 'text-gray-700 hover:text-green-600'
-                    }`}
+                    className={`text-sm font-medium transition-all duration-300 ${isHovered === item.label ? 'text-green-600 scale-105' : 'text-gray-700 hover:text-green-600'
+                      }`}
                     onClick={(e) => {
                       // If it's a hash link, prevent default and scroll
                       if (item.href.startsWith('#')) {
@@ -115,9 +114,8 @@ export function Navbar() {
                   </Link>
                   {item.items && (
                     <svg
-                      className={`ml-1 h-4 w-4 transform transition-all duration-300 ${
-                        isHovered === item.label ? 'rotate-180 text-green-600' : 'text-gray-500 group-hover:text-gray-700'
-                      }`}
+                      className={`ml-1 h-4 w-4 transform transition-all duration-300 ${isHovered === item.label ? 'rotate-180 text-green-600' : 'text-gray-500 group-hover:text-gray-700'
+                        }`}
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -129,11 +127,10 @@ export function Navbar() {
 
                 {item.items && (
                   <div
-                    className={`absolute left-0 mt-2 w-72 rounded-xl shadow-xl bg-white/95 backdrop-blur-sm ring-1 ring-black/5 py-3 z-10 transition-all duration-300 border border-gray-100/50 ${
-                      activeDropdown === item.label
-                        ? 'opacity-100 translate-y-0 visible scale-100'
-                        : 'opacity-0 -translate-y-3 invisible scale-95'
-                    }`}
+                    className={`absolute left-0 mt-2 w-72 rounded-xl shadow-xl bg-white/95 backdrop-blur-sm ring-1 ring-black/5 py-3 z-10 transition-all duration-300 border border-gray-100/50 ${activeDropdown === item.label
+                      ? 'opacity-100 translate-y-0 visible scale-100'
+                      : 'opacity-0 -translate-y-3 invisible scale-95'
+                      }`}
                     onMouseEnter={handleDropdownMouseEnter}
                     onMouseLeave={handleDropdownMouseLeave}
                   >

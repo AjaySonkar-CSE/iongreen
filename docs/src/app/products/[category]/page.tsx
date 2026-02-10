@@ -58,7 +58,7 @@ const productHeroBackgrounds: Record<string, string> = {
   "hydrogen-pules": "/pro1.jpg",
   "solar-solution": "/images/ai-solar-battery-installation.svg",
   "ion-green-energy-storage": "/1/ion1.png",
-  "hybrid-energy-storage": "/hybrid solor system.jpeg",
+  "hybrid-energy-storage": "/hybrid_solar_system.jpg",
   "mobile-ev-charging-storage": "/data5.jpp.jpg",
   "flipkart-amazon": "/images/productgreen.jpeg"
 };
@@ -455,7 +455,7 @@ export default async function ProductCategoryPage(props: ProductPageProps) {
     // Override with DB data if available
     if (dbProducts.length > 0) {
       const dbProduct = dbProducts[0];
-      
+
       const dbFeatures = parseJsonField(dbProduct.features, []);
       const dbSpecifications = parseJsonField(dbProduct.specifications, []);
       const dbApplications = parseJsonField(dbProduct.applications, []);
@@ -468,10 +468,10 @@ export default async function ProductCategoryPage(props: ProductPageProps) {
         let normalizedFeatures = [];
 
         if (typeof firstItem === 'string') {
-           normalizedFeatures = dbFeatures.map((f: string) => ({ title: f, description: '' }));
+          normalizedFeatures = dbFeatures.map((f: string) => ({ title: f, description: '' }));
         } else {
-           normalizedFeatures = dbFeatures.map((f: any) => ({
-            title: f.title || f.label || '', 
+          normalizedFeatures = dbFeatures.map((f: any) => ({
+            title: f.title || f.label || '',
             description: f.description || f.value || ''
           }));
         }
@@ -485,15 +485,15 @@ export default async function ProductCategoryPage(props: ProductPageProps) {
 
       // Handle specifications
       if (dbSpecifications && dbSpecifications.length > 0) {
-         // Check if it's array of strings or objects
-         if (typeof dbSpecifications[0] === 'string') {
-            details.specifications = dbSpecifications.map((s: string) => {
-              const parts = s.split(':');
-              return { label: parts[0]?.trim() || 'Spec', value: parts[1]?.trim() || '' };
-            });
-         } else {
-            details.specifications = dbSpecifications;
-         }
+        // Check if it's array of strings or objects
+        if (typeof dbSpecifications[0] === 'string') {
+          details.specifications = dbSpecifications.map((s: string) => {
+            const parts = s.split(':');
+            return { label: parts[0]?.trim() || 'Spec', value: parts[1]?.trim() || '' };
+          });
+        } else {
+          details.specifications = dbSpecifications;
+        }
       }
 
       // Handle applications
@@ -505,12 +505,12 @@ export default async function ProductCategoryPage(props: ProductPageProps) {
       if (dbBenefits && dbBenefits.length > 0) {
         details.benefits = dbBenefits;
       }
-      
+
       // Update product description if available in DB
       if (dbProduct.description) {
         product.description = dbProduct.description;
       }
-      
+
       // Update title if available in DB
       if (dbProduct.name) {
         product.title = dbProduct.name;

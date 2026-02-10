@@ -20,77 +20,77 @@ const brandLogos = [
 
 export function CooperationSection() {
   return (
-    <section className="py-16 bg-red-600 relative overflow-hidden">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute inset-0 bg-[linear-gradient(45deg,_rgba(255,255,255,0.1)_25%,_transparent_25%),_linear-gradient(-45deg,_rgba(255,255,255,0.1)_25%,_transparent_25%)] bg-[size:40px_40px]"></div>
+    <section className="py-20 bg-gradient-to-b from-[#020802] via-black to-[#020802] relative overflow-hidden">
+      {/* Background HUD Graphics */}
+      <div className="absolute inset-0 opacity-5 pointer-events-none">
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20" />
+        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(34,197,94,0.1),transparent_70%)]" />
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
-        <ScrollAnimate animation="fadeIn" delay={100}>
-          <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-              ION Green Partnerships
+        <ScrollAnimate animation="fadeInUpElegant" delay={100}>
+          <div className="text-center mb-16">
+            <p className="text-green-500 uppercase tracking-[0.4em] font-bold text-xs mb-4">
+              Global Ecosystem
+            </p>
+            <h2 className="text-5xl md:text-6xl font-black text-white mb-6 uppercase tracking-tighter">
+              ION GREEN <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-200">PARTNERSHIPS</span>
             </h2>
-            <p className="text-xl text-red-100 max-w-3xl mx-auto">
-              Building global partnerships to deliver ION Green lithium battery solutions for a sustainable energy future
+            <div className="w-24 h-1 bg-green-500 mx-auto rounded-full mb-8" />
+            <p className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto font-light leading-relaxed">
+              Building strategic global alliances to deliver cutting-edge lithium battery solutions for a sustainable energy future.
             </p>
           </div>
         </ScrollAnimate>
 
-        <ScrollAnimate animation="fadeIn" delay={200}>
-          <div className="text-center mb-8">
-            <h3 className="text-2xl font-semibold text-white mb-2">ION Green Ecosystem</h3>
-            <p className="text-red-100">Partnering with global leaders to deliver ION Green energy solutions worldwide</p>
-          </div>
-        </ScrollAnimate>
-
-        <ScrollAnimate animation="scaleIn" delay={300}>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 items-center justify-items-center">
+        <ScrollAnimate animation="fadeIn" delay={300}>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6">
             {brandLogos.map((logo, index) => (
-              <ScrollAnimate key={index} animation="fadeIn" delay={400 + (index * 50)}>
-                <div className="group bg-white/10 backdrop-blur-sm rounded-xl p-6 hover:bg-white/20 transition-all duration-300 hover:scale-105 border border-white/20 hover:border-white/40 hover:shadow-2xl relative overflow-hidden h-48 flex flex-col items-center justify-center">
-                  {/* Background gradient effect */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div
+                key={index}
+                className="group relative h-48 rounded-xl overflow-hidden cursor-pointer border border-white/5 bg-white/5 backdrop-blur-md transition-all duration-500 hover:border-green-500/40 hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(34,197,94,0.1)] flex flex-col items-center justify-center p-6"
+              >
+                {/* Card Glow Effect */}
+                <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-                  {/* Logo container */}
-                  <div className="relative z-10 w-20 h-20 md:w-24 md:h-24 flex items-center justify-center mb-4">
-                    <Image
-                      src={logo.src}
-                      alt={logo.alt}
-                      fill
-                      className="object-contain group-hover:scale-110 transition-transform duration-300"
-                    />
-                  </div>
-
-                  {/* Brand name */}
-                  <div className="relative z-10 text-center">
-                    <h4 className="text-white font-semibold text-sm md:text-base mb-1 group-hover:text-yellow-200 transition-colors">
-                      {logo.alt}
-                    </h4>
-                    <div className="w-8 h-0.5 bg-yellow-400 mx-auto rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  </div>
-
-                  {/* Decorative elements */}
-                  <div className="absolute -top-2 -right-2 w-4 h-4 bg-yellow-400 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  <div className="absolute -bottom-1 -left-1 w-3 h-3 bg-green-400 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100"></div>
+                {/* Logo container */}
+                <div className="relative z-10 w-20 h-20 md:w-24 md:h-24 flex items-center justify-center mb-4">
+                  <Image
+                    src={logo.src}
+                    alt={logo.alt}
+                    fill
+                    className="object-contain grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-110"
+                  />
                 </div>
-              </ScrollAnimate>
+
+                {/* Brand name */}
+                <div className="relative z-10 text-center transform translate-y-2 opacity-80 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+                  <span className="text-white font-bold text-[10px] uppercase tracking-[0.2em] block truncate max-w-[120px]">
+                    {logo.alt.split(' ').slice(2).join(' ') || logo.alt}
+                  </span>
+                </div>
+
+                {/* Bottom Neon Line */}
+                <div className="absolute bottom-0 left-0 h-1 bg-green-500 w-0 group-hover:w-full transition-all duration-500 fill-mode-forwards" />
+              </div>
             ))}
           </div>
         </ScrollAnimate>
 
-        <ScrollAnimate animation="fadeIn" delay={800}>
-          <div className="text-center mt-12">
-            <a
-              href="/contact"
-              className="inline-flex items-center px-8 py-4 bg-white text-red-600 font-semibold rounded-lg hover:bg-gray-100 transition-all duration-300 hover:scale-105 shadow-lg"
-            >
-              Join ION Green Partnership
-              <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-              </svg>
-            </a>
+        <ScrollAnimate animation="fadeInUpElegant" delay={800}>
+          <div className="text-center mt-20">
+            <div className="relative inline-block group">
+              <div className="absolute inset-0 bg-green-500/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full" />
+              <a
+                href="/contact"
+                className="relative inline-flex items-center px-10 py-4 bg-green-600 hover:bg-green-500 text-white font-bold rounded-full transition-all duration-300 hover:scale-105 shadow-[0_0_20px_rgba(34,197,94,0.3)] uppercase tracking-widest text-sm"
+              >
+                Join ION Green Partnership
+                <svg className="ml-3 w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+              </a>
+            </div>
           </div>
         </ScrollAnimate>
       </div>

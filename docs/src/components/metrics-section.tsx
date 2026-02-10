@@ -41,7 +41,7 @@ export function MetricsSection() {
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
           {metrics.map((metric, index) => (
-            <div 
+            <div
               key={index}
               className="flex flex-col items-center text-center p-4 md:p-6 rounded-lg bg-white shadow-sm hover:shadow-md transition-shadow duration-300"
             >

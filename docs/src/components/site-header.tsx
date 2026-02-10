@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -19,17 +19,36 @@ const { navItems } = getSiteContent();
 
 export function SiteHeader() {
   const pathname = usePathname();
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-[1000] bg-white/95 backdrop-blur-md shadow-lg border-b border-gray-100/50">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 md:px-6 lg:px-8">
-        <Link href="/" className="flex items-center gap-2 text-2xl font-bold text-slate-900 hover:text-green-600 transition-all duration-300 hover:scale-105 tracking-tight">
+    <header className={cn(
+      "fixed top-0 left-0 right-0 z-[1000] transition-all duration-500",
+      isScrolled
+        ? "bg-white/95 backdrop-blur-md shadow-lg border-b border-gray-100/50 py-1"
+        : "bg-transparent border-transparent py-2"
+    )}>
+      <div className="mx-auto flex max-w-[1600px] items-center justify-between px-4 md:px-6 lg:px-10">
+        <Link href="/" className="flex items-center gap-2 transition-all duration-300 hover:scale-105 group">
           <Image
-            src="/logo.png"
+            src={isScrolled ? "/logo_final3.png" : "/logo_final_dark.png"}
             alt="Logo"
-            width={160}
-            height={160}
-            className="object-contain"
+            width={300}
+            height={100}
+            className={cn(
+              "object-contain object-left transition-all duration-500",
+              isScrolled ? "h-12 md:h-14" : "h-12 md:h-14"
+            )}
+            priority
           />
         </Link>
 
@@ -39,6 +58,7 @@ export function SiteHeader() {
               <NavDropdown
                 key={item.href}
                 item={item}
+                isScrolled={isScrolled}
                 isActive={
                   pathname === item.href ||
                   (item.items?.some((subItem) => pathname === subItem.href) ?? false)
@@ -49,8 +69,12 @@ export function SiteHeader() {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "relative px-3 py-2.5 text-sm font-semibold text-slate-700 transition-all duration-300 hover:text-green-600 hover:bg-green-50/50 rounded-lg no-underline",
-                  pathname === item.href && "text-green-600 bg-green-50/50"
+                  "relative px-3 py-2.5 text-sm font-semibold transition-all duration-300 no-underline",
+                  pathname === item.href
+                    ? "text-green-600"
+                    : isScrolled
+                      ? "text-slate-700 hover:text-green-600"
+                      : "text-white hover:text-green-400"
                 )}
               >
                 {item.label}

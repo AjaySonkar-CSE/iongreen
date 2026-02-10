@@ -6,7 +6,7 @@ import Link from "next/link";
 
 const showcaseItems = [
   {
-    image: "/solor solution.jpeg",
+    image: "/solar_solution.jpg",
     title: "Solar Solution Technologies",
     description: "Ion Green Energy delivers next-generation Battery Energy Storage Systems (BESS) and intelligent power solutions for grid-scale, commercial, and industrial applications. Our technology enables renewable integration, peak shaving, backup power, and energy optimization with high efficiency and safety.",
     features: ["High Energy Density", "Advanced Safety", "Long Cycle Life", "Smart BMS"],
@@ -34,7 +34,7 @@ const showcaseItems = [
     href: "/case"
   },
   {
-    image: "/banner.zip - HYDROGEN FUEL CELL (1).png",
+    image: "/hydrogen_pules.png",
     title: "Future-Ready Technology",
     description: "Preparing for tomorrow's energy needs with forward-thinking design and technology",
     features: ["AI Integration", "IoT Connectivity", "Predictive Analytics", "Remote Monitoring"],

@@ -38,7 +38,7 @@ export default function AboutPage() {
   return (
     <>
       {/* Hero Section with Slider */}
-      <PageHeroSlider 
+      <PageHeroSlider
         slides={heroSlides}
         height="h-[80vh]"
         showNavigation={true}
@@ -331,15 +331,15 @@ export default function AboutPage() {
                 </p>
               </ScrollAnimate>
             </div>
-            
+
             <div className="prose prose-lg max-w-none">
               <p className="text-gray-700 mb-8 text-center">
                 ION Green operates through a globally integrated model combining headquarters leadership, engineering and manufacturing capabilities, and strategic regional partnerships. This structure enables consistent global standards with efficient local execution.
               </p>
-              
+
               <div className="mb-12">
                 <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">Regional Presence</h3>
-                
+
                 <div className="grid md:grid-cols-2 gap-8 mb-8">
                   <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
                     <h4 className="text-xl font-semibold text-green-600 mb-3">Middle East – United Arab Emirates (UAE)</h4>
@@ -348,7 +348,7 @@ export default function AboutPage() {
                       Corporate leadership, global business strategy, commercial management, and regional project coordination.
                     </p>
                   </div>
-                  
+
                   <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
                     <h4 className="text-xl font-semibold text-green-600 mb-3">South Asia – India</h4>
                     <p className="font-medium text-gray-900 mb-2">Engineering & Manufacturing</p>
@@ -356,7 +356,7 @@ export default function AboutPage() {
                       System engineering, product development, sourcing, and manufacturing support for domestic and international projects.
                     </p>
                   </div>
-                  
+
                   <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
                     <h4 className="text-xl font-semibold text-green-600 mb-3">Africa</h4>
                     <p className="font-medium text-gray-900 mb-2">Project Execution & Distribution Partners</p>
@@ -364,7 +364,7 @@ export default function AboutPage() {
                       On-ground project delivery, logistics coordination, and regional distribution through qualified local partners.
                     </p>
                   </div>
-                  
+
                   <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
                     <h4 className="text-xl font-semibold text-green-600 mb-3">Europe (Partners) (Selective)</h4>
                     <p className="font-medium text-gray-900 mb-2">Technology & Compliance Alignment</p>
@@ -374,7 +374,7 @@ export default function AboutPage() {
                   </div>
                 </div>
               </div>
-              
+
               <div className="mb-12 bg-white p-8 rounded-lg shadow-sm border border-gray-200">
                 <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">Global Delivery Advantage</h3>
                 <ul className="list-disc list-inside text-gray-700 space-y-2">
@@ -384,7 +384,7 @@ export default function AboutPage() {
                   <li>Scalable operating model for cross-border projects</li>
                 </ul>
               </div>
-              
+
               <div className="text-center">
                 <div className="inline-block bg-green-50 p-6 rounded-lg border border-green-200 max-w-2xl">
                   <h4 className="text-lg font-bold text-green-700 mb-2">Positioning Statement</h4>
@@ -408,7 +408,7 @@ export default function AboutPage() {
               </ScrollAnimate>
               <ScrollAnimate animation="fadeInUpElegant" delay={3700}>
                 <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                  ION Green owns 25+ years' experience in solar thermal, heat pump and energy storage production. 
+                  ION Green owns 25+ years' experience in solar thermal, heat pump and energy storage production.
                   We have established multiple production bases and boast significant annual production capacity for energy storage systems.
                 </p>
               </ScrollAnimate>

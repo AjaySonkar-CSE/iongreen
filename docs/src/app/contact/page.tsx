@@ -38,7 +38,7 @@ export default function ContactPage() {
   return (
     <>
       {/* Hero Section with Slider */}
-      <PageHeroSlider 
+      <PageHeroSlider
         slides={heroSlides}
         height="h-[80vh]"
         showNavigation={true}
