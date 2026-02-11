@@ -40,7 +40,8 @@ export function SiteHeader() {
       <div className="mx-auto flex max-w-[1600px] items-center justify-between px-4 md:px-6 lg:px-10">
         <Link href="/" className="flex items-center gap-2 transition-all duration-300 hover:scale-105 group">
           <Image
-            src={isScrolled ? "/logo_final3.png" : "/logo_final_dark.png"}
+            // src={isScrolled ? "/logo_final3.png" : "/logo_final_dark.png"}
+            src="/logo.png"
             alt="Logo"
             width={300}
             height={100}

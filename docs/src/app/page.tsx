@@ -12,36 +12,40 @@ import SolarSolutions from "@/components/solar-solutions";
 import LabEquipmentShowcase from "@/components/client/lab-equipment-showcase-client";
 import { dbService } from "@/lib/db-service";
 
+import { AnimatedSection } from "@/components/ui/animated-section";
+
 export default async function HomePage() {
   const heroSlides = await dbService.getHeroSlides();
 
   return (
-    <main className="bg-white">
+    <div className="relative bg-transparent">
       {/* Hero with modern carousel and product categories */}
-      <Hero slides={heroSlides} />
+      {/* This is fixed inset-0 on home page */}
+      <Hero slides={heroSlides} page="home" />
 
-      {/* Key stats below hero for clean separation */}
-      <div className="relative z-10">
+      <div className="relative z-10 bg-white shadow-[0_-50px_100px_rgba(0,0,0,0.2)] mt-[100vh] border-t border-white/10">
+        {/* Key stats below hero for clean separation */}
         <StatsSection />
+
+        {/* Company profile / who we are */}
+        <CompanyProfileText />
+
+        {/* Technology & solutions showcases */}
+        <SungrowStyleShowcase />
+
+        <SolarSolutions />
+        <SolarEastProductShowcase />
+
+        {/* Trust & social proof */}
+        <CertificationBar />
+        <LabEquipmentShowcase />
+        <SimpleHomepageSidebar />
+        <SolarEastNewsSection />
+
+        {/* Call to action & partnerships */}
+        <CTAPanel />
+        <CooperationSection />
       </div>
-
-      {/* Company profile / who we are */}
-      <CompanyProfileText />
-
-      {/* Technology & solutions showcases */}
-      <SungrowStyleShowcase />
-      <SolarSolutions />
-      <SolarEastProductShowcase />
-
-      {/* Trust & social proof */}
-      <CertificationBar />
-      <LabEquipmentShowcase />
-      <SimpleHomepageSidebar />
-      <SolarEastNewsSection />
-
-      {/* Call to action & partnerships */}
-      <CTAPanel />
-      <CooperationSection />
-    </main>
+    </div>
   );
 }

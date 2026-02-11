@@ -44,7 +44,7 @@ import { StaggeredText } from "@/components/ui/text-animations";
 export function SiteFooter() {
   const pathname = usePathname();
   return (
-    <>
+    <div className="relative z-10 bg-white">
       <div className="relative h-96 w-full overflow-hidden">
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
@@ -125,7 +125,7 @@ export function SiteFooter() {
           </div>
         </div>
       </footer>
-    </>
+    </div>
   );
 }
 

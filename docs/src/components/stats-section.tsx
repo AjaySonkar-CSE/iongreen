@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { ScrollReveal } from "./enhanced-scroll-reveal";
 import { Award, Users, Battery, Factory } from 'lucide-react';
+import { StaggeredText } from './ui/text-animations';
 
 interface AnimatedCounterProps {
   value: number;
@@ -17,26 +18,26 @@ const AnimatedCounter = ({ value, suffix = '' }: AnimatedCounterProps) => {
 
   useEffect(() => {
     if (!isInView) return;
-    
+
     const duration = 2000; // 2 seconds
     const start = 0;
     const end = value;
     const startTime = Date.now();
-    
+
     const animate = () => {
       const now = Date.now();
       const progress = Math.min((now - startTime) / duration, 1);
       const currentCount = Math.floor(progress * end);
-      
+
       setCount(currentCount);
-      
+
       if (progress < 1) {
         requestAnimationFrame(animate);
       } else {
         setCount(end);
       }
     };
-    
+
     animate();
   }, [isInView, value]);
 
@@ -72,8 +73,8 @@ const StatCard = ({ value, label, icon: Icon, delay, suffix = '' }: StatCardProp
         <div className="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent mb-3 font-montserrat">
           <AnimatedCounter value={value} suffix={suffix} />
         </div>
-        <div className="text-sm md:text-base text-gray-600 font-semibold uppercase tracking-wider">
-          {label}
+        <div className="text-sm md:text-base text-gray-500 font-medium uppercase tracking-[0.2em]">
+          <StaggeredText text={label} type="mask" delay={delay + 0.2} stagger={0.02} />
         </div>
       </div>
     </div>
@@ -88,48 +89,60 @@ export function StatsSection() {
         <div className="absolute -top-20 -right-20 w-96 h-96 bg-emerald-100 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
         <div className="absolute -bottom-20 -left-20 w-96 h-96 bg-green-100 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
       </div>
-      
+
       <div className="mx-auto max-w-[1600px] px-4 md:px-6 lg:px-10 relative">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Our Impact in Numbers</h2>
-          <div className="w-20 h-1 bg-gradient-to-r from-green-400 to-emerald-500 mx-auto rounded-full"></div>
+          <div className="flex flex-col items-center">
+            <StaggeredText
+              text="Our Impact in Numbers"
+              type="mask"
+              className="text-3xl md:text-5xl font-bold text-gray-900 mb-6 tracking-tight"
+            />
+            <motion.div
+              initial={{ width: 0 }}
+              whileInView={{ width: 80 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1, delay: 0.5 }}
+              className="h-1 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full"
+            />
+          </div>
         </motion.div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          <StatCard 
-            value={26} 
-            label="Years Experience" 
-            icon={Award} 
+          <StatCard
+            value={26}
+            label="Years Experience"
+            icon={Award}
             delay={0.1}
             suffix="+"
           />
-          
-          <StatCard 
-            value={6000} 
-            label="Global Employees" 
-            icon={Users} 
+
+          <StatCard
+            value={6000}
+            label="Global Employees"
+            icon={Users}
             delay={0.2}
             suffix="+"
           />
-          
-          <StatCard 
-            value={2} 
-            label="Annual Production" 
-            icon={Battery} 
+
+          <StatCard
+            value={2}
+            label="Annual Production"
+            icon={Battery}
             delay={0.3}
             suffix="GWh"
           />
-          
-          <StatCard 
-            value={5} 
-            label="Production Bases" 
-            icon={Factory} 
+
+          <StatCard
+            value={5}
+            label="Production Bases"
+            icon={Factory}
             delay={0.4}
           />
         </div>

@@ -26,7 +26,78 @@
 }
 
 .animate-fadeInUp {
-  animation: fadeInUp 0.8s ease-out forwards;
+  animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeInUpElegant {
+  from {
+    opacity: 0;
+    transform: translateY(60px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeInUpElegant {
+  animation: fadeInUpElegant 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes smoothReveal {
+  from {
+    opacity: 0;
+    clip-path: inset(0 0 100% 0);
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    clip-path: inset(0 0 0% 0);
+    transform: translateY(0);
+  }
+}
+
+.animate-smoothReveal {
+  animation: smoothReveal 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideInBounce {
+  0% {
+    opacity: 0;
+    transform: translateX(-100px);
+  }
+
+  60% {
+    opacity: 1;
+    transform: translateX(10px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-slideInBounce {
+  animation: slideInBounce 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes cascadeDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-cascadeDown {
+  animation: cascadeDown 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes scaleUp {
@@ -505,7 +576,6 @@ button:hover {
   main {
     min-height: 100vh;
     background: linear-gradient(180deg, #fff, #f8fafc);
-    overflow-x: hidden;
   }
 
   /* Scroll Snap */

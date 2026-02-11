@@ -9,7 +9,7 @@ interface AnimatedSectionProps {
   className?: string;
   delay?: number;
   duration?: number;
-  animation?: "fadeInUp" | "fadeInDown" | "fadeInLeft" | "fadeInRight" | "zoomIn" | "scaleUp";
+  animation?: "fadeInUp" | "fadeInDown" | "fadeInLeft" | "fadeInRight" | "zoomIn" | "scaleUp" | "reveal" | "blur";
   once?: boolean;
   threshold?: number;
 }
@@ -18,34 +18,56 @@ export function AnimatedSection({
   children,
   className,
   delay = 0,
-  duration = 0.6,
+  duration = 0.8,
   animation = "fadeInUp",
   once = true,
-  threshold = 0.2, // Trigger when 20% of element is in view
+  threshold = 0.1,
 }: AnimatedSectionProps) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once, amount: threshold });
 
   const getVariants = (): Variants => {
+    const defaultDuration = duration;
+
     switch (animation) {
+      case "reveal":
+        return {
+          hidden: { opacity: 0, clipPath: "inset(0 0 100% 0)", y: 30 },
+          visible: {
+            opacity: 1,
+            clipPath: "inset(0 0 0% 0)",
+            y: 0,
+            transition: { duration: defaultDuration + 0.4, ease: [0.16, 1, 0.3, 1] }
+          },
+        };
+      case "blur":
+        return {
+          hidden: { opacity: 0, filter: "blur(10px)", scale: 1.05 },
+          visible: {
+            opacity: 1,
+            filter: "blur(0px)",
+            scale: 1,
+            transition: { duration: defaultDuration, ease: "easeOut" }
+          },
+        };
       case "fadeInDown":
         return {
-          hidden: { opacity: 0, y: -50 },
+          hidden: { opacity: 0, y: -40 },
           visible: { opacity: 1, y: 0 },
         };
       case "fadeInLeft":
         return {
-          hidden: { opacity: 0, x: -50 },
+          hidden: { opacity: 0, x: -40 },
           visible: { opacity: 1, x: 0 },
         };
       case "fadeInRight":
         return {
-          hidden: { opacity: 0, x: 50 },
+          hidden: { opacity: 0, x: 40 },
           visible: { opacity: 1, x: 0 },
         };
       case "zoomIn":
         return {
-          hidden: { opacity: 0, scale: 0.8 },
+          hidden: { opacity: 0, scale: 0.9 },
           visible: { opacity: 1, scale: 1 },
         };
       case "scaleUp":
@@ -56,7 +78,7 @@ export function AnimatedSection({
       case "fadeInUp":
       default:
         return {
-          hidden: { opacity: 0, y: 50 },
+          hidden: { opacity: 0, y: 40 },
           visible: { opacity: 1, y: 0 },
         };
     }

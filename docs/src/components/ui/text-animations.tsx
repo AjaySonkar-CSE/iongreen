@@ -7,7 +7,7 @@ interface StaggeredTextProps {
   text: string;
   className?: string;
   once?: boolean;
-  type?: "word" | "char";
+  type?: "word" | "char" | "mask";
   delay?: number;
   duration?: number;
   stagger?: number;
@@ -24,7 +24,7 @@ export function StaggeredText({
 }: StaggeredTextProps) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once, amount: 0.5 });
-  
+
   const textArray = type === "word" ? text.split(" ") : text.split("");
 
   const container: Variants = {
@@ -40,37 +40,47 @@ export function StaggeredText({
       opacity: 1,
       y: 0,
       transition: {
-        type: "spring",
-        damping: 12,
-        stiffness: 100,
         duration: duration,
+        ease: [0.215, 0.61, 0.355, 1], // expoOut
       },
     },
     hidden: {
       opacity: 0,
-      y: 20,
+      y: 40,
+    },
+  };
+
+  const maskChild: Variants = {
+    visible: {
+      y: 0,
       transition: {
-        type: "spring",
-        damping: 12,
-        stiffness: 100,
-        duration: duration,
+        duration: 0.8,
+        ease: [0.16, 1, 0.3, 1],
       },
+    },
+    hidden: {
+      y: "110%",
     },
   };
 
   return (
     <motion.span
       ref={ref}
-      style={{ display: "inline-block" }}
+      style={{ display: "inline-block", overflow: type === "mask" ? "hidden" : "visible" }}
       variants={container}
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
       className={className}
     >
       {textArray.map((item, index) => (
-        <motion.span variants={child} key={index} style={{ display: "inline-block", marginRight: type === 'word' ? '0.25em' : '0' }}>
-          {item === " " ? "\u00A0" : item}
-        </motion.span>
+        <span key={index} style={{ display: "inline-block", overflow: "hidden", verticalAlign: "bottom" }}>
+          <motion.span
+            variants={type === "mask" ? maskChild : child}
+            style={{ display: "inline-block" }}
+          >
+            {item === " " ? "\u00A0" : item}
+          </motion.span>
+        </span>
       ))}
     </motion.span>
   );

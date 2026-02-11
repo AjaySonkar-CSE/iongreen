@@ -143,6 +143,7 @@ function isDynamicSlide(slide: HeroSlide): slide is DynamicHeroSlide {
 }
 
 import { HeroCarousel } from './hero-carousel';
+import { motion } from "framer-motion";
 
 export function Hero({
   page = 'home',
@@ -160,7 +161,7 @@ export function Hero({
   const displayTitle = title || pageHeadings[page]?.title;
   const displayDescription = description || pageHeadings[page]?.description;
 
-  // Hardcoded hero slides with the two specified images from public folder
+  // Hardcoded hero slides
   const hardcodedSlides = [
     {
       id: 1,
@@ -196,7 +197,6 @@ export function Hero({
     },
   ];
 
-  // Format hardcoded slides for HeroCarousel component
   const carouselSlides = hardcodedSlides.map(slide => ({
     id: slide.id,
     title: slide.title,
@@ -207,29 +207,18 @@ export function Hero({
   }));
 
   return (
-    <section className={cn("relative", className)} {...props}>
-      {isHomePage ? (
-        // Use HeroCarousel for Home Page with database slides and product categories
-        carouselSlides.length > 0 ? (
+    <section
+      className={cn(
+        isHomePage ? "fixed inset-0 w-full h-screen overflow-hidden z-0" : "relative min-h-[60vh]",
+        className
+      )}
+      {...props}
+    >
+      <div className="w-full h-full">
+        {isHomePage ? (
           <HeroCarousel slides={carouselSlides} categories={productCategories} />
         ) : (
-          // Fallback to image background if no database slides
-          <div className="relative min-h-screen">
-            <Image
-              src="/herogreen.jpeg"
-              alt="Hero slide"
-              fill
-              className="object-cover"
-              priority
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent"></div>
-          </div>
-        )
-      ) : (
-        // Dynamic Background for Other Pages
-        <div className="relative min-h-screen overflow-hidden">
           <div className="absolute inset-0">
-            {/* Background for specific pages */}
             {(sectionBackgrounds[page] || sectionBackgrounds[page.toLowerCase()]) && (
               <div className="absolute inset-0">
                 <Image
@@ -239,75 +228,32 @@ export function Hero({
                   className="object-cover"
                   priority
                 />
-
-                {/* Standardized Premium Overlays */}
-                <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-black/80"></div>
-                <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-transparent"></div>
-
-                {/* HUD Graphic Pattern Overlay */}
-                <div className="absolute inset-0 opacity-10 pointer-events-none" style={{
-                  backgroundImage: `
-                    radial-gradient(circle at 20% 30%, rgba(34,197,94,0.15) 1px, transparent 1px),
-                    radial-gradient(circle at 80% 70%, rgba(34,197,94,0.1) 1px, transparent 1px)
-                  `,
-                  backgroundSize: '100px 100px'
-                }}></div>
+                <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-black/80" />
+                <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-transparent" />
               </div>
             )}
 
-            {/* Product Category matching backgrounds (Fallback) */}
-            {productCategories.map((category) => (
-              page === category.sectionId && (
-                <div
-                  key={category.sectionId}
-                  className="absolute inset-0"
-                >
-                  <Image
-                    src={sectionBackgrounds[category.sectionId] || category.image}
-                    alt={category.name}
-                    fill
-                    className="object-cover"
-                    priority
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent"></div>
-                </div>
-              )
-            ))}
-          </div>
-
-          {/* Floating Neon Elements */}
-          <div className="absolute inset-0 pointer-events-none overflow-hidden">
-            <div className="absolute top-20 left-10 w-64 h-64 bg-green-500/5 rounded-full blur-[100px] animate-pulse"></div>
-            <div className="absolute bottom-32 right-16 w-96 h-96 bg-green-400/5 rounded-full blur-[120px] animate-pulse" style={{ animationDelay: '2s' }}></div>
-          </div>
-
-          {/* Hero Content Area */}
-          <div className="relative z-10 mx-auto max-w-7xl px-4 flex flex-col items-center justify-center text-center min-h-screen pt-20">
-            {(displayTitle || displayDescription) && (
-              <div className="mb-12 max-w-4xl">
-                {displayTitle && (
-                  <ScrollAnimate animation="fadeInUpElegant" delay={200}>
-                    <h1 className="text-5xl md:text-7xl font-black text-white mb-6 uppercase tracking-tighter drop-shadow-2xl">
-                      {displayTitle}
-                    </h1>
-                  </ScrollAnimate>
-                )}
-                {displayDescription && (
-                  <ScrollAnimate animation="fadeInUpElegant" delay={300}>
-                    <p className="text-xl md:text-2xl text-white/80 font-light leading-relaxed max-w-3xl mx-auto drop-shadow-lg">
-                      {displayDescription}
-                    </p>
-                  </ScrollAnimate>
-                )}
-                <ScrollAnimate animation="fadeInUpElegant" delay={400}>
-                  <div className="w-24 h-1 bg-green-500 mx-auto rounded-full mt-8" />
-                </ScrollAnimate>
-              </div>
-            )}
-
-            <div className="w-full">
-              {children}
+            {/* Standard Hero Content for Other Pages */}
+            <div className="relative z-10 mx-auto max-w-7xl px-4 flex flex-col items-center justify-center text-center h-full pt-20">
+              <ScrollAnimate animation="fadeInUpElegant" delay={200}>
+                <h1 className="text-5xl md:text-7xl font-black text-white mb-6 uppercase tracking-tighter drop-shadow-2xl">
+                  {displayTitle}
+                </h1>
+              </ScrollAnimate>
+              <ScrollAnimate animation="fadeInUpElegant" delay={300}>
+                <p className="text-xl md:text-2xl text-white/80 font-light leading-relaxed max-w-3xl mx-auto drop-shadow-lg">
+                  {displayDescription}
+                </p>
+              </ScrollAnimate>
             </div>
+          </div>
+        )}
+      </div>
+
+      {isHomePage && (
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 animate-bounce">
+          <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center pt-2">
+            <div className="w-1 h-2 bg-white rounded-full animate-scroll" />
           </div>
         </div>
       )}
