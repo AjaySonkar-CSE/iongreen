@@ -44,7 +44,7 @@ export default function FlipkartAmazonProductsPage() {
   const categories = Array.from(new Set(products.map(product => product.category)));
 
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  
+
   const filteredProducts = selectedCategory
     ? products.filter(product => product.category === selectedCategory)
     : products;
@@ -72,7 +72,7 @@ export default function FlipkartAmazonProductsPage() {
           </div>
         </div>
       </div>
-      
+
       {/* ION Green Content Section - Added per requirements */}
       <section className="py-8 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -155,11 +155,10 @@ export default function FlipkartAmazonProductsPage() {
         <div className="flex flex-wrap justify-center gap-4 mb-12">
           <button
             onClick={() => setSelectedCategory(null)}
-            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-              selectedCategory === null
+            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${selectedCategory === null
                 ? 'bg-green-600 text-white'
                 : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-            }`}
+              }`}
           >
             All Products
           </button>
@@ -167,11 +166,10 @@ export default function FlipkartAmazonProductsPage() {
             <button
               key={category}
               onClick={() => setSelectedCategory(category)}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                selectedCategory === category
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${selectedCategory === category
                   ? 'bg-green-600 text-white'
                   : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-              }`}
+                }`}
             >
               {category}
             </button>
@@ -255,7 +253,7 @@ export default function FlipkartAmazonProductsPage() {
           <p className="text-center text-gray-600 mb-12 max-w-3xl mx-auto">
             Enjoy the convenience of online shopping with the quality and reliability of ION Green products
           </p>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="text-center">
               <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -266,7 +264,7 @@ export default function FlipkartAmazonProductsPage() {
               <h3 className="text-xl font-semibold mb-2">Easy Returns</h3>
               <p className="text-gray-600">Hassle-free returns within 30 days on all products with free pickup</p>
             </div>
-            
+
             <div className="text-center">
               <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -276,7 +274,7 @@ export default function FlipkartAmazonProductsPage() {
               <h3 className="text-xl font-semibold mb-2">Fast Delivery</h3>
               <p className="text-gray-600">Quick delivery across India with secure packaging and real-time tracking</p>
             </div>
-            
+
             <div className="text-center">
               <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -295,7 +293,7 @@ export default function FlipkartAmazonProductsPage() {
           <p className="text-center text-gray-600 mb-12 max-w-3xl mx-auto">
             Getting started with ION Green solar products is easy and convenient
           </p>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="text-center">
               <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -304,7 +302,7 @@ export default function FlipkartAmazonProductsPage() {
               <h3 className="text-lg font-semibold mb-2">Browse Products</h3>
               <p className="text-gray-600">Select from our wide range of solar energy solutions</p>
             </div>
-            
+
             <div className="text-center">
               <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-green-600 font-bold text-xl">2</span>
@@ -312,7 +310,7 @@ export default function FlipkartAmazonProductsPage() {
               <h3 className="text-lg font-semibold mb-2">Add to Cart</h3>
               <p className="text-gray-600">Add products to your cart and proceed to checkout</p>
             </div>
-            
+
             <div className="text-center">
               <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-green-600 font-bold text-xl">3</span>
@@ -320,7 +318,7 @@ export default function FlipkartAmazonProductsPage() {
               <h3 className="text-lg font-semibold mb-2">Secure Payment</h3>
               <p className="text-gray-600">Complete your purchase with multiple payment options</p>
             </div>
-            
+
             <div className="text-center">
               <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-green-600 font-bold text-xl">4</span>
@@ -338,17 +336,17 @@ export default function FlipkartAmazonProductsPage() {
             Explore our complete range of solar products available on Flipkart and Amazon
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <a 
-              href="https://www.flipkart.com" 
-              target="_blank" 
+            <a
+              href="https://www.flipkart.com"
+              target="_blank"
               rel="noopener noreferrer"
               className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-8 rounded-lg transition duration-300"
             >
               Shop on Flipkart
             </a>
-            <a 
-              href="https://www.amazon.in" 
-              target="_blank" 
+            <a
+              href="https://www.amazon.in"
+              target="_blank"
               rel="noopener noreferrer"
               className="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-3 px-8 rounded-lg transition duration-300"
             >

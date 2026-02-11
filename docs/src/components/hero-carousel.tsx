@@ -196,8 +196,9 @@ export function HeroCarousel({ slides, categories = [] }: { slides: Slide[]; cat
                   visible: {
                     opacity: 1,
                     transition: {
-                      staggerChildren: 0.1,
-                      delayChildren: 0.5
+                      staggerChildren: 0.3,
+                      staggerDirection: 1,
+                      delayChildren: 0.6
                     }
                   }
                 }}
@@ -206,12 +207,13 @@ export function HeroCarousel({ slides, categories = [] }: { slides: Slide[]; cat
                   <motion.div
                     key={category.name}
                     variants={{
-                      hidden: { opacity: 0, y: 30 },
+                      hidden: { opacity: 0, x: -60, scale: 0.95 },
                       visible: {
                         opacity: 1,
-                        y: 0,
+                        x: 0,
+                        scale: 1,
                         transition: {
-                          duration: 0.8,
+                          duration: 1,
                           ease: [0.21, 0.45, 0.32, 0.9]
                         }
                       }

@@ -47,7 +47,7 @@ export function PageHero({ title, description }: PageHeroProps) {
         />
         <div className="absolute inset-0 bg-black/50 bg-gradient-to-b from-black/60 to-black/30"></div>
       </div>
-      
+
       {/* Content */}
       <div className="relative z-10 flex h-full items-center justify-center">
         <div className="mx-auto max-w-4xl px-4 text-center text-white md:px-6">
