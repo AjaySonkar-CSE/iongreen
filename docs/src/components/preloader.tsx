@@ -6,11 +6,11 @@ const Preloader = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Set a timeout to hide the preloader after 2 seconds
+    // Set a timeout to hide the preloader after a short delay
     const timer = setTimeout(() => {
       setIsLoading(false);
       document.body.style.overflow = 'auto';
-    }, 2000);
+    }, 800);
 
     // Initially hide scrollbar
     document.body.style.overflow = 'hidden';

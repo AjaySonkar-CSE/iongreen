@@ -1,0 +1,2 @@
+/* @license GPL-2.0-or-later https://www.drupal.org/licensing/faq */
+window.waitForGSAP=function(callback){const interval=setInterval(()=>{if(window.gsap&&window.ScrollTrigger){clearInterval(interval);gsap.registerPlugin(ScrollTrigger);callback();}},50);};window.waitForSwiperJs=function(callback){const interval=setInterval(()=>{if(window.Swiper){clearInterval(interval);callback();}},50);};window.waitForAOS=function(callback){const interval=setInterval(()=>{if(window.AOS){clearInterval(interval);callback();}},50);};;

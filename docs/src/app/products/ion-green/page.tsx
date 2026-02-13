@@ -30,8 +30,8 @@ export default async function IonGreenPage() {
         />
         <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
           <div className="text-center text-white px-4">
-            <h1 className="text-4xl md:text-5xl font-bold mb-3">{product?.name || "ION Green"}</h1>
-            <p className="text-lg">Energy Storage Solutions</p>
+            <h1 className="text-3xl md:text-4xl font-bold mb-3">{product?.name || "ION Green"}</h1>
+            <p className="text-base md:text-lg">Energy Storage Solutions</p>
           </div>
         </div>
       </div>

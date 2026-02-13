@@ -93,14 +93,16 @@ export function PageHeroSlider({
               <div className="absolute bottom-32 right-16 w-56 h-56 bg-green-300/8 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
             </div>
 
+
+
             {/* Content Overlay */}
-            <div className="absolute inset-0 z-10 flex flex-col items-center justify-center text-center px-4">
+            <div className="absolute bottom-15 left-1/2 transform -translate-x-1/2 z-10 text-center px-4">
               <div className="max-w-4xl mx-auto">
-                <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 drop-shadow-2xl animate-fadeInUp">
+                <h1 className="text-3xl md:text-5xl lg:text-5xl font-bold text-white mb-4 drop-shadow-2xl animate-fadeInUp">
                   {slide.title}
                 </h1>
                 {slide.description && (
-                  <p className="text-xl md:text-2xl text-gray-200 mb-8 drop-shadow-lg leading-relaxed animate-fadeInUp" style={{ animationDelay: '0.2s' }}>
+                  <p className="text-lg md:text-xl text-gray-200 mb-6 drop-shadow-lg leading-relaxed animate-fadeInUp" style={{ animationDelay: '0.2s' }}>
                     {slide.description}
                   </p>
                 )}
@@ -109,7 +111,7 @@ export function PageHeroSlider({
                     <Button
                       asChild
                       size="lg"
-                      className="bg-green-600 hover:bg-green-700 text-white px-8 py-4 text-lg font-semibold shadow-xl"
+                      className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 text-base font-semibold shadow-xl"
                     >
                       <Link href={slide.ctaHref}>
                         {slide.ctaLabel}

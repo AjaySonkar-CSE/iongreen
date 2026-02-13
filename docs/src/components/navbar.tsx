@@ -73,17 +73,17 @@ export function Navbar() {
   };
 
   return (
-    <header className="bg-white/95 backdrop-blur-sm shadow-sm sticky top-0 z-50 border-b border-gray-200/50">
+    <header className="bg-white/95 backdrop-blur-sm shadow-sm sticky top-0 z-50 border-b border-gray-200/50 overflow-visible">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-label="Global">
-        <div className="flex justify-between h-16">
+        <div className="flex justify-between h-12">
           <div className="flex items-center">
             <Link href="/" className="flex items-center">
               <Image
-                src="/logo_final3.png"
+                src="/logo_7.png"
                 alt="Ion Green Logo"
-                width={120}
-                height={40}
-                className="h-10 w-auto object-contain object-left"
+                width={210}
+                height={85}
+                className="h-20 w-auto object-contain object-left overflow-visible scale-110 transition-transform duration-300"
               />
             </Link>
           </div>

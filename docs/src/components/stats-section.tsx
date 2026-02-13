@@ -58,63 +58,74 @@ interface StatCardProps {
 
 const StatCard = ({ value, label, icon: Icon, delay, suffix = '' }: StatCardProps) => (
   <motion.div
-    initial={{ opacity: 0, y: 20 }}
-    whileInView={{ opacity: 1, y: 0 }}
+    initial={{ opacity: 0, scale: 0.9, y: 30 }}
+    whileInView={{ opacity: 1, scale: 1, y: 0 }}
     viewport={{ once: true }}
-    transition={{ duration: 0.6, delay }}
-    className="relative group"
+    transition={{ duration: 1, delay, ease: [0.16, 1, 0.3, 1] }}
+    className="relative group h-full"
   >
-    <div className="absolute -inset-1 bg-gradient-to-r from-green-400 to-emerald-500 rounded-2xl opacity-0 group-hover:opacity-20 blur transition duration-500"></div>
-    <div className="relative bg-white/95 backdrop-blur-sm rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-1 border border-white/80 overflow-hidden">
-      <div className="absolute top-4 right-4 text-green-100 group-hover:text-green-500 transition-colors duration-500">
-        <Icon size={48} strokeWidth={1.5} className="opacity-10 group-hover:opacity-30 transition-opacity duration-500" />
-      </div>
+    <div className="absolute -inset-2 bg-gradient-to-br from-green-500/20 to-emerald-500/0 rounded-[2.5rem] opacity-0 group-hover:opacity-100 blur-xl transition-all duration-700"></div>
+    <div className="relative h-full bg-white/80 backdrop-blur-xl rounded-[2rem] p-8 shadow-[0_15px_40px_-15px_rgba(0,0,0,0.1)] hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.15)] transition-all duration-700 hover:-translate-y-2 border border-white/60 overflow-hidden flex flex-col justify-between">
+      {/* Decorative inner circle */}
+      <div className="absolute -top-10 -right-10 w-32 h-32 bg-green-50 rounded-full opacity-50 group-hover:scale-150 transition-transform duration-1000 ease-out"></div>
+
       <div className="relative z-10">
-        <div className="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent mb-3 font-montserrat">
+        <div className="w-14 h-14 bg-green-50 rounded-2xl flex items-center justify-center mb-6 text-green-600 group-hover:bg-green-600 group-hover:text-white transition-all duration-500">
+          <Icon size={28} strokeWidth={2} />
+        </div>
+
+        <div className="text-4xl md:text-5xl font-black text-gray-900 mb-2 font-montserrat tracking-tight">
           <AnimatedCounter value={value} suffix={suffix} />
         </div>
-        <div className="text-sm md:text-base text-gray-500 font-medium uppercase tracking-[0.2em]">
-          <StaggeredText text={label} type="mask" delay={delay + 0.2} stagger={0.02} />
+
+        <div className="text-xs md:text-sm text-gray-500 font-bold uppercase tracking-[0.2em] leading-relaxed">
+          {label}
         </div>
       </div>
+
+      {/* Bottom accent line */}
+      <div className="w-12 h-1 bg-green-500/30 rounded-full mt-6 group-hover:w-full group-hover:bg-green-500 transition-all duration-700"></div>
     </div>
   </motion.div>
 );
 
 export function StatsSection() {
   return (
-    <section className="py-20 bg-gradient-to-b from-white to-green-50 relative overflow-hidden">
+    <section className="pt-32 pb-24 bg-gradient-to-b from-white to-green-50 relative overflow-hidden">
       {/* Decorative elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-20 -right-20 w-96 h-96 bg-emerald-100 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
-        <div className="absolute -bottom-20 -left-20 w-96 h-96 bg-green-100 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-20 -right-20 w-96 h-96 bg-emerald-100 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob will-change-transform backface-hidden"></div>
+        <div className="absolute -bottom-20 -left-20 w-96 h-96 bg-green-100 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000 will-change-transform backface-hidden"></div>
       </div>
 
-      <div className="mx-auto max-w-[1600px] px-4 md:px-6 lg:px-10 relative">
+      <div className="mx-auto max-w-7xl px-4 md:px-6 relative">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
           className="text-center mb-16"
         >
           <div className="flex flex-col items-center">
+            <span className="text-green-600 font-bold tracking-[0.3em] uppercase text-xs mb-4">
+              Growth & Excellence
+            </span>
             <StaggeredText
               text="Our Impact in Numbers"
               type="mask"
-              className="text-3xl md:text-5xl font-bold text-gray-900 mb-6 tracking-tight"
+              className="text-4xl md:text-6xl font-bold text-gray-900 mb-6 tracking-tight font-montserrat"
             />
             <motion.div
               initial={{ width: 0 }}
-              whileInView={{ width: 80 }}
+              whileInView={{ width: 120 }}
               viewport={{ once: true }}
               transition={{ duration: 1, delay: 0.5 }}
-              className="h-1 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full"
+              className="h-1.5 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full"
             />
           </div>
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-10">
           <StatCard
             value={26}
             label="Years Experience"

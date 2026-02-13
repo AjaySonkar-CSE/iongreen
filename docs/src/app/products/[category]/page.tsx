@@ -546,10 +546,10 @@ export default async function ProductCategoryPage(props: ProductPageProps) {
             <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
               <div className="text-center text-white px-4">
                 <ScrollAnimate animation="fadeInUpElegant" delay={200}>
-                  <h1 className="text-4xl md:text-5xl font-bold mb-4">{product.title}</h1>
+                  <h1 className="text-3xl md:text-4xl font-bold mb-4">{product.title}</h1>
                 </ScrollAnimate>
                 <ScrollAnimate animation="fadeInUpElegant" delay={300}>
-                  <p className="text-xl">{product.range}</p>
+                  <p className="text-lg md:text-xl font-medium text-white/90 uppercase tracking-wider">{product.range}</p>
                 </ScrollAnimate>
               </div>
             </div>

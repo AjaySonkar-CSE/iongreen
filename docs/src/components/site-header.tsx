@@ -32,22 +32,21 @@ export function SiteHeader() {
 
   return (
     <header className={cn(
-      "fixed top-0 left-0 right-0 z-[1000] transition-all duration-500",
+      "fixed top-0 left-0 right-0 z-[1000] transition-all duration-500 overflow-visible",
       isScrolled
-        ? "bg-white/95 backdrop-blur-md shadow-lg border-b border-gray-100/50 py-1"
-        : "bg-transparent border-transparent py-2"
+        ? "bg-white/95 backdrop-blur-md shadow-lg border-b border-gray-100/50"
+        : "bg-transparent border-transparent"
     )}>
-      <div className="mx-auto flex max-w-[1600px] items-center justify-between px-4 md:px-6 lg:px-10">
+      <div className="mx-auto flex max-w-[1600px] items-center justify-between px-4 md:px-6 lg:px-10 h-14 md:h-16">
         <Link href="/" className="flex items-center gap-2 transition-all duration-300 hover:scale-105 group">
           <Image
-            // src={isScrolled ? "/logo_final3.png" : "/logo_final_dark.png"}
-            src="/logo.png"
+            src="/logo_7.png"
             alt="Logo"
-            width={300}
-            height={100}
+            width={210}
+            height={85}
             className={cn(
               "object-contain object-left transition-all duration-500",
-              isScrolled ? "h-12 md:h-14" : "h-12 md:h-14"
+              isScrolled ? "h-20 md:h-24 overflow-visible scale-110" : "h-24 md:h-28 overflow-visible scale-110"
             )}
             priority
           />

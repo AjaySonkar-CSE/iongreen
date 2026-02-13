@@ -13,6 +13,7 @@ import LabEquipmentShowcase from "@/components/client/lab-equipment-showcase-cli
 import { dbService } from "@/lib/db-service";
 
 import { AnimatedSection } from "@/components/ui/animated-section";
+import { AnimatedContentWrapper } from "@/components/client/animated-content-wrapper";
 
 export default async function HomePage() {
   const heroSlides = await dbService.getHeroSlides();
@@ -23,7 +24,7 @@ export default async function HomePage() {
       {/* This is fixed inset-0 on home page */}
       <Hero slides={heroSlides} page="home" />
 
-      <div className="relative z-10 bg-white shadow-[0_-50px_100px_rgba(0,0,0,0.2)] mt-[100vh] border-t border-white/10">
+      <AnimatedContentWrapper>
         {/* Key stats below hero for clean separation */}
         <StatsSection />
 
@@ -45,7 +46,7 @@ export default async function HomePage() {
         {/* Call to action & partnerships */}
         <CTAPanel />
         <CooperationSection />
-      </div>
+      </AnimatedContentWrapper>
     </div>
   );
 }
