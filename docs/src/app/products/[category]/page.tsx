@@ -398,6 +398,8 @@ const productDetails: Record<string, {
 };
 
 // export default async function ProductCategoryPage({ params }: ProductPageProps) { 
+import { AnimatedContentWrapper } from "@/components/client/animated-content-wrapper";
+
 export default async function ProductCategoryPage(props: ProductPageProps) {
   const params = await props.params;  // ← yahi important fix hai
 
@@ -531,411 +533,413 @@ export default async function ProductCategoryPage(props: ProductPageProps) {
     }
 
     return (
-      <div className="min-h-screen">
-        {/* Hero Section with Background Image */}
-        <ScrollAnimate animation="smoothReveal" delay={100}>
-          <div className="relative h-96 w-full">
-            <Image
-              src={dbProducts.length > 0 && dbProducts[0].image_url ? dbProducts[0].image_url : "/image1.png"}
-              alt={product.title}
-              fill
-              className="object-cover"
-              priority
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            />
-            <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-              <div className="text-center text-white px-4">
-                <ScrollAnimate animation="fadeInUpElegant" delay={200}>
-                  <h1 className="text-3xl md:text-4xl font-bold mb-4">{product.title}</h1>
-                </ScrollAnimate>
-                <ScrollAnimate animation="fadeInUpElegant" delay={300}>
-                  <p className="text-lg md:text-xl font-medium text-white/90 uppercase tracking-wider">{product.range}</p>
-                </ScrollAnimate>
-              </div>
+      <div className="min-h-screen bg-transparent">
+        {/* Hero Section with Background Image - Fixed like home page */}
+        <section className="fixed inset-0 h-screen w-full overflow-hidden z-0">
+          <Image
+            src={dbProducts.length > 0 && dbProducts[0].image_url ? dbProducts[0].image_url : "/image1.png"}
+            alt={product.title}
+            fill
+            className="object-cover"
+            priority
+            sizes="100vw"
+          />
+          <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+            <div className="text-center text-white px-4">
+              <ScrollAnimate animation="fadeInUpElegant" delay={200}>
+                <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">{product.title}</h1>
+              </ScrollAnimate>
+              <ScrollAnimate animation="fadeInUpElegant" delay={300}>
+                <p className="text-lg md:text-xl font-medium text-white/90 uppercase tracking-wider">{product.range}</p>
+              </ScrollAnimate>
             </div>
           </div>
-        </ScrollAnimate>
+        </section>
 
-        {/* ION Green Content Section - Added per requirements */}
-        <ScrollAnimate animation="fadeInUpElegant" delay={400}>
-          <section className="py-8 bg-white">
-            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="text-center">
-                <ScrollAnimate animation="smoothReveal" delay={500}>
-                  <h2 className="text-2xl font-bold text-green-700 mb-4">ION Green {product.title}</h2>
-                </ScrollAnimate>
-                <ScrollAnimate animation="fadeInUpElegant" delay={600}>
-                  <p className="text-gray-600 mb-3">
-                    {product.description}
-                  </p>
-                </ScrollAnimate>
-                <ScrollAnimate animation="fadeInUpElegant" delay={700}>
-                  <p className="text-gray-600 mb-3">
-                    ION Green is a leading innovator in energy storage solutions, providing advanced battery energy storage systems that are safe, efficient, and environmentally friendly. Our cutting-edge technology ensures reliable performance and longevity for residential, commercial, and industrial applications.
-                  </p>
-                </ScrollAnimate>
-                <ScrollAnimate animation="fadeInUpElegant" delay={800}>
-                  <p className="text-gray-600">
-                    With a global presence in over 100 countries, we continue to drive innovation in sustainable energy solutions. Our dedicated support team is available 24/7 to assist with any technical inquiries, product maintenance, or system optimization needs.
-                  </p>
-                </ScrollAnimate>
-              </div>
-            </div>
-          </section>
-        </ScrollAnimate>
+        <AnimatedContentWrapper>
 
-        {/* ION Green Key Features Section */}
-        {productKeyFeatures[productKey] && (
-          <ScrollAnimate animation="fadeInUpElegant" delay={900}>
-            <section className="py-16 bg-slate-50">
-              <div className="max-w-6xl mx-auto px-4 md:px-6">
-                <ScrollAnimate animation="smoothReveal" delay={1000}>
-                  <h2 className="text-3xl font-bold text-center text-slate-900 mb-12">ION Green Key Features</h2>
-                </ScrollAnimate>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                  {productKeyFeatures[productKey].features.map((feature, index) => (
-                    <ScrollAnimate
-                      key={index}
-                      animation="scaleInBounce"
-                      delay={1100 + (index * 100)}
-                    >
-                      <div className="rounded-xl bg-white p-6 border border-slate-200 shadow-sm">
-                        <h3 className="text-xl font-semibold text-slate-900 mb-2">{feature.title}</h3>
-                        <p className="text-slate-700">{feature.description}</p>
-                      </div>
-                    </ScrollAnimate>
-                  ))}
-                </div>
-              </div>
-            </section>
-          </ScrollAnimate>
-        )}
 
-        {/* Use Cases Section */}
-        {productKeyFeatures[productKey] && (
-          <ScrollAnimate animation="fadeInUpElegant" delay={1700}>
-            <section className="py-12 bg-white">
-              <div className="max-w-6xl mx-auto px-4 md:px-6">
-                <div className="flex flex-col gap-8">
-                  <div className="relative w-full h-80 rounded-xl overflow-hidden shadow">
-                    <Image
-                      src={(product as any).image || details.specImage || pickDeterministicImage(productKey)}
-                      alt={`${product.title} System`}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    />
-                  </div>
-                  <div className="w-full">
-                    <ScrollAnimate animation="smoothReveal" delay={1800}>
-                      <h3 className="text-2xl font-bold text-slate-900 mb-4">Use Cases</h3>
-                    </ScrollAnimate>
-                    <ul className="space-y-3 text-slate-700">
-                      {productKeyFeatures[productKey].useCases.map((useCase, index) => (
-                        <ScrollAnimate
-                          key={index}
-                          animation="fadeInUpElegant"
-                          delay={1900 + (index * 100)}
-                        >
-                          <li className="flex items-start">
-                            <span className="mr-3 mt-1 text-green-600 flex-shrink-0">✓</span>
-                            <span>{useCase}</span>
-                          </li>
-                        </ScrollAnimate>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </section>
-          </ScrollAnimate>
-        )}
-
-        {/* Product Cards Section - Show database products if available */}
-        {dbProducts.length > 0 && (
-          <ScrollAnimate animation="slideInLeftSmooth" delay={900}>
-            <section className="py-16 bg-white">
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="text-center mb-12">
-                  <ScrollAnimate animation="fadeInUpElegant" delay={1000}>
-                    <h2 className="text-3xl font-bold text-slate-900 mb-4">Available Products</h2>
+          {/* ION Green Content Section - Added per requirements */}
+          <ScrollAnimate animation="fadeInUpElegant" delay={400}>
+            <section className="py-8 bg-white">
+              <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="text-center">
+                  <ScrollAnimate animation="smoothReveal" delay={500}>
+                    <h2 className="text-2xl font-bold text-green-700 mb-4">ION Green {product.title}</h2>
                   </ScrollAnimate>
-                  <ScrollAnimate animation="fadeInUpElegant" delay={1100}>
-                    <p className="text-lg text-slate-600 max-w-3xl mx-auto">
-                      Explore our {product.title} solutions
+                  <ScrollAnimate animation="fadeInUpElegant" delay={600}>
+                    <p className="text-gray-600 mb-3">
+                      {product.description}
+                    </p>
+                  </ScrollAnimate>
+                  <ScrollAnimate animation="fadeInUpElegant" delay={700}>
+                    <p className="text-gray-600 mb-3">
+                      ION Green is a leading innovator in energy storage solutions, providing advanced battery energy storage systems that are safe, efficient, and environmentally friendly. Our cutting-edge technology ensures reliable performance and longevity for residential, commercial, and industrial applications.
+                    </p>
+                  </ScrollAnimate>
+                  <ScrollAnimate animation="fadeInUpElegant" delay={800}>
+                    <p className="text-gray-600">
+                      With a global presence in over 100 countries, we continue to drive innovation in sustainable energy solutions. Our dedicated support team is available 24/7 to assist with any technical inquiries, product maintenance, or system optimization needs.
                     </p>
                   </ScrollAnimate>
                 </div>
+              </div>
+            </section>
+          </ScrollAnimate>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                  {dbProducts.map((dbProduct, index) => (
-                    <ScrollAnimate
-                      key={dbProduct.id}
-                      animation="scaleInBounce"
-                      delay={1200 + (index * 100)}
-                      className="overflow-hidden border border-slate-200 rounded-lg hover:shadow-lg transition-shadow"
-                    >
-                      <div className="relative h-48 bg-slate-100">
-                        <Image
-                          src={dbProduct.image_url || pickDeterministicImage(category)}
-                          alt={dbProduct.name}
-                          fill
-                          className="object-cover"
-                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        />
-                        <span className="absolute top-2 right-2 bg-green-600 hover:bg-green-700 text-white text-xs font-medium px-2.5 py-0.5 rounded-full">
-                          {dbProduct.category}
-                        </span>
-                      </div>
-                      <div className="p-6">
-                        <h3 className="text-xl font-semibold text-slate-900 mb-2">{dbProduct.name}</h3>
-                        <p className="text-slate-600 mb-4 line-clamp-2 h-14">{dbProduct.description}</p>
-
-                        <div className="mt-6 flex gap-3">
-                          <Link
-                            href="/products/ion-green"
-                            className="flex-1 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors text-sm font-medium text-center"
-                          >
-                            View Details
-                          </Link>
-                          <a
-                            href="tel:9202636627"
-                            aria-label="Call now"
-                            className="flex-1 px-4 py-2 bg-white text-green-600 border border-green-600 rounded-md hover:bg-green-50 transition-colors text-sm font-medium text-center"
-                          >
-                            Call Now
-                          </a>
+          {/* ION Green Key Features Section */}
+          {productKeyFeatures[productKey] && (
+            <ScrollAnimate animation="fadeInUpElegant" delay={900}>
+              <section className="py-16 bg-slate-50">
+                <div className="max-w-6xl mx-auto px-4 md:px-6">
+                  <ScrollAnimate animation="smoothReveal" delay={1000}>
+                    <h2 className="text-3xl font-bold text-center text-slate-900 mb-12">ION Green Key Features</h2>
+                  </ScrollAnimate>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    {productKeyFeatures[productKey].features.map((feature, index) => (
+                      <ScrollAnimate
+                        key={index}
+                        animation="scaleInBounce"
+                        delay={1100 + (index * 100)}
+                      >
+                        <div className="rounded-xl bg-white p-6 border border-slate-200 shadow-sm">
+                          <h3 className="text-xl font-semibold text-slate-900 mb-2">{feature.title}</h3>
+                          <p className="text-slate-700">{feature.description}</p>
                         </div>
-                      </div>
+                      </ScrollAnimate>
+                    ))}
+                  </div>
+                </div>
+              </section>
+            </ScrollAnimate>
+          )}
+
+          {/* Use Cases Section */}
+          {productKeyFeatures[productKey] && (
+            <ScrollAnimate animation="fadeInUpElegant" delay={1700}>
+              <section className="py-12 bg-white">
+                <div className="max-w-6xl mx-auto px-4 md:px-6">
+                  <div className="flex flex-col gap-8">
+                    <div className="relative w-full h-80 rounded-xl overflow-hidden shadow">
+                      <Image
+                        src={(product as any).image || details.specImage || pickDeterministicImage(productKey)}
+                        alt={`${product.title} System`}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      />
+                    </div>
+                    <div className="w-full">
+                      <ScrollAnimate animation="smoothReveal" delay={1800}>
+                        <h3 className="text-2xl font-bold text-slate-900 mb-4">Use Cases</h3>
+                      </ScrollAnimate>
+                      <ul className="space-y-3 text-slate-700">
+                        {productKeyFeatures[productKey].useCases.map((useCase, index) => (
+                          <ScrollAnimate
+                            key={index}
+                            animation="fadeInUpElegant"
+                            delay={1900 + (index * 100)}
+                          >
+                            <li className="flex items-start">
+                              <span className="mr-3 mt-1 text-green-600 flex-shrink-0">✓</span>
+                              <span>{useCase}</span>
+                            </li>
+                          </ScrollAnimate>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </ScrollAnimate>
+          )}
+
+          {/* Product Cards Section - Show database products if available */}
+          {dbProducts.length > 0 && (
+            <ScrollAnimate animation="slideInLeftSmooth" delay={900}>
+              <section className="py-16 bg-white">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                  <div className="text-center mb-12">
+                    <ScrollAnimate animation="fadeInUpElegant" delay={1000}>
+                      <h2 className="text-3xl font-bold text-slate-900 mb-4">Available Products</h2>
+                    </ScrollAnimate>
+                    <ScrollAnimate animation="fadeInUpElegant" delay={1100}>
+                      <p className="text-lg text-slate-600 max-w-3xl mx-auto">
+                        Explore our {product.title} solutions
+                      </p>
+                    </ScrollAnimate>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {dbProducts.map((dbProduct, index) => (
+                      <ScrollAnimate
+                        key={dbProduct.id}
+                        animation="scaleInBounce"
+                        delay={1200 + (index * 100)}
+                        className="overflow-hidden border border-slate-200 rounded-lg hover:shadow-lg transition-shadow"
+                      >
+                        <div className="relative h-48 bg-slate-100">
+                          <Image
+                            src={dbProduct.image_url || pickDeterministicImage(category)}
+                            alt={dbProduct.name}
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          />
+                          <span className="absolute top-2 right-2 bg-green-600 hover:bg-green-700 text-white text-xs font-medium px-2.5 py-0.5 rounded-full">
+                            {dbProduct.category}
+                          </span>
+                        </div>
+                        <div className="p-6">
+                          <h3 className="text-xl font-semibold text-slate-900 mb-2">{dbProduct.name}</h3>
+                          <p className="text-slate-600 mb-4 line-clamp-2 h-14">{dbProduct.description}</p>
+
+                          <div className="mt-6 flex gap-3">
+                            <Link
+                              href="/products/ion-green"
+                              className="flex-1 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors text-sm font-medium text-center"
+                            >
+                              View Details
+                            </Link>
+                            <a
+                              href="tel:9202636627"
+                              aria-label="Call now"
+                              className="flex-1 px-4 py-2 bg-white text-green-600 border border-green-600 rounded-md hover:bg-green-50 transition-colors text-sm font-medium text-center"
+                            >
+                              Call Now
+                            </a>
+                          </div>
+                        </div>
+                      </ScrollAnimate>
+                    ))}
+                  </div>
+                </div>
+              </section>
+            </ScrollAnimate>
+          )}
+
+          {/* ION Green Product Title Section */}
+          <section className="py-12 bg-white">
+            <div className="mx-auto max-w-6xl px-4 md:px-6">
+              <h2 className="text-3xl font-bold text-center text-green-700 mb-4">
+                ION Green {product.title}
+              </h2>
+              <p className="text-center text-lg text-gray-600 max-w-3xl mx-auto">
+                Advanced battery energy storage solution engineered for maximum efficiency, safety, and longevity
+              </p>
+            </div>
+          </section>
+
+          {/* Product Overview Section */}
+          <section className="py-16 bg-slate-50">
+            <div className="mx-auto max-w-6xl px-4 md:px-6">
+              <div className="flex flex-col gap-8">
+                {/* Top - ION Green Related Image */}
+                <div className="w-full flex items-center justify-center">
+                  <div className="relative w-full h-96 rounded-xl overflow-hidden shadow-lg">
+                    <Image
+                      src={(product as any).image || details.specImage || pickDeterministicImage(productKey)}
+                      alt={product.title}
+                      fill
+                      className="object-contain"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    />
+                  </div>
+                </div>
+
+                {/* Bottom - Product Content */}
+                <div className="w-full">
+                  <h3 className="text-2xl font-bold text-slate-900 mb-6">Product Overview</h3>
+                  <p className="text-slate-600 mb-6">
+                    {product.description}
+                  </p>
+
+                  <div className="bg-white p-6 rounded-lg shadow-sm mb-6">
+                    <h4 className="text-lg font-semibold text-slate-900 mb-3">Key Features:</h4>
+                    <ul className="space-y-2 text-slate-600">
+                      {product.features.map((feature, index) => (
+                        <li key={index} className="flex items-start">
+                          <span className="mr-2 text-green-600">✓</span>
+                          <span>{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Download Datasheet Button */}
+                  <div className="mt-6">
+                    <DownloadDatasheetButton
+                      imageUrl={(product as any).image || details.specImage || pickDeterministicImage(productKey)}
+                      productTitle={product.title}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Technical Specifications Section */}
+          <ScrollAnimate animation="slideInRightSmooth" delay={1300}>
+            <section className="py-16 bg-white">
+              <div className="mx-auto max-w-6xl px-4 md:px-6">
+                <ScrollAnimate animation="smoothReveal" delay={1400}>
+                  <h3 className="text-3xl font-bold text-center text-slate-900 mb-4">{specData?.title || 'Technical Specifications'}</h3>
+                </ScrollAnimate>
+                {specData?.description && (
+                  <ScrollAnimate animation="fadeInUpElegant" delay={1450}>
+                    <p className="text-center text-lg text-slate-600 mb-8 max-w-3xl mx-auto">{specData.description}</p>
+                  </ScrollAnimate>
+                )}
+                <ScrollAnimate animation="scaleInBounce" delay={1500}>
+                  <div className="relative mx-auto mb-8 h-64 w-full max-w-3xl overflow-hidden rounded-xl">
+                    <Image
+                      src={specData?.image_url || details.specImage}
+                      alt={`${product.title} Technical Specifications`}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      priority
+                    />
+                  </div>
+                </ScrollAnimate>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {details.specifications.map((spec, index) => (
+                    <ScrollAnimate
+                      key={index}
+                      animation="fadeInUpElegant"
+                      delay={1550 + (index * 50)}
+                      className="bg-slate-50 p-6 rounded-lg border border-slate-200"
+                    >
+                      <h4 className="font-semibold text-slate-900 mb-2">{spec.label}</h4>
+                      <p className="text-green-600 font-medium">{spec.value}</p>
                     </ScrollAnimate>
                   ))}
                 </div>
               </div>
             </section>
           </ScrollAnimate>
-        )}
 
-        {/* ION Green Product Title Section */}
-        <section className="py-12 bg-white">
-          <div className="mx-auto max-w-6xl px-4 md:px-6">
-            <h2 className="text-3xl font-bold text-center text-green-700 mb-4">
-              ION Green {product.title}
-            </h2>
-            <p className="text-center text-lg text-gray-600 max-w-3xl mx-auto">
-              Advanced battery energy storage solution engineered for maximum efficiency, safety, and longevity
-            </p>
-          </div>
-        </section>
-
-        {/* Product Overview Section */}
-        <section className="py-16 bg-slate-50">
-          <div className="mx-auto max-w-6xl px-4 md:px-6">
-            <div className="flex flex-col gap-8">
-              {/* Top - ION Green Related Image */}
-              <div className="w-full flex items-center justify-center">
-                <div className="relative w-full h-96 rounded-xl overflow-hidden shadow-lg">
-                  <Image
-                    src={(product as any).image || details.specImage || pickDeterministicImage(productKey)}
-                    alt={product.title}
-                    fill
-                    className="object-contain"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  />
-                </div>
-              </div>
-
-              {/* Bottom - Product Content */}
-              <div className="w-full">
-                <h3 className="text-2xl font-bold text-slate-900 mb-6">Product Overview</h3>
-                <p className="text-slate-600 mb-6">
-                  {product.description}
-                </p>
-
-                <div className="bg-white p-6 rounded-lg shadow-sm mb-6">
-                  <h4 className="text-lg font-semibold text-slate-900 mb-3">Key Features:</h4>
-                  <ul className="space-y-2 text-slate-600">
-                    {product.features.map((feature, index) => (
-                      <li key={index} className="flex items-start">
-                        <span className="mr-2 text-green-600">✓</span>
-                        <span>{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Download Datasheet Button */}
-                <div className="mt-6">
-                  <DownloadDatasheetButton
-                    imageUrl={(product as any).image || details.specImage || pickDeterministicImage(productKey)}
-                    productTitle={product.title}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Technical Specifications Section */}
-        <ScrollAnimate animation="slideInRightSmooth" delay={1300}>
-          <section className="py-16 bg-white">
-            <div className="mx-auto max-w-6xl px-4 md:px-6">
-              <ScrollAnimate animation="smoothReveal" delay={1400}>
-                <h3 className="text-3xl font-bold text-center text-slate-900 mb-4">{specData?.title || 'Technical Specifications'}</h3>
-              </ScrollAnimate>
-              {specData?.description && (
-                <ScrollAnimate animation="fadeInUpElegant" delay={1450}>
-                  <p className="text-center text-lg text-slate-600 mb-8 max-w-3xl mx-auto">{specData.description}</p>
+          {/* Applications Section */}
+          <ScrollAnimate animation="fadeInUpElegant" delay={1600}>
+            <section className="py-16 bg-slate-50">
+              <div className="mx-auto max-w-6xl px-4 md:px-6">
+                <ScrollAnimate animation="smoothReveal" delay={1700}>
+                  <h3 className="text-3xl font-bold text-center text-slate-900 mb-4">Applications</h3>
                 </ScrollAnimate>
-              )}
-              <ScrollAnimate animation="scaleInBounce" delay={1500}>
-                <div className="relative mx-auto mb-8 h-64 w-full max-w-3xl overflow-hidden rounded-xl">
-                  <Image
-                    src={specData?.image_url || details.specImage}
-                    alt={`${product.title} Technical Specifications`}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    priority
-                  />
-                </div>
-              </ScrollAnimate>
+                <ScrollAnimate animation="fadeInUpElegant" delay={1750}>
+                  <p className="text-center text-lg text-slate-600 mb-12 max-w-3xl mx-auto">
+                    Designed for diverse environments and use cases across residential, commercial, and industrial sectors
+                  </p>
+                </ScrollAnimate>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {details.specifications.map((spec, index) => (
-                  <ScrollAnimate
-                    key={index}
-                    animation="fadeInUpElegant"
-                    delay={1550 + (index * 50)}
-                    className="bg-slate-50 p-6 rounded-lg border border-slate-200"
-                  >
-                    <h4 className="font-semibold text-slate-900 mb-2">{spec.label}</h4>
-                    <p className="text-green-600 font-medium">{spec.value}</p>
-                  </ScrollAnimate>
-                ))}
-              </div>
-            </div>
-          </section>
-        </ScrollAnimate>
-
-        {/* Applications Section */}
-        <ScrollAnimate animation="fadeInUpElegant" delay={1600}>
-          <section className="py-16 bg-slate-50">
-            <div className="mx-auto max-w-6xl px-4 md:px-6">
-              <ScrollAnimate animation="smoothReveal" delay={1700}>
-                <h3 className="text-3xl font-bold text-center text-slate-900 mb-4">Applications</h3>
-              </ScrollAnimate>
-              <ScrollAnimate animation="fadeInUpElegant" delay={1750}>
-                <p className="text-center text-lg text-slate-600 mb-12 max-w-3xl mx-auto">
-                  Designed for diverse environments and use cases across residential, commercial, and industrial sectors
-                </p>
-              </ScrollAnimate>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {details.applications.map((application, index) => (
-                  <ScrollAnimate
-                    key={index}
-                    animation="scaleInBounce"
-                    delay={1800 + (index * 100)}
-                    className="bg-white p-6 rounded-lg border border-slate-200 shadow-sm"
-                  >
-                    <div className="flex items-center mb-4">
-                      <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center mr-3">
-                        <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                        </svg>
-                      </div>
-                      <h4 className="text-lg font-semibold text-slate-900">Application {index + 1}</h4>
-                    </div>
-                    <p className="text-slate-600">{application}</p>
-                  </ScrollAnimate>
-                ))}
-                {appData?.title && (
-                  <div className="bg-white p-6 rounded-lg border border-slate-200 shadow-sm">
-                    <div className="flex items-center mb-4">
-                      <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center mr-3 overflow-hidden">
-                        {appData.icon_url ? (
-                          <Image src={appData.icon_url} alt="Application icon" width={24} height={24} />
-                        ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {details.applications.map((application, index) => (
+                    <ScrollAnimate
+                      key={index}
+                      animation="scaleInBounce"
+                      delay={1800 + (index * 100)}
+                      className="bg-white p-6 rounded-lg border border-slate-200 shadow-sm"
+                    >
+                      <div className="flex items-center mb-4">
+                        <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center mr-3">
                           <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                           </svg>
-                        )}
+                        </div>
+                        <h4 className="text-lg font-semibold text-slate-900">Application {index + 1}</h4>
                       </div>
-                      <h4 className="text-lg font-semibold text-slate-900">{appData.title}</h4>
+                      <p className="text-slate-600">{application}</p>
+                    </ScrollAnimate>
+                  ))}
+                  {appData?.title && (
+                    <div className="bg-white p-6 rounded-lg border border-slate-200 shadow-sm">
+                      <div className="flex items-center mb-4">
+                        <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center mr-3 overflow-hidden">
+                          {appData.icon_url ? (
+                            <Image src={appData.icon_url} alt="Application icon" width={24} height={24} />
+                          ) : (
+                            <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                            </svg>
+                          )}
+                        </div>
+                        <h4 className="text-lg font-semibold text-slate-900">{appData.title}</h4>
+                      </div>
+                      <p className="text-slate-600">{appData.description || ''}</p>
                     </div>
-                    <p className="text-slate-600">{appData.description || ''}</p>
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
-            </div>
-          </section>
-        </ScrollAnimate>
+            </section>
+          </ScrollAnimate>
 
-        {/* Benefits Section */}
-        <ScrollAnimate animation="slideInLeftSmooth" delay={1900}>
-          <section className="py-16 bg-white">
-            <div className="mx-auto max-w-6xl px-4 md:px-6">
-              <ScrollAnimate animation="smoothReveal" delay={2000}>
-                <h3 className="text-3xl font-bold text-center text-slate-900 mb-4">Key Benefits</h3>
-              </ScrollAnimate>
-              <ScrollAnimate animation="fadeInUpElegant" delay={2050}>
-                <p className="text-center text-lg text-slate-600 mb-12 max-w-3xl mx-auto">
-                  Maximize value and performance with ION Green energy storage solutions
-                </p>
-              </ScrollAnimate>
+          {/* Benefits Section */}
+          <ScrollAnimate animation="slideInLeftSmooth" delay={1900}>
+            <section className="py-16 bg-white">
+              <div className="mx-auto max-w-6xl px-4 md:px-6">
+                <ScrollAnimate animation="smoothReveal" delay={2000}>
+                  <h3 className="text-3xl font-bold text-center text-slate-900 mb-4">Key Benefits</h3>
+                </ScrollAnimate>
+                <ScrollAnimate animation="fadeInUpElegant" delay={2050}>
+                  <p className="text-center text-lg text-slate-600 mb-12 max-w-3xl mx-auto">
+                    Maximize value and performance with ION Green energy storage solutions
+                  </p>
+                </ScrollAnimate>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {details.benefits.map((benefit, index) => (
-                  <ScrollAnimate
-                    key={index}
-                    animation="fadeInUpElegant"
-                    delay={2100 + (index * 100)}
-                    className="flex items-start p-6 bg-slate-50 rounded-lg border border-slate-200"
-                  >
-                    <div className="flex-shrink-0 w-12 h-12 rounded-full bg-green-100 flex items-center justify-center mr-4">
-                      <span className="text-green-600 font-bold">{index + 1}</span>
-                    </div>
-                    <p className="text-slate-700">{benefit}</p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  {details.benefits.map((benefit, index) => (
+                    <ScrollAnimate
+                      key={index}
+                      animation="fadeInUpElegant"
+                      delay={2100 + (index * 100)}
+                      className="flex items-start p-6 bg-slate-50 rounded-lg border border-slate-200"
+                    >
+                      <div className="flex-shrink-0 w-12 h-12 rounded-full bg-green-100 flex items-center justify-center mr-4">
+                        <span className="text-green-600 font-bold">{index + 1}</span>
+                      </div>
+                      <p className="text-slate-700">{benefit}</p>
+                    </ScrollAnimate>
+                  ))}
+                </div>
+              </div>
+            </section>
+          </ScrollAnimate>
+
+          {/* Call to Action Section */}
+          <ScrollAnimate animation="scaleInBounce" delay={2200}>
+            <section className="py-16 bg-gradient-to-r from-green-600 to-green-800">
+              <div className="mx-auto max-w-4xl px-4 md:px-6 text-center">
+                <ScrollAnimate animation="fadeInUpElegant" delay={2300}>
+                  <h3 className="text-3xl font-bold text-white mb-4">Ready to Transform Your Energy Strategy?</h3>
+                </ScrollAnimate>
+                <ScrollAnimate animation="fadeInUpElegant" delay={2350}>
+                  <p className="text-xl text-green-100 mb-8 max-w-2xl mx-auto">
+                    Contact our energy storage experts to discuss how ION Green solutions can optimize your energy costs and enhance reliability.
+                  </p>
+                </ScrollAnimate>
+                <div className="flex flex-col sm:flex-row justify-center gap-4">
+                  <ScrollAnimate animation="slideInLeftSmooth" delay={2400}>
+                    <a
+                      href="/contact"
+                      className="px-8 py-3 bg-white text-green-700 font-semibold rounded-lg hover:bg-gray-100 transition-colors"
+                    >
+                      Request a Consultation
+                    </a>
                   </ScrollAnimate>
-                ))}
+                  <ScrollAnimate animation="slideInRightSmooth" delay={2450}>
+                    <a
+                      href="tel:9202636627"
+                      className="px-8 py-3 bg-transparent border-2 border-white text-white font-semibold rounded-lg hover:bg-white/10 transition-colors"
+                    >
+                      Call Now
+                    </a>
+                  </ScrollAnimate>
+                </div>
               </div>
-            </div>
-          </section>
-        </ScrollAnimate>
-
-        {/* Call to Action Section */}
-        <ScrollAnimate animation="scaleInBounce" delay={2200}>
-          <section className="py-16 bg-gradient-to-r from-green-600 to-green-800">
-            <div className="mx-auto max-w-4xl px-4 md:px-6 text-center">
-              <ScrollAnimate animation="fadeInUpElegant" delay={2300}>
-                <h3 className="text-3xl font-bold text-white mb-4">Ready to Transform Your Energy Strategy?</h3>
-              </ScrollAnimate>
-              <ScrollAnimate animation="fadeInUpElegant" delay={2350}>
-                <p className="text-xl text-green-100 mb-8 max-w-2xl mx-auto">
-                  Contact our energy storage experts to discuss how ION Green solutions can optimize your energy costs and enhance reliability.
-                </p>
-              </ScrollAnimate>
-              <div className="flex flex-col sm:flex-row justify-center gap-4">
-                <ScrollAnimate animation="slideInLeftSmooth" delay={2400}>
-                  <a
-                    href="/contact"
-                    className="px-8 py-3 bg-white text-green-700 font-semibold rounded-lg hover:bg-gray-100 transition-colors"
-                  >
-                    Request a Consultation
-                  </a>
-                </ScrollAnimate>
-                <ScrollAnimate animation="slideInRightSmooth" delay={2450}>
-                  <a
-                    href="tel:9202636627"
-                    className="px-8 py-3 bg-transparent border-2 border-white text-white font-semibold rounded-lg hover:bg-white/10 transition-colors"
-                  >
-                    Call Now
-                  </a>
-                </ScrollAnimate>
-              </div>
-            </div>
-          </section>
-        </ScrollAnimate>
+            </section>
+          </ScrollAnimate>
+        </AnimatedContentWrapper>
       </div>
     );
   } catch (error) {

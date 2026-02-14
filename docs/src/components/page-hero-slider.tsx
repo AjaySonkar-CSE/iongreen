@@ -22,6 +22,7 @@ interface PageHeroSliderProps {
   showIndicators?: boolean;
   autoPlay?: boolean;
   autoPlayInterval?: number;
+  fixed?: boolean;
 }
 
 export function PageHeroSlider({
@@ -30,7 +31,8 @@ export function PageHeroSlider({
   showNavigation = true,
   showIndicators = true,
   autoPlay = true,
-  autoPlayInterval = 5000
+  autoPlayInterval = 5000,
+  fixed = false
 }: PageHeroSliderProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
@@ -62,7 +64,7 @@ export function PageHeroSlider({
 
   return (
     <div
-      className={`relative w-full ${height} overflow-hidden`}
+      className={`w-full ${height} overflow-hidden ${fixed ? 'fixed inset-0 z-0 h-screen' : 'relative'}`}
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >

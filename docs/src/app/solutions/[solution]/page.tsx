@@ -369,6 +369,8 @@ const solutionDetails: Record<string, {
   }
 };
 
+import { AnimatedContentWrapper } from "@/components/client/animated-content-wrapper";
+
 export default async function SolutionPage(props: SolutionPageProps) {
   const params = await props.params;
 
@@ -420,9 +422,9 @@ export default async function SolutionPage(props: SolutionPageProps) {
   const heroImage = solutionData.image_url || imgFolderImages[imageIndex];
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Hero Section with Image Background */}
-      <section className="relative h-[80vh] w-full overflow-hidden">
+    <div className="min-h-screen bg-transparent">
+      {/* Hero Section with Image Background - Fixed like home page */}
+      <section className="fixed inset-0 h-screen w-full overflow-hidden z-0">
         <div className="absolute inset-0">
           <Image
             src={heroImage}
@@ -481,203 +483,207 @@ export default async function SolutionPage(props: SolutionPageProps) {
         </div>
       </section>
 
-      {/* Overview Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <ScrollAnimate animation="fadeInUpElegant" delay={200}>
-            <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold text-gray-900 mb-6">Solution Overview</h2>
-              <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
-                {details.detailedDescription || solutionData.description}
+      <AnimatedContentWrapper>
+
+
+        {/* Overview Section */}
+        <section className="py-20 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <ScrollAnimate animation="fadeInUpElegant" delay={200}>
+              <div className="text-center mb-16">
+                <h2 className="text-4xl font-bold text-gray-900 mb-6">Solution Overview</h2>
+                <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
+                  {details.detailedDescription || solutionData.description}
+                </p>
+              </div>
+            </ScrollAnimate>
+
+            <ScrollAnimate animation="slideInRightSmooth" delay={300}>
+              <div className="relative h-[500px] rounded-2xl overflow-hidden shadow-2xl">
+                <Image
+                  src={heroImage}
+                  alt={solutionData.title}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+              </div>
+            </ScrollAnimate>
+          </div>
+        </section>
+
+        {/* Features Section */}
+        {details.features.length > 0 && (
+          <section id="features" className="py-20 bg-gray-50">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <ScrollAnimate animation="fadeInUpElegant" delay={200}>
+                <div className="text-center mb-16">
+                  <h2 className="text-4xl font-bold text-gray-900 mb-4">{details.cardTitles.features}</h2>
+                  <p className="text-xl text-gray-600 max-w-3xl mx-auto">{details.cardDescriptions.features}</p>
+                </div>
+              </ScrollAnimate>
+
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {details.features.map((feature, index) => (
+                  <ScrollAnimate
+                    key={index}
+                    animation="scaleInBounce"
+                    delay={300 + (index * 100)}
+                  >
+                    <div className="bg-white p-6 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:border-green-200 transform hover:-translate-y-2">
+                      <div className="flex items-start">
+                        <div className="flex-shrink-0 w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mr-4">
+                          <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                          </svg>
+                        </div>
+                        <p className="text-gray-700 font-medium leading-relaxed">{feature}</p>
+                      </div>
+                    </div>
+                  </ScrollAnimate>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* Applications Section */}
+        {details.applications.length > 0 && (
+          <section className="py-20 bg-white">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <ScrollAnimate animation="fadeInUpElegant" delay={200}>
+                <div className="text-center mb-16">
+                  <h2 className="text-4xl font-bold text-gray-900 mb-4">{details.cardTitles.applications}</h2>
+                  <p className="text-xl text-gray-600 max-w-3xl mx-auto">{details.cardDescriptions.applications}</p>
+                </div>
+              </ScrollAnimate>
+
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {details.applications.map((application, index) => (
+                  <ScrollAnimate
+                    key={index}
+                    animation="slideInSmooth"
+                    delay={300 + (index * 100)}
+                  >
+                    <div className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-green-50 to-white p-6 shadow-md hover:shadow-xl transition-all duration-300 border border-green-100">
+                      <div className="flex items-center mb-4">
+                        <div className="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center mr-4 group-hover:scale-110 transition-transform duration-300">
+                          <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                        </div>
+                        <h3 className="text-lg font-semibold text-gray-900">{application}</h3>
+                      </div>
+                    </div>
+                  </ScrollAnimate>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* Advantages Section */}
+        {details.advantages.length > 0 && (
+          <section className="py-20 bg-gradient-to-br from-green-50 to-white">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <ScrollAnimate animation="fadeInUpElegant" delay={200}>
+                <div className="text-center mb-16">
+                  <h2 className="text-4xl font-bold text-gray-900 mb-4">{details.cardTitles.advantages}</h2>
+                  <p className="text-xl text-gray-600 max-w-3xl mx-auto">{details.cardDescriptions.advantages}</p>
+                </div>
+              </ScrollAnimate>
+
+              <div className="grid md:grid-cols-2 gap-8">
+                {details.advantages.map((advantage, index) => (
+                  <ScrollAnimate
+                    key={index}
+                    animation="slideInLeftSmooth"
+                    delay={300 + (index * 100)}
+                  >
+                    <div className="bg-white p-6 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border-l-4 border-green-500">
+                      <div className="flex items-start">
+                        <div className="flex-shrink-0 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center mr-4 mt-1">
+                          <span className="text-white font-bold text-sm">{index + 1}</span>
+                        </div>
+                        <p className="text-gray-700 text-lg leading-relaxed">{advantage}</p>
+                      </div>
+                    </div>
+                  </ScrollAnimate>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* Related Projects Section */}
+        {details.relatedProjects.length > 0 && (
+          <section className="py-20 bg-white">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <ScrollAnimate animation="fadeInUpElegant" delay={200}>
+                <div className="text-center mb-16">
+                  <h2 className="text-4xl font-bold text-gray-900 mb-4">{details.cardTitles.projects}</h2>
+                  <p className="text-xl text-gray-600 max-w-3xl mx-auto">{details.cardDescriptions.projects}</p>
+                </div>
+              </ScrollAnimate>
+
+              <div className="grid md:grid-cols-3 gap-8">
+                {details.relatedProjects.map((project, index) => (
+                  <ScrollAnimate
+                    key={index}
+                    animation="scaleInBounce"
+                    delay={300 + (index * 100)}
+                  >
+                    <div className="bg-gradient-to-br from-slate-900 to-green-900 text-white p-8 rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+                      <div className="flex items-center mb-4">
+                        <div className="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center mr-4">
+                          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                          </svg>
+                        </div>
+                        <h3 className="text-xl font-bold">{project}</h3>
+                      </div>
+                    </div>
+                  </ScrollAnimate>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* CTA Section */}
+        <section className="py-20 bg-gradient-to-r from-green-600 to-green-700 text-white">
+          <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
+            <ScrollAnimate animation="fadeInUpElegant" delay={200}>
+              <h2 className="text-4xl font-bold mb-4">Ready to Get Started?</h2>
+              <p className="text-xl text-green-100 mb-8">
+                Contact our experts to discuss your specific requirements and get a customized solution.
               </p>
-            </div>
-          </ScrollAnimate>
-
-          <ScrollAnimate animation="slideInRightSmooth" delay={300}>
-            <div className="relative h-[500px] rounded-2xl overflow-hidden shadow-2xl">
-              <Image
-                src={heroImage}
-                alt={solutionData.title}
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
-            </div>
-          </ScrollAnimate>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      {details.features.length > 0 && (
-        <section id="features" className="py-20 bg-gray-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <ScrollAnimate animation="fadeInUpElegant" delay={200}>
-              <div className="text-center mb-16">
-                <h2 className="text-4xl font-bold text-gray-900 mb-4">{details.cardTitles.features}</h2>
-                <p className="text-xl text-gray-600 max-w-3xl mx-auto">{details.cardDescriptions.features}</p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Button
+                  asChild
+                  size="lg"
+                  className="bg-white text-green-600 hover:bg-gray-100 px-8 py-4 text-lg font-semibold"
+                >
+                  <Link href="/contact">
+                    Request Quote
+                  </Link>
+                </Button>
+                <Button
+                  asChild
+                  size="lg"
+                  variant="outline"
+                  className="border-white text-white hover:bg-white hover:text-green-600 px-8 py-4 text-lg font-semibold"
+                >
+                  <Link href="tel:+919202836627">
+                    Call Now
+                  </Link>
+                </Button>
               </div>
             </ScrollAnimate>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {details.features.map((feature, index) => (
-                <ScrollAnimate
-                  key={index}
-                  animation="scaleInBounce"
-                  delay={300 + (index * 100)}
-                >
-                  <div className="bg-white p-6 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:border-green-200 transform hover:-translate-y-2">
-                    <div className="flex items-start">
-                      <div className="flex-shrink-0 w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mr-4">
-                        <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                        </svg>
-                      </div>
-                      <p className="text-gray-700 font-medium leading-relaxed">{feature}</p>
-                    </div>
-                  </div>
-                </ScrollAnimate>
-              ))}
-            </div>
           </div>
         </section>
-      )}
-
-      {/* Applications Section */}
-      {details.applications.length > 0 && (
-        <section className="py-20 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <ScrollAnimate animation="fadeInUpElegant" delay={200}>
-              <div className="text-center mb-16">
-                <h2 className="text-4xl font-bold text-gray-900 mb-4">{details.cardTitles.applications}</h2>
-                <p className="text-xl text-gray-600 max-w-3xl mx-auto">{details.cardDescriptions.applications}</p>
-              </div>
-            </ScrollAnimate>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {details.applications.map((application, index) => (
-                <ScrollAnimate
-                  key={index}
-                  animation="slideInSmooth"
-                  delay={300 + (index * 100)}
-                >
-                  <div className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-green-50 to-white p-6 shadow-md hover:shadow-xl transition-all duration-300 border border-green-100">
-                    <div className="flex items-center mb-4">
-                      <div className="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center mr-4 group-hover:scale-110 transition-transform duration-300">
-                        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                      </div>
-                      <h3 className="text-lg font-semibold text-gray-900">{application}</h3>
-                    </div>
-                  </div>
-                </ScrollAnimate>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* Advantages Section */}
-      {details.advantages.length > 0 && (
-        <section className="py-20 bg-gradient-to-br from-green-50 to-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <ScrollAnimate animation="fadeInUpElegant" delay={200}>
-              <div className="text-center mb-16">
-                <h2 className="text-4xl font-bold text-gray-900 mb-4">{details.cardTitles.advantages}</h2>
-                <p className="text-xl text-gray-600 max-w-3xl mx-auto">{details.cardDescriptions.advantages}</p>
-              </div>
-            </ScrollAnimate>
-
-            <div className="grid md:grid-cols-2 gap-8">
-              {details.advantages.map((advantage, index) => (
-                <ScrollAnimate
-                  key={index}
-                  animation="slideInLeftSmooth"
-                  delay={300 + (index * 100)}
-                >
-                  <div className="bg-white p-6 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border-l-4 border-green-500">
-                    <div className="flex items-start">
-                      <div className="flex-shrink-0 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center mr-4 mt-1">
-                        <span className="text-white font-bold text-sm">{index + 1}</span>
-                      </div>
-                      <p className="text-gray-700 text-lg leading-relaxed">{advantage}</p>
-                    </div>
-                  </div>
-                </ScrollAnimate>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* Related Projects Section */}
-      {details.relatedProjects.length > 0 && (
-        <section className="py-20 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <ScrollAnimate animation="fadeInUpElegant" delay={200}>
-              <div className="text-center mb-16">
-                <h2 className="text-4xl font-bold text-gray-900 mb-4">{details.cardTitles.projects}</h2>
-                <p className="text-xl text-gray-600 max-w-3xl mx-auto">{details.cardDescriptions.projects}</p>
-              </div>
-            </ScrollAnimate>
-
-            <div className="grid md:grid-cols-3 gap-8">
-              {details.relatedProjects.map((project, index) => (
-                <ScrollAnimate
-                  key={index}
-                  animation="scaleInBounce"
-                  delay={300 + (index * 100)}
-                >
-                  <div className="bg-gradient-to-br from-slate-900 to-green-900 text-white p-8 rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
-                    <div className="flex items-center mb-4">
-                      <div className="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center mr-4">
-                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                        </svg>
-                      </div>
-                      <h3 className="text-xl font-bold">{project}</h3>
-                    </div>
-                  </div>
-                </ScrollAnimate>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-green-600 to-green-700 text-white">
-        <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
-          <ScrollAnimate animation="fadeInUpElegant" delay={200}>
-            <h2 className="text-4xl font-bold mb-4">Ready to Get Started?</h2>
-            <p className="text-xl text-green-100 mb-8">
-              Contact our experts to discuss your specific requirements and get a customized solution.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button
-                asChild
-                size="lg"
-                className="bg-white text-green-600 hover:bg-gray-100 px-8 py-4 text-lg font-semibold"
-              >
-                <Link href="/contact">
-                  Request Quote
-                </Link>
-              </Button>
-              <Button
-                asChild
-                size="lg"
-                variant="outline"
-                className="border-white text-white hover:bg-white hover:text-green-600 px-8 py-4 text-lg font-semibold"
-              >
-                <Link href="tel:+919202836627">
-                  Call Now
-                </Link>
-              </Button>
-            </div>
-          </ScrollAnimate>
-        </div>
-      </section>
+      </AnimatedContentWrapper>
     </div>
   );
 }

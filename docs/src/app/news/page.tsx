@@ -6,6 +6,8 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { PageHeroSlider } from "@/components/page-hero-slider";
 
+import { AnimatedContentWrapper } from "@/components/client/animated-content-wrapper";
+
 export default async function NewsPage() {
   // Fetch news data on the server side
   const dbNews = await dbService.getNews(6);
@@ -47,21 +49,26 @@ export default async function NewsPage() {
   ];
 
   return (
-    <>
-      {/* Hero Section with Slider */}
+    <div className="min-h-screen bg-transparent">
+      {/* Hero Section with Slider - Fixed like home page */}
       <PageHeroSlider
         slides={heroSlides}
-        height="h-[80vh]"
+        height="h-screen"
         showNavigation={true}
         showIndicators={true}
         autoPlay={true}
         autoPlayInterval={5000}
+        fixed={true}
       />
-      <ScrollAnimate animation="fadeInUpElegant" delay={400}>
-        <div id="news-feed">
-          <NewsFeed news={news} />
-        </div>
-      </ScrollAnimate>
-    </>
+
+      <AnimatedContentWrapper>
+
+        <ScrollAnimate animation="fadeInUpElegant" delay={400}>
+          <div id="news-feed">
+            <NewsFeed news={news} />
+          </div>
+        </ScrollAnimate>
+      </AnimatedContentWrapper>
+    </div>
   );
 }

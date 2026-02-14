@@ -209,7 +209,7 @@ export function Hero({
   return (
     <section
       className={cn(
-        isHomePage ? "fixed inset-0 w-full h-screen overflow-hidden z-0" : "relative min-h-[60vh]",
+        "fixed inset-0 w-full h-screen overflow-hidden z-0",
         className
       )}
       {...props}
