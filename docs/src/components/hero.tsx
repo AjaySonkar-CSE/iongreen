@@ -236,12 +236,12 @@ export function Hero({
             {/* Standard Hero Content for Other Pages */}
             <div className="relative z-10 mx-auto max-w-7xl px-4 flex flex-col items-center justify-center text-center h-full pt-20">
               <ScrollAnimate animation="fadeInUpElegant" delay={200}>
-                <h1 className="text-3xl md:text-5xl font-black text-white mb-4 uppercase tracking-tighter drop-shadow-2xl">
+                <h1 className="text-xl md:text-5xl font-black text-white mb-2 md:mb-4 uppercase tracking-tighter drop-shadow-2xl">
                   {displayTitle}
                 </h1>
               </ScrollAnimate>
               <ScrollAnimate animation="fadeInUpElegant" delay={300}>
-                <p className="text-lg md:text-xl text-white/80 font-light leading-relaxed max-w-3xl mx-auto drop-shadow-lg">
+                <p className="text-sm md:text-xl text-white/80 font-light leading-relaxed max-w-3xl mx-auto drop-shadow-lg">
                   {displayDescription}
                 </p>
               </ScrollAnimate>

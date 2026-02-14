@@ -46,7 +46,7 @@ export function SiteHeader() {
             height={85}
             className={cn(
               "object-contain object-left transition-all duration-500",
-              isScrolled ? "h-20 md:h-24 overflow-visible scale-110" : "h-24 md:h-28 overflow-visible scale-110"
+              isScrolled ? "h-14 md:h-16 overflow-visible scale-100" : "h-16 md:h-20 overflow-visible scale-100"
             )}
             priority
           />
@@ -109,57 +109,89 @@ interface MobileMenuProps {
 function MobileMenu({ navItems }: MobileMenuProps) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [expandedItem, setExpandedItem] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+      setExpandedItem(null); // Reset expanded items when menu closes
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [open]);
+
+  const toggleExpand = (label: string) => {
+    setExpandedItem(expandedItem === label ? null : label);
+  };
 
   return (
     <div className="lg:hidden">
       <button
         type="button"
         onClick={() => setOpen((prev) => !prev)}
-        className="rounded-lg border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-all duration-300"
+        className="flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-all duration-300 focus:outline-none"
         aria-expanded={open}
+        aria-label={open ? "Close menu" : "Open menu"}
       >
-        <span className="flex items-center">
-          {open ? 'Close' : 'Menu'}
-          <svg
-            className={`ml-2 h-4 w-4 transform transition-transform duration-300 ${open ? 'rotate-180' : ''}`}
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        {open ? (
+          <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
           </svg>
-        </span>
+        ) : (
+          <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        )}
       </button>
       {open && (
-        <div className="absolute inset-x-0 top-full border-b border-slate-200 bg-white/95 backdrop-blur-md shadow-xl px-4 py-6">
+        <div className="absolute inset-x-0 top-full border-b border-slate-200 bg-white/95 backdrop-blur-md shadow-xl px-4 py-6 max-h-[calc(100vh-3.5rem)] overflow-y-auto">
           <div className="flex flex-col gap-2">
             {navItems.map((item) => (
               <div key={item.href} className="w-full">
                 {item.items ? (
                   <div className="space-y-1">
-                    <div className="px-4 py-3 text-sm font-semibold text-slate-900 border-l-3 border-green-500 bg-green-50/50 rounded-r-lg">
-                      {item.label}
-                    </div>
-                    <div className="ml-4 space-y-1 border-l border-slate-200 pl-4">
-                      {item.items.map((subItem) => (
-                        <Link
-                          key={subItem.href}
-                          href={subItem.href}
-                          className={cn(
-                            "block w-full rounded-lg px-4 py-3 text-sm transition-all duration-300 hover:bg-slate-50 hover:translate-x-1 no-underline",
-                            pathname === subItem.href ? "text-green-600 bg-green-50 font-semibold" : "text-slate-700 hover:text-green-600"
-                          )}
-                          onClick={() => setOpen(false)}
-                        >
-                          <div className="flex items-center justify-between">
-                            <span>{subItem.label}</span>
-                            <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                            </svg>
-                          </div>
-                        </Link>
-                      ))}
-                    </div>
+                    <button
+                      onClick={() => toggleExpand(item.label)}
+                      className={cn(
+                        "flex w-full items-center justify-between px-4 py-3 text-sm font-semibold rounded-lg transition-all duration-300 no-underline",
+                        expandedItem === item.label ? "text-green-600 bg-green-50" : "text-slate-900 hover:bg-slate-50"
+                      )}
+                    >
+                      <span>{item.label}</span>
+                      <svg
+                        className={`h-4 w-4 transform transition-transform duration-300 ${expandedItem === item.label ? 'rotate-180' : ''}`}
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </button>
+                    {expandedItem === item.label && (
+                      <div className="ml-4 mt-1 space-y-1 border-l border-slate-200 pl-4 animate-in slide-in-from-top-2 duration-300">
+                        {item.items.map((subItem) => (
+                          <Link
+                            key={subItem.href}
+                            href={subItem.href}
+                            className={cn(
+                              "block w-full rounded-lg px-4 py-3 text-sm transition-all duration-300 hover:bg-slate-50 hover:translate-x-1 no-underline",
+                              pathname === subItem.href ? "text-green-600 bg-green-50 font-semibold" : "text-slate-700 hover:text-green-600"
+                            )}
+                            onClick={() => setOpen(false)}
+                          >
+                            <div className="flex items-center justify-between">
+                              <span>{subItem.label}</span>
+                              <svg className="w-4 h-4 text-slate-400 group-hover:text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                              </svg>
+                            </div>
+                          </Link>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 ) : (
                   <Link

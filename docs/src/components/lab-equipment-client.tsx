@@ -352,16 +352,16 @@ export function LabEquipmentClient({ equipmentItems = [], error }: LabEquipmentC
       </Hero>
 
       <AnimatedContentWrapper>
-        <div className="bg-white py-16">
+        <div className="bg-white py-8 md:py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <ScrollAnimate animation="fadeInUpElegant" delay={100}>
-                <h2 className="text-4xl font-bold text-gray-900 mb-6">
+                <h2 className="text-2xl md:text-4xl font-bold text-gray-900 mb-4 md:mb-6">
                   Excellence in Precision: Our Laboratory Infrastructure
                 </h2>
               </ScrollAnimate>
               <ScrollAnimate animation="fadeInUpElegant" delay={200}>
-                <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
+                <p className="text-base md:text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
                   At ION Green, we believe that innovation starts with rigorous testing and precision analysis.
                   Our state-of-the-art laboratory is equipped with the latest diagnostic tools and high-precision
                   instruments to ensure that every battery component meets our exacting standards of safety,
@@ -370,11 +370,11 @@ export function LabEquipmentClient({ equipmentItems = [], error }: LabEquipmentC
               </ScrollAnimate>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-12 mb-16">
+            <div className="grid md:grid-cols-2 gap-6 md:gap-12 mb-8 md:mb-16">
               <ScrollAnimate animation="slideInLeftSmooth" delay={300}>
-                <div className="bg-slate-50 p-8 rounded-2xl border border-slate-100">
-                  <h3 className="text-2xl font-bold text-gray-900 mb-4">Advanced R&D Capabilities</h3>
-                  <p className="text-gray-600 leading-relaxed">
+                <div className="bg-slate-50 p-6 md:p-8 rounded-2xl border border-slate-100">
+                  <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-3 md:mb-4">Advanced R&D Capabilities</h3>
+                  <p className="text-gray-600 text-sm md:text-base leading-relaxed">
                     Our R&D team continuously works on the next generation of energy storage solutions.
                     By utilizing advanced microscopy and chemical analysis, we are able to optimize cell
                     chemistry and thermal performance, pushing the boundaries of what's possible in
@@ -383,9 +383,9 @@ export function LabEquipmentClient({ equipmentItems = [], error }: LabEquipmentC
                 </div>
               </ScrollAnimate>
               <ScrollAnimate animation="slideInRightSmooth" delay={400}>
-                <div className="bg-slate-50 p-8 rounded-2xl border border-slate-100">
-                  <h3 className="text-2xl font-bold text-gray-900 mb-4">Rigorous Quality Assurance</h3>
-                  <p className="text-gray-600 leading-relaxed">
+                <div className="bg-slate-50 p-6 md:p-8 rounded-2xl border border-slate-100">
+                  <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-3 md:mb-4">Rigorous Quality Assurance</h3>
+                  <p className="text-gray-600 text-sm md:text-base leading-relaxed">
                     Quality is not just a stage in our process; it is the foundation of our manufacturing.
                     Every instrument in our lab plays a crucial role in verifying the structural integrity
                     and performance stability of our LiFePO4 systems before they leave the factory floor.
@@ -404,10 +404,10 @@ export function LabEquipmentClient({ equipmentItems = [], error }: LabEquipmentC
             </div>
           </div>
         ) : (
-          <div className="container mx-auto p-4 bg-gray-50 pb-20">
-            <div className="text-center py-12">
+          <div className="container mx-auto p-3 md:p-4 bg-gray-50 pb-12 md:pb-20">
+            <div className="text-center py-8 md:py-12">
               <ScrollAnimate animation="smoothReveal" delay={100}>
-                <h2 className="text-3xl font-bold text-gray-900 mb-4">Inventory Catalogue</h2>
+                <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2 md:mb-4">Inventory Catalogue</h2>
                 <div className="w-20 h-1 bg-green-600 mx-auto rounded-full"></div>
               </ScrollAnimate>
             </div>
@@ -421,7 +421,7 @@ export function LabEquipmentClient({ equipmentItems = [], error }: LabEquipmentC
                   >
                     <Link
                       href={`/lab-equipment/${item.slug}`}
-                      className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:border-green-200 block h-96"
+                      className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:border-green-200 block h-64 md:h-96"
                     >
                       {/* Full-size image background */}
                       <div className="absolute inset-0">
@@ -438,11 +438,11 @@ export function LabEquipmentClient({ equipmentItems = [], error }: LabEquipmentC
 
                       {/* Content overlay - appears on hover */}
                       <div className="absolute inset-0 flex flex-col justify-end p-6 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0">
-                        <div className="bg-white/95 backdrop-blur-sm rounded-xl p-4">
-                          <h2 className="text-xl font-bold text-gray-900 mb-2">
+                        <div className="bg-white/95 backdrop-blur-sm rounded-xl p-3 md:p-4">
+                          <h2 className="text-lg md:text-xl font-bold text-gray-900 mb-1 md:mb-2">
                             {item.name}
                           </h2>
-                          <p className="text-gray-700 text-sm mb-3 line-clamp-3">
+                          <p className="text-gray-700 text-xs md:text-sm mb-2 md:mb-3 line-clamp-2 md:line-clamp-3">
                             {item.description}
                           </p>
                           <div className="flex items-center text-green-600 font-medium group-hover:text-green-700 transition-colors duration-300">
