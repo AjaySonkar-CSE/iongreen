@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { dbService } from "@/lib/db-service";
+import { ScrollAnimate } from "@/components/scroll-animate";
+import { AnimatedContentWrapper } from "@/components/client/animated-content-wrapper";
 
 export default async function IonGreenPage() {
   const product = await dbService.getProductBySlug("ion-green");
@@ -17,213 +19,229 @@ export default async function IonGreenPage() {
     { label: "Dimension (W*D*H)", value: "6058×2438×2591mm" },
     { label: "Weight", value: "≤30T" },
   ];
+
   return (
-    <div className="min-h-screen bg-white">
-      <div className="relative h-72 w-full">
+    <div className="min-h-screen bg-transparent">
+      {/* Hero Section - Fixed like home page */}
+      <section className="fixed inset-0 h-screen w-full overflow-hidden z-0">
         <Image
           src={heroImage}
           alt="ION Green"
           fill
           className="object-cover"
           priority
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          sizes="100vw"
         />
         <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
           <div className="text-center text-white px-4">
-            <h1 className="text-3xl md:text-4xl font-bold mb-3">{product?.name || "ION Green"}</h1>
-            <p className="text-base md:text-lg">Energy Storage Solutions</p>
-          </div>
-        </div>
-      </div>
-
-      <section className="py-12 bg-white">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h2 className="text-3xl font-bold text-green-700 mb-4">ION Green Energy Solutions</h2>
-            <p className="text-gray-700 mb-3">
-              {product?.description || "ION Green advanced battery energy storage systems provide safe, efficient, and sustainable power for residential, commercial, and industrial applications. Systems are designed for high reliability, long cycle life, and intelligent energy management."}
-            </p>
-            <p className="text-gray-700 mb-3">
-              Global presence in 100+ countries with dedicated 24/7 technical support, performance optimization, and lifecycle services. From consultation to commissioning and maintenance, our experts partner with you at every step.
-            </p>
-            <p className="text-gray-700">
-              Choose ION Green for scalable, eco‑friendly solutions that reduce costs, enhance resilience, and accelerate sustainability goals.
-            </p>
+            <ScrollAnimate animation="fadeInUpElegant" delay={200}>
+              <h1 className="text-3xl md:text-5xl lg:text-7xl font-bold mb-4 drop-shadow-2xl">{product?.name || "ION Green"}</h1>
+            </ScrollAnimate>
+            <ScrollAnimate animation="fadeInUpElegant" delay={400}>
+              <p className="text-lg md:text-2xl font-medium text-white/90 uppercase tracking-[0.3em] drop-shadow-lg">Energy Storage Solutions</p>
+            </ScrollAnimate>
           </div>
         </div>
       </section>
 
-      <section className="py-16 bg-slate-50">
-        <div className="max-w-6xl mx-auto px-4 md:px-6">
-          <h2 className="text-3xl font-bold text-center text-slate-900 mb-12">ION Green Key Features</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="rounded-xl bg-white p-6 border border-slate-200 shadow-sm">
-              <h3 className="text-xl font-semibold text-slate-900 mb-2">High Efficiency</h3>
-              <p className="text-slate-700">Optimized charge/discharge for maximum round‑trip efficiency and lower energy costs.</p>
-            </div>
-            <div className="rounded-xl bg-white p-6 border border-slate-200 shadow-sm">
-              <h3 className="text-xl font-semibold text-slate-900 mb-2">Safe Chemistry</h3>
-              <p className="text-slate-700">LiFePO₄ based systems with advanced BMS, thermal protection, and certifications.</p>
-            </div>
-            <div className="rounded-xl bg-white p-6 border border-slate-200 shadow-sm">
-              <h3 className="text-xl font-semibold text-slate-900 mb-2">Scalable & Modular</h3>
-              <p className="text-slate-700">Modular architecture enables smooth expansion from kWh to multi‑MWh deployments.</p>
-            </div>
-            <div className="rounded-xl bg-white p-6 border border-slate-200 shadow-sm">
-              <h3 className="text-xl font-semibold text-slate-900 mb-2">Solar Integration</h3>
-              <p className="text-slate-700">Seamlessly integrates with solar PV systems for maximum renewable energy utilization and grid independence.</p>
-            </div>
-            <div className="rounded-xl bg-white p-6 border border-slate-200 shadow-sm">
-              <h3 className="text-xl font-semibold text-slate-900 mb-2">Smart Energy Management</h3>
-              <p className="text-slate-700">Advanced EMS optimizes energy flow between solar generation, battery storage, and grid for peak performance.</p>
-            </div>
-            <div className="rounded-xl bg-white p-6 border border-slate-200 shadow-sm">
-              <h3 className="text-xl font-semibold text-slate-900 mb-2">Long Cycle Life</h3>
-              <p className="text-slate-700">Designed for 6000+ cycles with 80% DOD, ensuring long-term reliability and reduced lifecycle costs.</p>
+      <AnimatedContentWrapper>
+        {/* Content Section */}
+        <section className="py-20 bg-white">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center">
+              <ScrollAnimate animation="smoothReveal" delay={200}>
+                <h2 className="text-3xl md:text-5xl font-bold text-green-700 mb-8 tracking-tight">ION Green Energy Solutions</h2>
+              </ScrollAnimate>
+              <div className="space-y-6">
+                <ScrollAnimate animation="fadeInUpElegant" delay={400}>
+                  <p className="text-gray-700 text-lg md:text-xl leading-relaxed">
+                    {product?.description || "ION Green advanced battery energy storage systems provide safe, efficient, and sustainable power for residential, commercial, and industrial applications. Systems are designed for high reliability, long cycle life, and intelligent energy management."}
+                  </p>
+                </ScrollAnimate>
+                <ScrollAnimate animation="fadeInUpElegant" delay={600}>
+                  <p className="text-gray-700 text-lg md:text-xl leading-relaxed">
+                    Global presence in 100+ countries with dedicated 24/7 technical support, performance optimization, and lifecycle services. From consultation to commissioning and maintenance, our experts partner with you at every step.
+                  </p>
+                </ScrollAnimate>
+                <ScrollAnimate animation="fadeInUpElegant" delay={800}>
+                  <p className="text-gray-700 text-lg md:text-xl leading-relaxed font-medium text-green-600">
+                    Choose ION Green for scalable, eco‑friendly solutions that reduce costs, enhance resilience, and accelerate sustainability goals.
+                  </p>
+                </ScrollAnimate>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section className="py-12 bg-white">
-        <div className="max-w-6xl mx-auto px-4 md:px-6">
-          <div className="flex flex-col gap-8 items-center">
-            <div className="relative w-full h-80 rounded-xl overflow-hidden shadow">
-              <Image
-                src={brochureUrl}
-                alt="ION Green System"
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              />
-            </div>
-            <div className="w-full">
-              <h3 className="text-2xl font-bold text-slate-900 mb-4">Use Cases</h3>
-              <ul className="space-y-2 text-slate-700">
-                <li>Residential backup and self‑consumption</li>
-                <li>Commercial peak shaving and bill optimization</li>
-                <li>Industrial reliability and microgrid integration</li>
-                <li>Utility‑scale renewable integration and grid services</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-16 bg-gradient-to-br from-green-50 to-blue-50">
-        <div className="max-w-6xl mx-auto px-4 md:px-6">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-slate-900 mb-4">Solar Integration Solutions</h2>
-            <p className="text-lg text-slate-600 max-w-3xl mx-auto">
-              ION Green energy storage systems are perfectly designed to work with solar photovoltaic systems, creating complete renewable energy solutions that maximize efficiency and reliability.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="bg-white rounded-xl p-6 shadow-lg border border-slate-200">
-              <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center mb-4">
-                <svg className="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold text-slate-900 mb-3">Solar PV Integration</h3>
-              <p className="text-slate-600">Seamlessly connects with solar panels to store excess energy generated during peak sunlight hours for use during evening or cloudy periods.</p>
-            </div>
-
-            <div className="bg-white rounded-xl p-6 shadow-lg border border-slate-200">
-              <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-4">
-                <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold text-slate-900 mb-3">Hybrid Inverter Compatibility</h3>
-              <p className="text-slate-600">Works perfectly with hybrid inverters to create all-in-one solar-plus-storage systems that optimize energy flow and grid interaction.</p>
-            </div>
-
-            <div className="bg-white rounded-xl p-6 shadow-lg border border-slate-200">
-              <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-4">
-                <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold text-slate-900 mb-3">Net Metering Optimization</h3>
-              <p className="text-slate-600">Maximizes net metering benefits by storing excess solar energy instead of exporting it, reducing electricity bills and increasing ROI.</p>
-            </div>
-
-            <div className="bg-white rounded-xl p-6 shadow-lg border border-slate-200">
-              <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mb-4">
-                <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold text-slate-900 mb-3">Off-Grid Independence</h3>
-              <p className="text-slate-600">Enables complete energy independence by combining solar generation with battery storage for reliable power during grid outages.</p>
-            </div>
-
-            <div className="bg-white rounded-xl p-6 shadow-lg border border-slate-200">
-              <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mb-4">
-                <svg className="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold text-slate-900 mb-3">Smart Energy Management</h3>
-              <p className="text-slate-600">Advanced algorithms predict solar generation patterns and optimize battery charging/discharging for maximum system efficiency.</p>
-            </div>
-
-            <div className="bg-white rounded-xl p-6 shadow-lg border border-slate-200">
-              <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mb-4">
-                <svg className="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold text-slate-900 mb-3">Performance Analytics</h3>
-              <p className="text-slate-600">Comprehensive monitoring and analytics provide insights into solar energy utilization, battery performance, and system optimization.</p>
+        {/* Features Section */}
+        <section className="py-24 bg-slate-50">
+          <div className="max-w-7xl mx-auto px-4 md:px-6">
+            <ScrollAnimate animation="smoothReveal" className="mb-16">
+              <h2 className="text-4xl md:text-5xl font-bold text-center text-slate-900 tracking-tight">ION Green Key Features</h2>
+            </ScrollAnimate>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[
+                { title: "High Efficiency", desc: "Optimized charge/discharge for maximum round‑trip efficiency and lower energy costs." },
+                { title: "Safe Chemistry", desc: "LiFePO₄ based systems with advanced BMS, thermal protection, and certifications." },
+                { title: "Scalable & Modular", desc: "Modular architecture enables smooth expansion from kWh to multi‑MWh deployments." },
+                { title: "Solar Integration", desc: "Seamlessly integrates with solar PV systems for maximum renewable energy utilization and grid independence." },
+                { title: "Smart Energy Management", desc: "Advanced EMS optimizes energy flow between solar generation, battery storage, and grid for peak performance." },
+                { title: "Long Cycle Life", desc: "Designed for 6000+ cycles with 80% DOD, ensuring long-term reliability and reduced lifecycle costs." }
+              ].map((feature, idx) => (
+                <ScrollAnimate
+                  key={idx}
+                  animation="scaleInBounce"
+                  delay={100 * idx}
+                  className="rounded-2xl bg-white p-8 border border-slate-100 shadow-[0_10px_40px_rgba(0,0,0,0.03)] hover:shadow-[0_20px_60px_rgba(0,0,0,0.08)] transition-all duration-500"
+                >
+                  <h3 className="text-2xl font-bold text-slate-900 mb-4">{feature.title}</h3>
+                  <p className="text-slate-600 leading-relaxed text-lg">{feature.desc}</p>
+                </ScrollAnimate>
+              ))}
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section className="py-16 bg-slate-50">
-        <div className="max-w-6xl mx-auto px-4 md:px-6">
-          <h2 className="text-3xl font-bold text-slate-900 mb-8">Technical Specifications</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-            <div className="relative w-full h-96 rounded-xl overflow-hidden border border-slate-200 bg-white">
-              <Image
-                src={brochureUrl}
-                alt="Technical datasheet"
-                fill
-                className="object-contain p-4"
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              />
+        {/* Use Cases Section */}
+        <section className="py-24 bg-white overflow-hidden">
+          <div className="max-w-7xl mx-auto px-4 md:px-6">
+            <div className="grid lg:grid-cols-2 gap-16 items-center">
+              <ScrollAnimate animation="slideInLeftSmooth">
+                <div className="relative aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl">
+                  <Image
+                    src={brochureUrl}
+                    alt="ION Green System"
+                    fill
+                    className="object-cover"
+                    sizes="50vw"
+                  />
+                </div>
+              </ScrollAnimate>
+              <div className="space-y-8">
+                <ScrollAnimate animation="fadeInUpElegant">
+                  <h3 className="text-4xl font-bold text-slate-900 tracking-tight">Enterprise Use Cases</h3>
+                </ScrollAnimate>
+                <div className="space-y-4">
+                  {[
+                    "Residential backup and self‑consumption",
+                    "Commercial peak shaving and bill optimization",
+                    "Industrial reliability and microgrid integration",
+                    "Utility‑scale renewable integration and grid services"
+                  ].map((item, idx) => (
+                    <ScrollAnimate key={idx} animation="fadeInUpElegant" delay={100 * idx}>
+                      <div className="flex items-center gap-4 bg-slate-50 p-5 rounded-2xl border border-slate-100 group transition-all hover:bg-green-50">
+                        <div className="w-10 h-10 rounded-full bg-green-100 text-green-600 flex items-center justify-center font-bold">
+                          {idx + 1}
+                        </div>
+                        <span className="text-lg font-semibold text-slate-800">{item}</span>
+                      </div>
+                    </ScrollAnimate>
+                  ))}
+                </div>
+              </div>
             </div>
-            <div className="bg-white border border-slate-200 rounded-xl p-6">
-              <dl className="divide-y divide-slate-200">
-                {specs.map((s, i) => (
-                  <div key={i} className="py-3 grid grid-cols-3 gap-4">
-                    <dt className="text-slate-600 font-medium">{s.label}</dt>
-                    <dd className="col-span-2 text-slate-900">{s.value}</dd>
+          </div>
+        </section>
+
+        {/* Tech Cards Grid */}
+        <section className="py-24 bg-gradient-to-b from-white to-slate-50">
+          <div className="max-w-7xl mx-auto px-4 md:px-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[
+                { title: "Solar PV Integration", icon: "☀️", color: "yellow", desc: "Seamlessly connects with solar panels to store excess energy generated during peak sunlight hours." },
+                { title: "Hybrid Inverter Compatibility", icon: "⚡", color: "blue", desc: "Works perfectly with hybrid inverters to create all-in-one solar-plus-storage systems." },
+                { title: "Net Metering Optimization", icon: "📊", color: "green", desc: "Maximizes net metering benefits by storing excess solar energy instead of exporting it." },
+                { title: "Off-Grid Independence", icon: "🏠", color: "purple", desc: "Enables complete energy independence by combining solar generation with battery storage." },
+                { title: "Smart Energy Management", icon: "🧠", color: "orange", desc: "Advanced algorithms predict solar generation patterns and optimize battery charging." },
+                { title: "Performance Analytics", icon: "📈", color: "red", desc: "Comprehensive monitoring and analytics provide insights into solar energy utilization." }
+              ].map((card, idx) => (
+                <ScrollAnimate
+                  key={idx}
+                  animation="scaleInBounce"
+                  delay={100 * idx}
+                  className="bg-white rounded-3xl p-8 shadow-[0_10px_40px_rgba(0,0,0,0.03)] border border-slate-100 group hover:border-green-100 transition-all duration-500"
+                >
+                  <div className={`w-16 h-16 bg-${card.color}-50 rounded-2xl flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform duration-500`}>
+                    {card.icon}
                   </div>
-                ))}
-              </dl>
-              <div className="mt-6 flex gap-3">
-                <a
-                  href={brochureUrl}
-                  download
-                  className="px-4 py-2 bg-orange-600 text-white rounded-md hover:bg-orange-700 transition-colors text-sm font-medium"
-                >
-                  Download Datasheet
-                </a>
-                <Link
-                  href="/contact"
-                  className="px-4 py-2 bg-white text-green-600 border border-green-600 rounded-md hover:bg-green-50 transition-colors text-sm font-medium"
-                >
-                  Contact Sales
-                </Link>
-              </div>
+                  <h3 className="text-2xl font-bold text-slate-900 mb-4">{card.title}</h3>
+                  <p className="text-slate-600 leading-relaxed">{card.desc}</p>
+                </ScrollAnimate>
+              ))}
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+
+        {/* Technical Data Section */}
+        <section className="py-24 bg-white">
+          <div className="max-w-7xl mx-auto px-4 md:px-6">
+            <ScrollAnimate animation="smoothReveal" className="mb-16">
+              <h2 className="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight">Technical Specifications</h2>
+            </ScrollAnimate>
+            <div className="grid lg:grid-cols-2 gap-16 items-start">
+              <ScrollAnimate animation="slideInLeftSmooth">
+                <div className="relative aspect-square rounded-3xl overflow-hidden border border-slate-200 bg-slate-50 group">
+                  <Image
+                    src={brochureUrl}
+                    alt="Technical datasheet"
+                    fill
+                    className="object-contain p-12 group-hover:scale-110 transition-transform duration-700"
+                    sizes="50vw"
+                  />
+                </div>
+              </ScrollAnimate>
+              <ScrollAnimate animation="slideInRightSmooth" className="bg-slate-50 border border-slate-200 rounded-3xl p-8 md:p-12 shadow-inner">
+                <dl className="divide-y divide-slate-200">
+                  {specs.map((s, i) => (
+                    <div key={i} className="py-5 grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-4 transition-colors hover:bg-white/50 px-2 rounded-lg">
+                      <dt className="text-slate-500 font-bold uppercase tracking-wider text-xs">{s.label}</dt>
+                      <dd className="md:col-span-2 text-slate-900 font-semibold text-lg">{s.value}</dd>
+                    </div>
+                  ))}
+                </dl>
+                <div className="mt-10 flex flex-col sm:flex-row gap-4">
+                  <a
+                    href={brochureUrl}
+                    download
+                    className="flex-1 px-8 py-4 bg-green-600 text-white rounded-2xl hover:bg-green-700 transition-all transform hover:scale-105 font-bold text-center shadow-lg shadow-green-200"
+                  >
+                    Download Datasheet
+                  </a>
+                  <Link
+                    href="/contact"
+                    className="flex-1 px-8 py-4 bg-white text-green-700 border-2 border-green-600 rounded-2xl hover:bg-green-50 transition-all transform hover:scale-105 font-bold text-center"
+                  >
+                    Contact Sales
+                  </Link>
+                </div>
+              </ScrollAnimate>
+            </div>
+          </div>
+        </section>
+
+        {/* Custom CTA Section */}
+        <section className="py-24 bg-slate-900 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-1/2 h-full bg-green-600/10 blur-[120px] rounded-full translate-x-1/2"></div>
+          <div className="max-w-4xl mx-auto px-4 text-center relative z-10">
+            <ScrollAnimate animation="fadeInUpElegant">
+              <h2 className="text-4xl md:text-6xl font-bold text-white mb-8 tracking-tight">Ready to Power Your Innovation?</h2>
+            </ScrollAnimate>
+            <ScrollAnimate animation="fadeInUpElegant" delay={200}>
+              <p className="text-xl text-slate-400 mb-12 leading-relaxed">
+                Join 100+ countries already utilizing ION Green's advanced BESS solutions. Our engineers are ready to design your perfect energy future.
+              </p>
+            </ScrollAnimate>
+            <ScrollAnimate animation="scaleInBounce" delay={400}>
+              <Link
+                href="/contact"
+                className="inline-block px-12 py-5 bg-green-500 text-white rounded-full hover:bg-green-400 transition-all transform hover:scale-110 font-bold text-xl shadow-2xl shadow-green-500/20"
+              >
+                Start Your Journey
+              </Link>
+            </ScrollAnimate>
+          </div>
+        </section>
+      </AnimatedContentWrapper>
     </div>
   );
 }

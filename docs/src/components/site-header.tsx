@@ -40,7 +40,7 @@ export function SiteHeader() {
       <div className="mx-auto flex max-w-[1600px] items-center justify-between px-4 md:px-6 lg:px-10 h-14 md:h-16">
         <Link href="/" className="flex items-center gap-2 transition-all duration-300 hover:scale-105 group">
           <Image
-            src="/logo_7.png"
+            src="/logo_10.png"
             alt="Logo"
             width={210}
             height={85}
@@ -102,6 +102,9 @@ export function SiteHeader() {
   );
 }
 
+import { ChevronRight, ChevronDown, Menu, X, Sparkles } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+
 interface MobileMenuProps {
   navItems: NavItem[];
 }
@@ -116,7 +119,7 @@ function MobileMenu({ navItems }: MobileMenuProps) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
-      setExpandedItem(null); // Reset expanded items when menu closes
+      setExpandedItem(null);
     }
     return () => {
       document.body.style.overflow = 'unset';
@@ -132,93 +135,147 @@ function MobileMenu({ navItems }: MobileMenuProps) {
       <button
         type="button"
         onClick={() => setOpen((prev) => !prev)}
-        className="flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-all duration-300 focus:outline-none"
+        className="relative z-[1001] flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 backdrop-blur-md border border-white/20 text-slate-700 hover:bg-white/20 transition-all duration-300 focus:outline-none shadow-sm"
         aria-expanded={open}
         aria-label={open ? "Close menu" : "Open menu"}
       >
-        {open ? (
-          <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        ) : (
-          <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-        )}
+        <AnimatePresence mode="wait">
+          {open ? (
+            <motion.div
+              key="close"
+              initial={{ rotate: -90, opacity: 0 }}
+              animate={{ rotate: 0, opacity: 1 }}
+              exit={{ rotate: 90, opacity: 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              <X className="h-6 w-6" />
+            </motion.div>
+          ) : (
+            <motion.div
+              key="menu"
+              initial={{ rotate: 90, opacity: 0 }}
+              animate={{ rotate: 0, opacity: 1 }}
+              exit={{ rotate: -90, opacity: 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              <Menu className="h-6 w-6" />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </button>
-      {open && (
-        <div className="absolute inset-x-0 top-full border-b border-slate-200 bg-white/95 backdrop-blur-md shadow-xl px-4 py-6 max-h-[calc(100vh-3.5rem)] overflow-y-auto">
-          <div className="flex flex-col gap-2">
-            {navItems.map((item) => (
-              <div key={item.href} className="w-full">
-                {item.items ? (
-                  <div className="space-y-1">
-                    <button
-                      onClick={() => toggleExpand(item.label)}
-                      className={cn(
-                        "flex w-full items-center justify-between px-4 py-3 text-sm font-semibold rounded-lg transition-all duration-300 no-underline",
-                        expandedItem === item.label ? "text-green-600 bg-green-50" : "text-slate-900 hover:bg-slate-50"
-                      )}
+
+      <AnimatePresence>
+        {open && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setOpen(false)}
+              className="fixed inset-0 z-[999] bg-slate-900/40 backdrop-blur-sm"
+            />
+
+            {/* Menu Panel */}
+            <motion.div
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              className="fixed inset-y-0 right-0 z-[1000] w-[85%] max-w-sm bg-white shadow-2xl flex flex-col pt-20"
+            >
+              <div className="flex-1 overflow-y-auto px-6 py-4">
+                <nav className="flex flex-col gap-2">
+                  {navItems.map((item, idx) => (
+                    <motion.div
+                      key={item.href}
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: idx * 0.05 }}
                     >
-                      <span>{item.label}</span>
-                      <svg
-                        className={`h-4 w-4 transform transition-transform duration-300 ${expandedItem === item.label ? 'rotate-180' : ''}`}
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                      </svg>
-                    </button>
-                    {expandedItem === item.label && (
-                      <div className="ml-4 mt-1 space-y-1 border-l border-slate-200 pl-4 animate-in slide-in-from-top-2 duration-300">
-                        {item.items.map((subItem) => (
-                          <Link
-                            key={subItem.href}
-                            href={subItem.href}
+                      {item.items ? (
+                        <div className="space-y-1">
+                          <button
+                            onClick={() => toggleExpand(item.label)}
                             className={cn(
-                              "block w-full rounded-lg px-4 py-3 text-sm transition-all duration-300 hover:bg-slate-50 hover:translate-x-1 no-underline",
-                              pathname === subItem.href ? "text-green-600 bg-green-50 font-semibold" : "text-slate-700 hover:text-green-600"
+                              "flex w-full items-center justify-between px-4 py-4 text-base font-bold rounded-xl transition-all duration-300 no-underline",
+                              expandedItem === item.label ? "text-green-600 bg-green-50/50" : "text-slate-900 hover:bg-slate-50"
                             )}
-                            onClick={() => setOpen(false)}
                           >
-                            <div className="flex items-center justify-between">
-                              <span>{subItem.label}</span>
-                              <svg className="w-4 h-4 text-slate-400 group-hover:text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                              </svg>
-                            </div>
-                          </Link>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  <Link
-                    href={item.href}
-                    className={cn(
-                      "block w-full rounded-lg px-4 py-3 text-sm font-semibold transition-all duration-300 hover:bg-slate-50 hover:translate-x-1 no-underline",
-                      pathname === item.href ? "text-green-600 bg-green-50" : "text-slate-700 hover:text-green-600"
-                    )}
-                    onClick={() => setOpen(false)}
-                  >
-                    {item.label}
-                  </Link>
-                )}
+                            <span>{item.label}</span>
+                            <ChevronDown
+                              className={cn(
+                                "h-5 w-5 transform transition-transform duration-300",
+                                expandedItem === item.label ? 'rotate-180 text-green-600' : 'text-slate-400'
+                              )}
+                            />
+                          </button>
+
+                          <AnimatePresence>
+                            {expandedItem === item.label && (
+                              <motion.div
+                                initial={{ height: 0, opacity: 0 }}
+                                animate={{ height: "auto", opacity: 1 }}
+                                exit={{ height: 0, opacity: 0 }}
+                                transition={{ duration: 0.3, ease: "easeInOut" }}
+                                className="overflow-hidden"
+                              >
+                                <div className="ml-4 mt-1 space-y-1 border-l-2 border-green-100 pl-4 py-2">
+                                  {item.items.map((subItem) => (
+                                    <Link
+                                      key={subItem.href}
+                                      href={subItem.href}
+                                      className={cn(
+                                        "block w-full rounded-lg px-4 py-3 text-sm transition-all duration-300 hover:bg-green-50 hover:translate-x-1 no-underline",
+                                        pathname === subItem.href ? "text-green-600 bg-green-50 font-bold" : "text-slate-600 hover:text-green-600"
+                                      )}
+                                      onClick={() => setOpen(false)}
+                                    >
+                                      <div className="flex items-center justify-between">
+                                        <span>{subItem.label}</span>
+                                        <ChevronRight className="w-4 h-4 text-slate-300" />
+                                      </div>
+                                    </Link>
+                                  ))}
+                                </div>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </div>
+                      ) : (
+                        <Link
+                          href={item.href}
+                          className={cn(
+                            "block w-full rounded-xl px-4 py-4 text-base font-bold transition-all duration-300 hover:bg-slate-50 no-underline border border-transparent",
+                            pathname === item.href ? "text-green-600 bg-green-50 border-green-100" : "text-slate-900 hover:text-green-600"
+                          )}
+                          onClick={() => setOpen(false)}
+                        >
+                          {item.label}
+                        </Link>
+                      )}
+                    </motion.div>
+                  ))}
+                </nav>
               </div>
-            ))}
-            <div className="mt-6 pt-4 border-t border-slate-200">
-              <Link
-                href="/contact"
-                className="block w-full rounded-lg bg-gradient-to-r from-green-600 to-green-700 px-4 py-3 text-center text-sm font-semibold text-white shadow-lg hover:shadow-xl hover:from-green-700 hover:to-green-800 transition-all duration-300 hover:scale-105 no-underline"
-                onClick={() => setOpen(false)}
-              >
-                Contact Us
-              </Link>
-            </div>
-          </div>
-        </div>
-      )}
+
+              <div className="p-6 border-t border-slate-100 bg-slate-50/50 mt-auto">
+                <Link
+                  href="/contact"
+                  className="flex items-center justify-center gap-2 w-full rounded-xl bg-green-600 px-4 py-4 text-center text-sm font-bold text-white shadow-lg shadow-green-200 hover:bg-green-700 transition-all active:scale-[0.98] no-underline"
+                  onClick={() => setOpen(false)}
+                >
+                  Contact Us
+                  <ChevronRight className="w-4 h-4" />
+                </Link>
+                <p className="text-[10px] text-center text-slate-400 mt-4 font-bold uppercase tracking-widest">
+                  ION Green • Sustainable Energy
+                </p>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

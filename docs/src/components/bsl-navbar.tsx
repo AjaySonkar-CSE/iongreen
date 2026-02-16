@@ -79,7 +79,7 @@ export function BSLNavbar() {
           <div className="flex items-center">
             <Link href="/" className="block h-20 w-auto transition-all duration-300 hover:scale-105">
               <Image
-                src="/logo_7.png"
+                src="/logo_10.png"
                 alt="ION Green Logo"
                 width={210}
                 height={85}

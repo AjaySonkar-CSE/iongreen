@@ -55,7 +55,7 @@ function pickDeterministicImage(key: string) {
 const productHeroBackgrounds: Record<string, string> = {
   "energy-storage-system": "/pro2.jpg",
   "hybrid-solar-system": "/data2.jpg.jpg",
-  "hydrogen-pules": "/pro1.jpg",
+  "hydrogen-pules": "/Hydrogen_Pules_1.png",
   "solar-solution": "/images/ai-solar-battery-installation.svg",
   "ion-green-energy-storage": "/1/ion1.png",
   "hybrid-energy-storage": "/hybrid_solar_system.jpg",
@@ -410,7 +410,7 @@ export default async function ProductCategoryPage(props: ProductPageProps) {
       notFound();
     }
 
-    const category = decodeURIComponent(params.category);
+    const category = decodeURIComponent(params.category).toLowerCase();
 
     // Get site content
     const content = getSiteContent();
@@ -536,15 +536,13 @@ export default async function ProductCategoryPage(props: ProductPageProps) {
       <div className="min-h-screen bg-transparent">
         {/* Hero Section with Background Image - Fixed like home page */}
         <section className="fixed inset-0 h-screen w-full overflow-hidden z-0">
-          <Image
-            src={dbProducts.length > 0 && dbProducts[0].image_url ? dbProducts[0].image_url : "/image1.png"}
+          <img
+            src={category === 'hydrogen-pules' ? '/Hydrogen_Pules_1.png' : (productHeroBackgrounds[category] || (dbProducts.length > 0 && dbProducts[0].image_url ? dbProducts[0].image_url : "/image1.png"))}
             alt={product.title}
-            fill
-            className="object-cover"
-            priority
-            sizes="100vw"
+            className="absolute inset-0 w-full h-full object-cover"
+            style={{ width: '100%', height: '100%' }}
           />
-          <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
             <div className="text-center text-white px-4">
               <ScrollAnimate animation="fadeInUpElegant" delay={200}>
                 <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">{product.title}</h1>
