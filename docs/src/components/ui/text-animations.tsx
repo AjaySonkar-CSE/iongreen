@@ -25,39 +25,34 @@ export function StaggeredText({
   const ref = useRef(null);
   const isInView = useInView(ref, { once, amount: 0.5 });
 
-  const textArray = type === "word" ? text.split(" ") : text.split("");
+  const words = text.split(" ");
+  let globalCharIndex = 0;
 
-  const container: Variants = {
-    hidden: { opacity: 0 },
-    visible: (i = 1) => ({
-      opacity: 1,
-      transition: { staggerChildren: stagger, delayChildren: delay * i },
-    }),
-  };
-
-  const child: Variants = {
-    visible: {
+  const childVariants: Variants = {
+    visible: (i: number) => ({
       opacity: 1,
       y: 0,
       transition: {
         duration: duration,
-        ease: [0.215, 0.61, 0.355, 1], // expoOut
+        delay: delay + (i * stagger),
+        ease: [0.215, 0.61, 0.355, 1],
       },
-    },
+    }),
     hidden: {
       opacity: 0,
       y: 40,
     },
   };
 
-  const maskChild: Variants = {
-    visible: {
+  const maskChildVariants: Variants = {
+    visible: (i: number) => ({
       y: 0,
       transition: {
         duration: 0.8,
+        delay: delay + (i * stagger),
         ease: [0.16, 1, 0.3, 1],
       },
-    },
+    }),
     hidden: {
       y: "110%",
     },
@@ -66,20 +61,42 @@ export function StaggeredText({
   return (
     <motion.span
       ref={ref}
-      style={{ display: "inline-block", overflow: type === "mask" ? "hidden" : "visible" }}
-      variants={container}
+      style={{ display: "inline-block" }}
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
       className={className}
     >
-      {textArray.map((item, index) => (
-        <span key={index} style={{ display: "inline-block", overflow: "hidden", verticalAlign: "bottom" }}>
-          <motion.span
-            variants={type === "mask" ? maskChild : child}
-            style={{ display: "inline-block" }}
-          >
-            {item === " " ? "\u00A0" : item}
-          </motion.span>
+      {words.map((word, wordIndex) => (
+        <span
+          key={wordIndex}
+          className="inline-block whitespace-nowrap"
+          style={{ verticalAlign: "bottom" }}
+        >
+          {word.split("").map((char, charIndex) => {
+            const i = globalCharIndex++;
+            return (
+              <span
+                key={charIndex}
+                style={{
+                  display: "inline-block",
+                  overflow: type === "mask" ? "hidden" : "visible",
+                  verticalAlign: "bottom"
+                }}
+              >
+                <motion.span
+                  custom={i}
+                  variants={type === "mask" ? maskChildVariants : childVariants}
+                  style={{ display: "inline-block" }}
+                >
+                  {char}
+                </motion.span>
+              </span>
+            );
+          })}
+          {/* Add a space character after the word, unless it's the last word */}
+          {wordIndex < words.length - 1 && (
+            <span className="inline-block">&nbsp;</span>
+          )}
         </span>
       ))}
     </motion.span>

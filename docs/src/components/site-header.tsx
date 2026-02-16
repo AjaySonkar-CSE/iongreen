@@ -32,9 +32,9 @@ export function SiteHeader() {
 
   return (
     <header className={cn(
-      "fixed top-0 left-0 right-0 z-[1000] transition-all duration-500 overflow-visible",
+      "fixed top-0 left-0 right-0 z-[9999] transition-all duration-500 overflow-visible",
       isScrolled
-        ? "bg-white/95 backdrop-blur-md shadow-lg border-b border-gray-100/50"
+        ? "bg-white shadow-xl border-b border-gray-100"
         : "bg-transparent border-transparent"
     )}>
       <div className="mx-auto flex max-w-[1600px] items-center justify-between px-4 md:px-6 lg:px-10 h-14 md:h-16">
@@ -135,7 +135,7 @@ function MobileMenu({ navItems }: MobileMenuProps) {
       <button
         type="button"
         onClick={() => setOpen((prev) => !prev)}
-        className="relative z-[1001] flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 backdrop-blur-md border border-white/20 text-slate-700 hover:bg-white/20 transition-all duration-300 focus:outline-none shadow-sm"
+        className="relative z-[10005] flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 backdrop-blur-md border border-white/20 text-slate-700 hover:bg-white/20 transition-all duration-300 focus:outline-none shadow-md"
         aria-expanded={open}
         aria-label={open ? "Close menu" : "Open menu"}
       >
@@ -173,7 +173,7 @@ function MobileMenu({ navItems }: MobileMenuProps) {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setOpen(false)}
-              className="fixed inset-0 z-[999] bg-slate-900/40 backdrop-blur-sm"
+              className="fixed inset-0 z-[10000] bg-slate-950/60 backdrop-blur-md"
             />
 
             {/* Menu Panel */}
@@ -182,7 +182,7 @@ function MobileMenu({ navItems }: MobileMenuProps) {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="fixed inset-y-0 right-0 z-[1000] w-[85%] max-w-sm bg-white shadow-2xl flex flex-col pt-20"
+              className="fixed inset-y-0 right-0 z-[10001] w-[85%] max-w-sm bg-white shadow-[0_0_50px_rgba(0,0,0,0.3)] flex flex-col pt-24"
             >
               <div className="flex-1 overflow-y-auto px-6 py-4">
                 <nav className="flex flex-col gap-2">

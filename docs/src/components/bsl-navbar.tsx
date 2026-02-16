@@ -75,15 +75,15 @@ export function BSLNavbar() {
   return (
     <header className="bg-white/95 backdrop-blur-sm shadow-sm sticky top-0 z-50 border-b border-gray-200/50 overflow-visible">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-label="Global">
-        <div className="flex justify-between h-14">
+        <div className="flex justify-between items-center h-16 md:h-20 transition-all duration-300">
           <div className="flex items-center">
-            <Link href="/" className="block h-20 w-auto transition-all duration-300 hover:scale-105">
+            <Link href="/" className="flex items-center transition-all duration-300 hover:scale-105 group">
               <Image
                 src="/logo_10.png"
                 alt="ION Green Logo"
                 width={210}
                 height={85}
-                className="h-24 w-auto object-contain object-left overflow-visible scale-110"
+                className="h-10 md:h-14 lg:h-16 w-auto object-contain object-left"
                 priority
               />
             </Link>

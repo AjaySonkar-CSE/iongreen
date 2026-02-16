@@ -251,7 +251,7 @@ export function Hero({
       </div>
 
       {isHomePage && (
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 animate-bounce">
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 animate-bounce hidden md:block">
           <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center pt-2">
             <div className="w-1 h-2 bg-white rounded-full animate-scroll" />
           </div>
