@@ -8,7 +8,13 @@ import { ParallaxWrapper } from "@/components/providers/parallax-provider";
 import { SmoothScrollProvider } from "@/components/providers/smooth-scroll-provider";
 import Preloader from "@/components/preloader";
 
-export function LayoutWrapper({ children }: { children: React.ReactNode }) {
+export function LayoutWrapper({
+  children,
+  initialNavbarData
+}: {
+  children: React.ReactNode;
+  initialNavbarData?: any;
+}) {
   const pathname = usePathname();
   const isAdmin = pathname?.startsWith("/admin");
 
@@ -21,7 +27,7 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
       <Preloader />
       <SmoothScrollProvider>
         <ParallaxWrapper>
-          <SiteHeader />
+          <SiteHeader initialNavbarData={initialNavbarData} />
           <main>
             {children}
             <SiteFooter />

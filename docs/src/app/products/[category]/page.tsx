@@ -401,40 +401,44 @@ const productDetails: Record<string, {
 import { AnimatedContentWrapper } from "@/components/client/animated-content-wrapper";
 
 export default async function ProductCategoryPage(props: ProductPageProps) {
-  const params = await props.params;  // ← yahi important fix hai
+  const params = await props.params;
 
   try {
-    // Validate and decode the category from URL
     if (!params?.category) {
       console.error('No category parameter provided');
       notFound();
     }
 
-    const category = decodeURIComponent(params.category).toLowerCase();
+    const slug = params.category;
 
-    // Get site content
+    // 1. Try to fetch from database first by slug
+    let dbProduct = await dbService.getProductBySlug(slug);
+
+    // 2. Get site content for fallback
     const content = getSiteContent();
-
-    if (!content?.products) {
-      console.error('No products found in content');
-      notFound();
-    }
-
-    // Safely find the product category by URL slug
-    const product = content.products?.find((p: ProductCategory) => {
+    const staticProduct = content.products?.find((p: ProductCategory) => {
       const productSlug = p.title.toLowerCase()
-        .replace(/[^a-z0-9\s]+/g, '')  // Keep only alphanumeric and spaces
-        .replace(/\s+/g, '-')           // Replace spaces with hyphens
-        .replace(/-+/g, '-')            // Replace multiple hyphens with single
-        .replace(/^-+|-+$/g, '');       // Remove leading/trailing hyphens
-
-      return productSlug === category;
+        .replace(/[^a-z0-9\s]+/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .replace(/^-+|-+$/g, '');
+      return productSlug === slug;
     });
 
-    if (!product) {
-      console.warn(`Product not found for category: ${category}`);
+    if (!dbProduct && !staticProduct) {
+      console.warn(`Product not found for slug: ${slug}`);
       notFound();
     }
+
+    // Merge or fallback logic
+    const category = slug;
+    const product = {
+      title: dbProduct?.name || staticProduct?.title || '',
+      description: dbProduct?.description || staticProduct?.description || '',
+      range: staticProduct?.range || 'Advanced Solution',
+      features: staticProduct?.features || [],
+      image: dbProduct?.image_url || staticProduct?.image || ''
+    };
 
     // Get detailed content for this product
     const productKey = category;
@@ -447,25 +451,14 @@ export default async function ProductCategoryPage(props: ProductPageProps) {
 
     let keyFeatures = productKeyFeatures[productKey];
 
-    let dbProducts: Product[] = [];
-    try {
-      dbProducts = await dbService.getProducts(category);
-    } catch (err) {
-      console.error("Failed to fetch products from database:", err);
-    }
-
-    // Override with DB data if available
-    if (dbProducts.length > 0) {
-      const dbProduct = dbProducts[0];
-
+    // If we have a database product, populate details from it
+    if (dbProduct) {
       const dbFeatures = parseJsonField(dbProduct.features, []);
       const dbSpecifications = parseJsonField(dbProduct.specifications, []);
       const dbApplications = parseJsonField(dbProduct.applications, []);
       const dbBenefits = parseJsonField(dbProduct.benefits, []);
 
-      // Handle features: they might be simple strings or objects
       if (dbFeatures && dbFeatures.length > 0) {
-        // Check structure of first item
         const firstItem = dbFeatures[0];
         let normalizedFeatures = [];
 
@@ -481,13 +474,11 @@ export default async function ProductCategoryPage(props: ProductPageProps) {
         keyFeatures = {
           title: dbProduct.name,
           features: normalizedFeatures,
-          useCases: keyFeatures?.useCases || [] // Keep static useCases if DB doesn't have them separately mapped yet
+          useCases: keyFeatures?.useCases || []
         };
       }
 
-      // Handle specifications
       if (dbSpecifications && dbSpecifications.length > 0) {
-        // Check if it's array of strings or objects
         if (typeof dbSpecifications[0] === 'string') {
           details.specifications = dbSpecifications.map((s: string) => {
             const parts = s.split(':');
@@ -498,26 +489,32 @@ export default async function ProductCategoryPage(props: ProductPageProps) {
         }
       }
 
-      // Handle applications
       if (dbApplications && dbApplications.length > 0) {
         details.applications = dbApplications;
       }
 
-      // Handle benefits
       if (dbBenefits && dbBenefits.length > 0) {
         details.benefits = dbBenefits;
       }
-
-      // Update product description if available in DB
-      if (dbProduct.description) {
-        product.description = dbProduct.description;
-      }
-
-      // Update title if available in DB
-      if (dbProduct.name) {
-        product.title = dbProduct.name;
-      }
     }
+
+    // Still fetch dbProducts for the "Available Products" section if it's a category match
+    // or just fetch featured products as related products
+    let relatedProducts: Product[] = [];
+    try {
+      // If dbProduct exists, fetch products in the same category
+      if (dbProduct?.category) {
+        relatedProducts = await dbService.getProducts(dbProduct.category);
+        // Exclude the current product from related products
+        relatedProducts = relatedProducts.filter(p => p.id !== dbProduct?.id);
+      }
+    } catch (err) {
+      console.error("Failed to fetch related products:", err);
+    }
+
+    // For backward compatibility with the template which uses dbProducts
+    const dbProducts = relatedProducts;
+
 
     let specData: { title?: string; description?: string; image_url?: string } | null = null;
     let appData: { title?: string; description?: string; icon_url?: string } | null = null;

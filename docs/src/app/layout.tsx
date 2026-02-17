@@ -32,16 +32,19 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+import { dbService } from "@/lib/db-service";
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const navbarData = await dbService.getNavbarData();
 
   return (
     <html lang="en" className={`${montserrat.variable} ${roboto.variable} font-sans`}>
       <body className="min-h-screen bg-background font-sans antialiased font-roboto">
-        <LayoutWrapper>
+        <LayoutWrapper initialNavbarData={navbarData}>
           {children}
         </LayoutWrapper>
       </body>

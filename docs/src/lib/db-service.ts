@@ -21,6 +21,8 @@ interface NavigationItem {
   id: number;
   label: string;
   href: string;
+  description: string | null;
+  image_url: string | null;
   parent_id: number | null;
   position: number;
   is_active: boolean;
@@ -1399,6 +1401,71 @@ export const dbService = {
     const pool = getDbPool();
     const [rows] = await pool.query('SELECT slug, updated_at FROM pages WHERE is_active = TRUE');
     return rows as Array<{ slug: string; updated_at: Date }>;
+  },
+
+  // Get dynamic navigation content for products and solutions
+  async getNavbarData() {
+    try {
+      // 1. Get main navigation from database
+      const dbNav = await this.getNavigation();
+
+      // 2. Get all active products and solutions
+      const products = await this.getProducts(undefined, 50, undefined);
+      const solutions = await this.getSolutions();
+
+      const productItems = products.map(p => ({
+        label: p.name && p.name.length > 40 ? p.name.substring(0, 40) + '...' : p.name,
+        href: `/products/${p.slug}`,
+        description: p.description && p.description.length > 80
+          ? p.description.substring(0, 80) + '...'
+          : p.description,
+        image: p.image_url
+      }));
+
+      const solutionItems = solutions.map(s => ({
+        label: s.title && s.title.length > 40 ? s.title.substring(0, 40) + '...' : s.title,
+        href: `/solutions/${s.slug}`,
+        description: s.summary && s.summary.length > 80
+          ? s.summary.substring(0, 80) + '...'
+          : s.summary,
+        image: s.image_url
+      }));
+
+      // If we have database navigation, use it and inject products/solutions
+      if (dbNav && dbNav.length > 0) {
+        return {
+          navItems: dbNav.map(item => {
+            let items = (item as any).children || [];
+            if (item.label === 'Products' && productItems.length > 0) items = productItems;
+            if (item.label === 'Solutions' && solutionItems.length > 0) items = solutionItems;
+
+            return {
+              label: item.label,
+              href: item.href,
+              description: (item as any).description,
+              image: (item as any).image_url,
+              items: items.length > 0 ? items.map((sub: any) => ({
+                label: sub.label || sub.name || sub.title,
+                href: sub.href || `/products/${sub.slug}`,
+                description: sub.description || sub.summary,
+                image: sub.image || sub.image_url
+              })) : undefined
+            };
+          }),
+          products: productItems,
+          solutions: solutionItems
+        };
+      }
+
+      // Fallback: return just the lists if no custom navigation defined
+      return {
+        products: productItems,
+        solutions: solutionItems
+      };
+    } catch (error) {
+      console.error('Error fetching navbar data:', error);
+      return null;
+    }
   }
 };
 

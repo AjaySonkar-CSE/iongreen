@@ -332,12 +332,24 @@ export async function ensureProductApplicationsTable() {
 // Migrate existing tables to add missing columns
 export async function migrateExistingTables() {
   const pool = getDbPool();
-  
+
   try {
     // Check and add missing columns to products table
     const [productColumns] = await pool.query('DESCRIBE products');
     const productColNames = (productColumns as any[]).map((c: any) => c.Field);
-    
+
+    if (!productColNames.includes('name')) {
+      await pool.query('ALTER TABLE products ADD COLUMN name VARCHAR(255) NOT NULL AFTER id');
+    }
+    if (!productColNames.includes('description')) {
+      await pool.query('ALTER TABLE products ADD COLUMN description TEXT AFTER slug');
+    }
+    if (!productColNames.includes('image_url')) {
+      await pool.query('ALTER TABLE products ADD COLUMN image_url VARCHAR(512) AFTER description');
+    }
+    if (!productColNames.includes('category')) {
+      await pool.query('ALTER TABLE products ADD COLUMN category VARCHAR(100) AFTER image_url');
+    }
     if (!productColNames.includes('features')) {
       await pool.query('ALTER TABLE products ADD COLUMN features JSON NULL AFTER category');
     }
@@ -353,18 +365,33 @@ export async function migrateExistingTables() {
     if (!productColNames.includes('price')) {
       await pool.query('ALTER TABLE products ADD COLUMN price DECIMAL(10,2) NULL AFTER benefits');
     }
-    
+    if (!productColNames.includes('is_featured')) {
+      await pool.query('ALTER TABLE products ADD COLUMN is_featured BOOLEAN DEFAULT false AFTER price');
+    }
+
+    // Check and add missing columns to navigation table
+    const [navColumns] = await pool.query('DESCRIBE navigation');
+    const navColNames = (navColumns as any[]).map((c: any) => c.Field);
+
+    if (!navColNames.includes('description')) {
+      await pool.query('ALTER TABLE navigation ADD COLUMN description VARCHAR(255) NULL AFTER href');
+    }
+    if (!navColNames.includes('image_url')) {
+      await pool.query('ALTER TABLE navigation ADD COLUMN image_url VARCHAR(512) NULL AFTER description');
+    }
+
     // Check and add missing columns to news table
     const [newsColumns] = await pool.query('DESCRIBE news');
     const newsColNames = (newsColumns as any[]).map((c: any) => c.Field);
-    
+
     if (!newsColNames.includes('is_active')) {
       await pool.query('ALTER TABLE news ADD COLUMN is_active BOOLEAN DEFAULT true AFTER is_published');
     }
-    
+
     console.log("Database migration completed successfully");
   } catch (error) {
     console.error("Migration error:", error);
     // Don't throw error, just log it
   }
 }
+

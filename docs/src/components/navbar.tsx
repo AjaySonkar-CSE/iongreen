@@ -127,14 +127,14 @@ export function Navbar() {
 
                 {item.items && (
                   <div
-                    className={`absolute left-0 mt-2 w-72 rounded-xl shadow-xl bg-white/95 backdrop-blur-sm ring-1 ring-black/5 py-3 z-10 transition-all duration-300 border border-gray-100/50 ${activeDropdown === item.label
+                    className={`absolute left-0 mt-2 w-72 rounded-xl shadow-xl bg-white/95 backdrop-blur-sm ring-1 ring-black/5 py-3 z-10 transition-all duration-300 border border-gray-100/50 max-h-[60vh] overflow-y-auto custom-scrollbar ${activeDropdown === item.label
                       ? 'opacity-100 translate-y-0 visible scale-100'
                       : 'opacity-0 -translate-y-3 invisible scale-95'
                       }`}
                     onMouseEnter={handleDropdownMouseEnter}
                     onMouseLeave={handleDropdownMouseLeave}
                   >
-                    <div className="px-4 py-2 border-b border-gray-100/50 mb-2">
+                    <div className="px-4 py-2 border-b border-gray-100/50 mb-2 flex-shrink-0">
                       <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
                         {item.description}
                       </p>
@@ -167,14 +167,14 @@ export function Navbar() {
                             </div>
                           )}
                           <div className="flex-1 min-w-0">
-                            <div className="flex items-center justify-between">
-                              <span className="font-medium">{subItem.label}</span>
+                            <div className="flex items-center justify-between overflow-hidden">
+                              <span className="font-medium truncate flex-1">{subItem.label}</span>
                               <svg className="w-4 h-4 text-gray-400 group-hover/subitem:text-green-500 group-hover/subitem:translate-x-1 transition-all duration-200 flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                               </svg>
                             </div>
                             {subItem.description && (
-                              <p className="text-xs text-gray-500 mt-1 group-hover/subitem:text-gray-600 transition-colors">
+                              <p className="text-xs text-gray-500 mt-1 group-hover/subitem:text-gray-600 transition-colors line-clamp-2">
                                 {subItem.description}
                               </p>
                             )}

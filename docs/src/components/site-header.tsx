@@ -15,11 +15,30 @@ interface NavItem {
   items?: NavItem[];
 }
 
-const { navItems } = getSiteContent();
+const { navItems: staticNavItems } = getSiteContent();
 
-export function SiteHeader() {
+export function SiteHeader({ initialNavbarData }: { initialNavbarData?: any }) {
   const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
+  const [navItems, setNavItems] = useState(staticNavItems);
+
+  useEffect(() => {
+    if (initialNavbarData) {
+      if (initialNavbarData.navItems) {
+        setNavItems(initialNavbarData.navItems);
+      } else {
+        setNavItems(staticNavItems.map(item => {
+          if (item.label === 'Products' && initialNavbarData.products) {
+            return { ...item, items: initialNavbarData.products };
+          }
+          if (item.label === 'Solutions' && initialNavbarData.solutions) {
+            return { ...item, items: initialNavbarData.solutions };
+          }
+          return item;
+        }));
+      }
+    }
+  }, [initialNavbarData]);
 
   useEffect(() => {
     const handleScroll = () => {

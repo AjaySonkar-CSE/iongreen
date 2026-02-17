@@ -104,15 +104,15 @@ export function NavDropdown({ item, isActive, isScrolled }: NavDropdownProps) {
               isMega ? "-left-48 w-[850px]" : "left-0 w-80"
             )}
           >
-            <div className="bg-white/98 backdrop-blur-xl rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] ring-1 ring-black/5 border border-green-50/50 overflow-hidden">
-              <div className="flex">
+            <div className="bg-white/98 backdrop-blur-xl rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] ring-1 ring-black/5 border border-green-50/50 overflow-hidden flex flex-col max-h-[80vh] pointer-events-auto">
+              <div className="flex flex-1 overflow-hidden min-h-0">
                 {/* Main Content Area */}
                 <div className={cn(
-                  "p-6",
-                  isMega ? "flex-1" : "w-full"
+                  "p-6 flex flex-col min-h-0 relative",
+                  isMega ? "flex-1" : "w-80"
                 )}>
                   {item.description && (
-                    <div className="flex items-center gap-2 mb-6 px-2">
+                    <div className="flex items-center gap-2 mb-6 px-2 flex-shrink-0">
                       <div className="w-8 h-8 rounded-lg bg-green-50 flex items-center justify-center">
                         <Sparkles className="w-4 h-4 text-green-600" />
                       </div>
@@ -126,9 +126,11 @@ export function NavDropdown({ item, isActive, isScrolled }: NavDropdownProps) {
                   )}
 
                   <div className={cn(
-                    "grid gap-2",
-                    isMega ? "grid-cols-2" : "grid-cols-1"
-                  )}>
+                    "grid gap-2 pr-3 overflow-y-auto custom-scrollbar scroll-smooth overscroll-contain touch-pan-y relative z-10 pointer-events-auto",
+                    isMega ? "grid-cols-2 max-h-[450px]" : "grid-cols-1 max-h-[350px]"
+                  )}
+                    onWheel={(e) => e.stopPropagation()}
+                  >
                     {item.items.map((subItem, index) => (
                       <motion.div
                         key={subItem.href}
@@ -158,9 +160,9 @@ export function NavDropdown({ item, isActive, isScrolled }: NavDropdownProps) {
                             </div>
                           )}
                           <div className="flex-1 min-w-0">
-                            <div className="font-bold text-slate-800 group-hover/item:text-green-600 transition-colors text-sm mb-0.5 flex items-center gap-2">
-                              {subItem.label}
-                              <ArrowRight className="w-3.5 h-3.5 opacity-0 -translate-x-2 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-all text-green-500" />
+                            <div className="font-bold text-slate-800 group-hover/item:text-green-600 transition-colors text-sm mb-0.5 flex items-center justify-between gap-2 overflow-hidden">
+                              <span className="truncate flex-1">{subItem.label}</span>
+                              <ArrowRight className="w-3.5 h-3.5 opacity-0 -translate-x-2 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-all text-green-500 flex-shrink-0" />
                             </div>
                             {subItem.description && (
                               <p className="text-[11px] text-slate-500 line-clamp-2 leading-tight group-hover/item:text-slate-600">
