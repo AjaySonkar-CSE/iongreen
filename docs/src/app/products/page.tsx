@@ -63,7 +63,7 @@ export default async function ProductsPage() {
         <section className="relative bg-gradient-to-br from-slate-900 via-green-900 to-slate-800 text-white">
           <div className="border-t border-white/10">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+              <div className="flex flex-wrap justify-center gap-12 lg:gap-24">
                 {siteContent.hero.stats.map((stat, index) => (
                   <ScrollAnimate
                     key={stat.label}
