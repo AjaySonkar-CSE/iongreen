@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import Link from "next/link";
-import { ArrowLeft, Save, Loader2, Image as ImageIcon } from "lucide-react";
+import { ArrowLeft, Save, Loader2, Image as ImageIcon, Upload, X } from "lucide-react";
 import Image from "next/image";
 
 interface CaseStudyFormProps {
@@ -31,6 +31,7 @@ interface CaseStudyFormData {
 export function CaseStudyForm({ caseStudyId, initialData }: CaseStudyFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const isEditing = !!caseStudyId;
 
   const {
@@ -105,6 +106,51 @@ export function CaseStudyForm({ caseStudyId, initialData }: CaseStudyFormProps) 
     }
   };
 
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type
+    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+    if (!allowedTypes.includes(file.type)) {
+      toast.error("Invalid file type. Only JPG, JPEG, PNG, and WebP are allowed.");
+      return;
+    }
+
+    // Validate file size (5MB limit)
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("File too large. Maximum size is 5MB.");
+      return;
+    }
+
+    setUploading(true);
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        setValue('image_url', data.url);
+        toast.success("Image uploaded successfully");
+      } else {
+        toast.error(data.error || "Upload failed");
+      }
+    } catch (error) {
+      console.error("Upload error:", error);
+      toast.error("An error occurred during upload");
+    } finally {
+      setUploading(false);
+      // Reset input value to allow uploading the same file again
+      if (e.target) e.target.value = '';
+    }
+  };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-8 max-w-5xl mx-auto">
       <div className="flex items-center justify-between">
@@ -153,7 +199,7 @@ export function CaseStudyForm({ caseStudyId, initialData }: CaseStudyFormProps) 
           {/* Main Info */}
           <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm space-y-6">
             <h2 className="text-lg font-semibold text-gray-900">Project Details</h2>
-            
+
             <div className="grid gap-6">
               <div className="space-y-2">
                 <label className="text-sm font-medium text-gray-700">
@@ -253,7 +299,7 @@ export function CaseStudyForm({ caseStudyId, initialData }: CaseStudyFormProps) 
           {/* Status */}
           <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm space-y-6">
             <h2 className="text-lg font-semibold text-gray-900">Settings</h2>
-            
+
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <label className="text-sm font-medium text-gray-700">Featured</label>
@@ -284,15 +330,52 @@ export function CaseStudyForm({ caseStudyId, initialData }: CaseStudyFormProps) 
           {/* Media */}
           <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm space-y-6">
             <h2 className="text-lg font-semibold text-gray-900">Project Image</h2>
-            
+
             <div className="space-y-4">
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-700">Image URL</label>
-                <input
-                  {...register("image_url")}
-                  className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
-                  placeholder="https://..."
-                />
+                <div className="flex items-center justify-between">
+                  <label className="text-sm font-medium text-gray-700">Image URL</label>
+                  <label className="relative cursor-pointer group">
+                    <input
+                      type="file"
+                      className="hidden"
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                      disabled={uploading}
+                    />
+                    <div className="flex items-center gap-1.5 text-xs font-semibold text-green-600 hover:text-green-700 transition-colors">
+                      {uploading ? (
+                        <>
+                          <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                          <span>Uploading...</span>
+                        </>
+                      ) : (
+                        <>
+                          <Upload className="h-3.5 w-3.5" />
+                          <span>Upload Image</span>
+                        </>
+                      )}
+                    </div>
+                  </label>
+                </div>
+                <div className="flex gap-2">
+                  <div className="relative flex-1">
+                    <input
+                      {...register("image_url")}
+                      className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500 pr-10"
+                      placeholder="https://..."
+                    />
+                    {imageUrl && (
+                      <button
+                        type="button"
+                        onClick={() => setValue("image_url", "")}
+                        className="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-gray-400 hover:text-red-500 transition-colors"
+                      >
+                        <X className="h-4 w-4" />
+                      </button>
+                    )}
+                  </div>
+                </div>
               </div>
 
               <div className="relative aspect-video w-full overflow-hidden rounded-lg bg-gray-100 border border-gray-200">
@@ -302,11 +385,19 @@ export function CaseStudyForm({ caseStudyId, initialData }: CaseStudyFormProps) 
                     alt="Preview"
                     fill
                     className="object-cover"
+                    unoptimized
                   />
                 ) : (
                   <div className="flex h-full w-full flex-col items-center justify-center text-gray-400">
                     <ImageIcon className="h-8 w-8 mb-2" />
                     <span className="text-xs">Image Preview</span>
+                  </div>
+                )}
+                {uploading && (
+                  <div className="absolute inset-0 bg-black/20 backdrop-blur-[2px] flex items-center justify-center">
+                    <div className="bg-white p-3 rounded-full shadow-lg">
+                      <Loader2 className="h-6 w-6 animate-spin text-green-600" />
+                    </div>
                   </div>
                 )}
               </div>
