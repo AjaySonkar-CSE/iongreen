@@ -5,7 +5,8 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { Loader2, ArrowLeft } from "lucide-react";
+import { Loader2, ArrowLeft, Upload, X } from "lucide-react";
+import { toast } from "sonner";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -30,11 +31,13 @@ interface HeroSlideFormProps {
 export default function HeroSlideForm({ initialData, isEditing = false }: HeroSlideFormProps) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const {
     register,
     handleSubmit,
+    setValue,
     watch,
     formState: { errors },
   } = useForm<HeroSlideFormValues>({
@@ -62,7 +65,7 @@ export default function HeroSlideForm({ initialData, isEditing = false }: HeroSl
       const url = isEditing
         ? `/api/hero-slides/${initialData?.id}`
         : "/api/hero-slides";
-      
+
       const method = isEditing ? "PUT" : "POST";
 
       const response = await fetch(url, {
@@ -83,6 +86,51 @@ export default function HeroSlideForm({ initialData, isEditing = false }: HeroSl
       setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type
+    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+    if (!allowedTypes.includes(file.type)) {
+      toast.error("Invalid file type. Only JPG, JPEG, PNG, and WebP are allowed.");
+      return;
+    }
+
+    // Validate file size (5MB limit)
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("File too large. Maximum size is 5MB.");
+      return;
+    }
+
+    setUploading(true);
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        setValue('image_url', data.url, { shouldValidate: true });
+        toast.success("Image uploaded successfully");
+      } else {
+        toast.error(data.error || "Upload failed");
+      }
+    } catch (error) {
+      console.error("Upload error:", error);
+      toast.error("An error occurred during upload");
+    } finally {
+      setUploading(false);
+      // Reset input value to allow uploading the same file again
+      if (e.target) e.target.value = '';
     }
   };
 
@@ -160,26 +208,74 @@ export default function HeroSlideForm({ initialData, isEditing = false }: HeroSl
           {/* Right Column */}
           <div className="space-y-6">
             <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-700">Image URL</label>
-              <input
-                {...register("image_url")}
-                className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
-                placeholder="/images/..."
-              />
+              <div className="flex items-center justify-between">
+                <label className="text-sm font-medium text-gray-700">Image URL</label>
+                <label className="relative cursor-pointer group">
+                  <input
+                    type="file"
+                    className="hidden"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    disabled={uploading}
+                  />
+                  <div className="flex items-center gap-1.5 text-xs font-semibold text-green-600 hover:text-green-700 transition-colors">
+                    {uploading ? (
+                      <>
+                        <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                        <span>Uploading...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Upload className="h-3.5 w-3.5" />
+                        <span>Upload Image</span>
+                      </>
+                    )}
+                  </div>
+                </label>
+              </div>
+              <div className="relative">
+                <input
+                  {...register("image_url")}
+                  className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500 pr-10"
+                  placeholder="/images/..."
+                />
+                {imageUrl && (
+                  <button
+                    type="button"
+                    onClick={() => setValue("image_url", "", { shouldValidate: true })}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-gray-400 hover:text-red-500 transition-colors"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                )}
+              </div>
               {errors.image_url && (
                 <p className="text-red-500 text-xs">{errors.image_url.message}</p>
               )}
-              {imageUrl && (
-                <div className="mt-2 relative h-48 w-full rounded-lg overflow-hidden border border-gray-200">
+
+              <div className="mt-2 relative h-48 w-full rounded-lg overflow-hidden border border-gray-200 bg-gray-50">
+                {imageUrl ? (
                   <Image
                     src={imageUrl}
                     alt="Preview"
                     fill
                     className="object-cover"
-                    unoptimized // For external images or during dev
+                    unoptimized
                   />
-                </div>
-              )}
+                ) : (
+                  <div className="flex h-full w-full flex-col items-center justify-center text-gray-400">
+                    <Upload className="h-8 w-8 mb-2 opacity-20" />
+                    <span className="text-xs">No image selected</span>
+                  </div>
+                )}
+                {uploading && (
+                  <div className="absolute inset-0 bg-black/10 backdrop-blur-[1px] flex items-center justify-center">
+                    <div className="bg-white p-2 rounded-full shadow-sm">
+                      <Loader2 className="h-5 w-5 animate-spin text-green-600" />
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
