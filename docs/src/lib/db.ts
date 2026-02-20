@@ -157,9 +157,26 @@ export async function initializeDatabase() {
   await ensureHeroSlidesTable();
   await ensureProductSpecificationsTable();
   await ensureProductApplicationsTable();
+  await ensureAdminsTable();
   await migrateExistingTables();
 
   console.log("Database initialized with all tables");
+}
+
+// Admins table for authentication
+export async function ensureAdminsTable() {
+  const pool = getDbPool();
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS admins (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      email VARCHAR(180) NOT NULL UNIQUE,
+      password VARCHAR(255) NOT NULL,
+      name VARCHAR(100),
+      last_login TIMESTAMP NULL,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `);
 }
 
 // Contact form submissions

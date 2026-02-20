@@ -1,18 +1,19 @@
 import { notFound } from 'next/navigation';
 import { getDbPool } from '@/lib/db';
 
-export default async function DynamicPage({ params }: { params: { slug: string } }) {
+export default async function DynamicPage({ params }: { params: Promise<{ slug: string }> }) {
+  const resolvedParams = await params;
   const pool = getDbPool();
-  
+
   try {
     // Fetch the page from the database
     const [rows] = await pool.query(
       'SELECT * FROM pages WHERE slug = ? AND is_active = 1',
-      [params.slug]
+      [resolvedParams.slug]
     );
 
     const page = (rows as any[])[0];
-    
+
     if (!page) {
       return notFound();
     }
@@ -30,24 +31,24 @@ export default async function DynamicPage({ params }: { params: { slug: string }
           {seoKeywords.length > 0 && (
             <meta name="keywords" content={seoKeywords.join(', ')} />
           )}
-          
+
           {/* Open Graph / Facebook */}
           <meta property="og:type" content="website" />
           <meta property="og:title" content={seoTitle} />
           <meta property="og:description" content={seoDescription} />
-          
+
           {/* Twitter */}
           <meta name="twitter:card" content="summary_large_image" />
           <meta name="twitter:title" content={seoTitle} />
           <meta name="twitter:description" content={seoDescription} />
         </head>
-        
+
         <main className="container mx-auto py-12 px-4">
           <article className="prose lg:prose-xl mx-auto">
             <h1 className="text-4xl font-bold mb-8">{page.title}</h1>
-            <div 
+            <div
               className="prose max-w-none"
-              dangerouslySetInnerHTML={{ __html: page.content }} 
+              dangerouslySetInnerHTML={{ __html: page.content }}
             />
           </article>
         </main>
@@ -63,7 +64,7 @@ export default async function DynamicPage({ params }: { params: { slug: string }
 export async function generateStaticParams() {
   const pool = getDbPool();
   const [rows] = await pool.query('SELECT slug FROM pages WHERE is_active = 1');
-  
+
   return (rows as any[]).map((page) => ({
     slug: page.slug,
   }));

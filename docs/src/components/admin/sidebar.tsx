@@ -91,6 +91,16 @@ export function AdminSidebar() {
             {!collapsed && <span className="font-medium">Settings</span>}
           </button>
           <button
+            onClick={async () => {
+              try {
+                const res = await fetch("/api/auth/login", { method: "DELETE" });
+                if (res.ok) {
+                  window.location.href = "/login";
+                }
+              } catch (error) {
+                console.error("Logout failed:", error);
+              }
+            }}
             className={cn(
               "flex w-full items-center gap-3 px-3 py-2 rounded-lg text-red-600 hover:bg-red-50 transition-colors",
               collapsed && "justify-center"
