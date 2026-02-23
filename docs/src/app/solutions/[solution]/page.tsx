@@ -421,6 +421,58 @@ export default async function SolutionPage(props: SolutionPageProps) {
   const imageIndex = solutionKey.length % imgFolderImages.length;
   const heroImage = solutionData.image_url || imgFolderImages[imageIndex];
 
+  // Parse description into structured sections for highlighted display
+  const parseDescription = (desc: string) => {
+    // Sanitize: strip garbled Unicode chars (MySQL encoding corruption) and original special chars
+    const sanitize = (text: string) => text
+      .replace(/[\u2714\u2713\u2717\u2022\u25C6\u25B6\u25BA\u2605\u2606]/g, '') // Unicode special chars
+      .replace(/Ô£ö|Ô£ô|Ô£ë|Ô£ù|ÔÇô|â\x9C\x94|â\x9C\x93|â\x80¢|â\x97\x86/g, '') // Garbled encodings
+      .replace(/[✔✓✗★☆]/g, '') // Any remaining special chars
+      .trim();
+
+    const lines = desc.split('\n').map(l => sanitize(l)).filter(Boolean);
+    const sections: { heading: string; items: { text: string; type: 'bullet' | 'text' }[] }[] = [];
+    let current: { heading: string; items: { text: string; type: 'bullet' | 'text' }[] } | null = null;
+
+    for (const line of lines) {
+      const isBullet = /^[•\-*◆▶►]/.test(line) || /^\d+[\.)]/.test(line);
+      const isHeading = !isBullet && line.endsWith(':') && line.length < 80;
+
+      if (isHeading) {
+        if (current) sections.push(current);
+        current = { heading: line.replace(/:$/, '').trim(), items: [] };
+      } else if (isBullet) {
+        if (!current) current = { heading: 'Details', items: [] };
+        current.items.push({
+          text: line.replace(/^[•\-*◆▶►]\s*/, '').replace(/^\d+[\.)]\s*/, '').trim(),
+          type: 'bullet'
+        });
+      } else {
+        // Plain text paragraph - add as a text type item
+        if (!current) current = { heading: 'About', items: [] };
+        current.items.push({ text: line, type: 'text' });
+      }
+    }
+    if (current && current.items.length > 0) sections.push(current);
+    return sections;
+
+  };
+
+  const descriptionSections = parseDescription(solutionData.description || '');
+
+  // Section heading colors for variety
+  const sectionColors = [
+    { bg: 'bg-green-50', border: 'border-green-500', icon: 'bg-green-500', bullet: 'text-green-500', text: 'text-gray-700', head: 'text-green-800', badge: 'bg-green-500' },
+    { bg: 'bg-blue-50', border: 'border-blue-500', icon: 'bg-blue-500', bullet: 'text-blue-500', text: 'text-gray-700', head: 'text-blue-800', badge: 'bg-blue-500' },
+    { bg: 'bg-amber-50', border: 'border-amber-500', icon: 'bg-amber-500', bullet: 'text-amber-500', text: 'text-gray-700', head: 'text-amber-800', badge: 'bg-amber-500' },
+    { bg: 'bg-purple-50', border: 'border-purple-500', icon: 'bg-purple-500', bullet: 'text-purple-500', text: 'text-gray-700', head: 'text-purple-800', badge: 'bg-purple-500' },
+    { bg: 'bg-rose-50', border: 'border-rose-500', icon: 'bg-rose-500', bullet: 'text-rose-500', text: 'text-gray-700', head: 'text-rose-800', badge: 'bg-rose-500' },
+    { bg: 'bg-teal-50', border: 'border-teal-500', icon: 'bg-teal-500', bullet: 'text-teal-500', text: 'text-gray-700', head: 'text-teal-800', badge: 'bg-teal-500' },
+    { bg: 'bg-indigo-50', border: 'border-indigo-500', icon: 'bg-indigo-500', bullet: 'text-indigo-500', text: 'text-gray-700', head: 'text-indigo-800', badge: 'bg-indigo-500' },
+    { bg: 'bg-orange-50', border: 'border-orange-500', icon: 'bg-orange-500', bullet: 'text-orange-500', text: 'text-gray-700', head: 'text-orange-800', badge: 'bg-orange-500' },
+  ];
+
+
   return (
     <div className="min-h-screen bg-transparent">
       {/* Hero Section with Image Background - Fixed like home page */}
@@ -490,28 +542,182 @@ export default async function SolutionPage(props: SolutionPageProps) {
         <section className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <ScrollAnimate animation="fadeInUpElegant" delay={200}>
-              <div className="text-center mb-16">
-                <h2 className="text-4xl font-bold text-gray-900 mb-6">Solution Overview</h2>
-                <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
-                  {details.detailedDescription || solutionData.description}
+              <div className="text-center mb-12">
+                <span className="text-green-600 font-bold tracking-widest uppercase text-sm">Overview</span>
+                <h2 className="text-4xl font-bold text-gray-900 mt-2 mb-4">Solution Overview</h2>
+                {/* Show only the summary — short & clean */}
+                <p className="text-lg text-gray-500 max-w-3xl mx-auto leading-relaxed">
+                  {solutionData.summary}
                 </p>
               </div>
             </ScrollAnimate>
 
+            {/* Hero Image */}
             <ScrollAnimate animation="slideInRightSmooth" delay={300}>
-              <div className="relative h-[500px] rounded-2xl overflow-hidden shadow-2xl">
+              <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-gray-100">
                 <Image
                   src={heroImage}
                   alt={solutionData.title}
-                  fill
-                  className="object-cover"
+                  width={1200}
+                  height={800}
+                  className="w-full h-auto object-contain max-h-[70vh]"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+                <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/20 to-transparent pointer-events-none"></div>
               </div>
             </ScrollAnimate>
           </div>
         </section>
+
+        {/* Highlights Section — Description Data + Gallery Images Combined */}
+        {(descriptionSections.length > 0 || (solutionData.gallery && solutionData.gallery.length > 0)) && (
+          <section id="highlights" className="py-24 bg-slate-50 overflow-hidden">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <ScrollAnimate animation="fadeInUpElegant" delay={200}>
+                <div className="text-center mb-20">
+                  <span className="text-green-600 font-bold tracking-widest uppercase text-sm mb-4 block">Key Details</span>
+                  <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6">Solution Highlights</h2>
+                  <div className="w-24 h-1.5 bg-green-500 mx-auto rounded-full"></div>
+                </div>
+              </ScrollAnimate>
+
+              <div className="space-y-24">
+                {/* Description sections as highlights */}
+                {descriptionSections.map((section, index) => {
+                  const color = sectionColors[index % sectionColors.length];
+                  // Find matching gallery image if available
+                  const galleryItem = solutionData.gallery && solutionData.gallery[index];
+                  const hasImage = galleryItem && galleryItem.image_url;
+
+                  return (
+                    <div key={`desc-${index}`} className={`flex flex-col ${index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'} gap-10 lg:gap-16 items-center`}>
+
+                      {/* Image side */}
+                      {hasImage ? (
+                        <div className="w-full lg:w-1/2">
+                          <ScrollAnimate animation={index % 2 === 0 ? "slideInLeftSmooth" : "slideInRightSmooth"} delay={300}>
+                            <div className="group relative">
+                              <div className={`absolute -inset-4 ${color.bg} rounded-3xl blur-2xl opacity-60 group-hover:opacity-100 transition-all duration-700 ${index % 2 === 0 ? '-rotate-1' : 'rotate-1'}`}></div>
+                              <div className="relative rounded-2xl overflow-hidden shadow-2xl border-2 border-white/50 bg-white">
+                                <Image
+                                  src={galleryItem.image_url}
+                                  alt={section.heading}
+                                  width={800}
+                                  height={600}
+                                  className="w-full h-auto object-contain transition-transform duration-700 group-hover:scale-[1.02]"
+                                  sizes="(max-width: 1024px) 100vw, 50vw"
+                                />
+                              </div>
+                            </div>
+                          </ScrollAnimate>
+                        </div>
+                      ) : (
+                        <div className="w-full lg:w-1/2">
+                          <ScrollAnimate animation={index % 2 === 0 ? "slideInLeftSmooth" : "slideInRightSmooth"} delay={300}>
+                            <div className={`${color.bg} rounded-2xl p-12 flex items-center justify-center min-h-[280px] border-2 ${color.border}`}>
+                              <span className="text-[8rem] font-black opacity-20 select-none text-slate-300">
+                                0{index + 1}
+                              </span>
+                            </div>
+                          </ScrollAnimate>
+                        </div>
+                      )}
+
+                      {/* Text side */}
+                      <div className="w-full lg:w-1/2 flex flex-col justify-center">
+                        <ScrollAnimate animation="fadeInUpElegant" delay={400}>
+                          <div className="relative">
+                            {/* Background number */}
+                            <span className="absolute -top-12 -left-6 text-[7rem] font-black text-slate-100 select-none z-0 hidden lg:block">
+                              0{index + 1}
+                            </span>
+
+                            <div className={`relative z-10 pl-5 border-l-4 ${color.border}`}>
+                              <h3 className={`text-2xl md:text-3xl font-bold ${color.head} mb-6 flex items-center gap-3`}>
+                                <span className={`inline-flex w-10 h-10 rounded-xl ${color.badge} text-white items-center justify-center text-lg font-bold flex-shrink-0 shadow-md`}>
+                                  {index + 1}
+                                </span>
+                                {section.heading}
+                              </h3>
+
+                              <div className="space-y-3">
+                                {section.items.map((item, ii) => (
+                                  item.type === 'bullet' ? (
+                                    <div key={ii} className="flex items-start gap-3">
+                                      <div className={`w-5 h-5 rounded-full ${color.bg} ${color.border} border flex items-center justify-center flex-shrink-0 mt-0.5`}>
+                                        <svg className={`w-3 h-3 ${color.bullet}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                                        </svg>
+                                      </div>
+                                      <span className="text-slate-700 leading-relaxed">{item.text}</span>
+                                    </div>
+                                  ) : (
+                                    <p key={ii} className="text-slate-600 leading-relaxed">{item.text}</p>
+                                  )
+                                ))}
+                              </div>
+
+                              {/* Gallery image description if available */}
+                              {hasImage && galleryItem.description && (
+                                <p className="mt-6 text-sm text-slate-500 italic border-t border-slate-200 pt-4">
+                                  {galleryItem.description}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        </ScrollAnimate>
+                      </div>
+                    </div>
+                  );
+                })}
+
+                {/* Extra gallery images that don't have matching description sections */}
+                {solutionData.gallery && solutionData.gallery.slice(descriptionSections.length).map((item: any, idx: number) => {
+                  const index = descriptionSections.length + idx;
+                  return (
+                    <div key={`gallery-${idx}`} className={`flex flex-col ${index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'} gap-10 lg:gap-16 items-center`}>
+                      <div className="w-full lg:w-1/2">
+                        <ScrollAnimate animation={index % 2 === 0 ? "slideInLeftSmooth" : "slideInRightSmooth"} delay={300}>
+                          <div className="group relative">
+                            <div className={`absolute -inset-4 bg-green-500/10 rounded-3xl blur-2xl group-hover:bg-green-500/20 transition-all duration-700`}></div>
+                            <div className="relative rounded-2xl overflow-hidden shadow-2xl border-2 border-white/50 bg-white">
+                              <Image
+                                src={item.image_url}
+                                alt={item.description || `Highlight ${index + 1}`}
+                                width={800}
+                                height={600}
+                                className="w-full h-auto object-contain transition-transform duration-700 group-hover:scale-[1.02]"
+                                sizes="(max-width: 1024px) 100vw, 50vw"
+                              />
+                            </div>
+                          </div>
+                        </ScrollAnimate>
+                      </div>
+                      <div className="w-full lg:w-1/2 flex flex-col justify-center">
+                        <ScrollAnimate animation="fadeInUpElegant" delay={400}>
+                          <div className="relative">
+                            <span className="absolute -top-12 -left-6 text-[7rem] font-black text-slate-100 select-none z-0 hidden lg:block">
+                              0{index + 1}
+                            </span>
+                            <div className="relative z-10 pl-5 border-l-4 border-green-500">
+                              <h3 className="text-2xl md:text-3xl font-bold text-slate-800 mb-6 flex items-center gap-3">
+                                <span className="inline-flex w-10 h-10 rounded-xl bg-green-500 text-white items-center justify-center text-lg font-bold flex-shrink-0 shadow-md">
+                                  {index + 1}
+                                </span>
+                                {item.title || `Highlight ${index + 1}`}
+                              </h3>
+                              <p className="text-slate-600 leading-relaxed text-lg">{item.description}</p>
+                            </div>
+                          </div>
+                        </ScrollAnimate>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* Features Section */}
         {details.features.length > 0 && (
@@ -615,6 +821,7 @@ export default async function SolutionPage(props: SolutionPageProps) {
             </div>
           </section>
         )}
+
 
         {/* Related Projects Section */}
         {details.relatedProjects.length > 0 && (

@@ -3,7 +3,7 @@ import mysql from 'mysql2/promise';
 // Database configuration from environment variables
 const dbConfig = {
   host: process.env.MYSQL_HOST ?? "127.0.0.1",
-  port: Number(process.env.MYSQL_PORT ?? "3307"),
+  port: Number(process.env.MYSQL_PORT ?? "3306"),
   user: process.env.MYSQL_USER ?? "root",
   password: process.env.MYSQL_PASSWORD ?? "",
   database: process.env.MYSQL_DATABASE ?? "green_db",
@@ -40,6 +40,7 @@ Benefits:
 • Low maintenance requirements
 • Scalable architecture for growing networks`,
     image_url: "/Img/image1.png",
+    gallery: [],
     category: "telecom",
     is_active: true
   },
@@ -75,6 +76,7 @@ Benefits:
 • Scalable solutions for growing data centers
 • Comprehensive monitoring and control`,
     image_url: "/Img/image2.png",
+    gallery: [],
     category: "data-centre",
     is_active: true
   },
@@ -110,6 +112,16 @@ Benefits:
 • Quick ROI (typically 3-5 years)
 • Scalable architecture for future expansion`,
     image_url: "/Img/image3.png",
+    gallery: [
+      {
+        image_url: "/Img/image9.png",
+        description: "Industrial energy storage installation serving a large manufacturing facility. Our systems provide up to 40% reduction in peak demand charges and ensure power reliability."
+      },
+      {
+        image_url: "/Img/image11.png",
+        description: "Scale model of our modular commercial energy storage cabinet, designed for easy integration into existing electrical rooms."
+      }
+    ],
     category: "commercial-industrial",
     is_active: true
   },
@@ -145,6 +157,7 @@ Benefits:
 • Long service life (10+ years)
 • Quiet and clean operation`,
     image_url: "/Img/image4.png",
+    gallery: [],
     category: "backup",
     is_active: true
   }
@@ -169,17 +182,19 @@ async function addSolutions() {
           [solution.slug]
         ) as any[];
 
+        const galleryJson = JSON.stringify(solution.gallery || []);
         if (existing.length > 0) {
           console.log(`⚠️  Solution "${solution.title}" already exists, updating...`);
           await connection.query(
             `UPDATE solutions 
-             SET title = ?, summary = ?, description = ?, image_url = ?, is_active = ?
-             WHERE slug = ?`,
+               SET title = ?, summary = ?, description = ?, image_url = ?, gallery = ?, is_active = ?
+               WHERE slug = ?`,
             [
               solution.title,
               solution.summary,
               solution.description,
               solution.image_url,
+              galleryJson,
               solution.is_active,
               solution.slug
             ]
@@ -187,14 +202,15 @@ async function addSolutions() {
           console.log(`✅ Updated: ${solution.title}`);
         } else {
           await connection.query(
-            `INSERT INTO solutions (title, slug, summary, description, image_url, is_active)
-             VALUES (?, ?, ?, ?, ?, ?)`,
+            `INSERT INTO solutions (title, slug, summary, description, image_url, gallery, is_active)
+               VALUES (?, ?, ?, ?, ?, ?, ?)`,
             [
               solution.title,
               solution.slug,
               solution.summary,
               solution.description,
               solution.image_url,
+              galleryJson,
               solution.is_active
             ]
           );

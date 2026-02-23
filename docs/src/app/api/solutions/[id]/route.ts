@@ -37,7 +37,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
   try {
     const { id } = await params;
     const body = await request.json();
-    const { title, slug, summary, description, image_url, is_active } = body;
+    const { title, slug, summary, description, image_url, gallery, is_active } = body;
 
     if (!id || isNaN(Number(id))) {
       return NextResponse.json(
@@ -46,31 +46,33 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
       );
     }
 
+    const galleryJson = gallery ? JSON.stringify(gallery) : '[]';
+
     // Use dbService to update the solution in the database
     const pool = getDbPool();
-    
-    const query = `UPDATE solutions SET title = ?, slug = ?, summary = ?, description = ?, image_url = ?, is_active = ?, updated_at = NOW() WHERE id = ?`;
-    
+
+    const query = `UPDATE solutions SET title = ?, slug = ?, summary = ?, description = ?, image_url = ?, gallery = ?, is_active = ?, updated_at = NOW() WHERE id = ?`;
+
     const [result] = await pool.execute(query, [
-      title, slug, summary, description, image_url, is_active ? 1 : 0, Number(id)
+      title, slug, summary, description, image_url, galleryJson, is_active ? 1 : 0, Number(id)
     ]);
-    
+
     // Fetch the updated solution
     const updatedSolution = await dbService.getSolutionById(Number(id));
-    
+
     if (!updatedSolution) {
       return NextResponse.json(
         { success: false, message: "Solution not found after update" },
         { status: 404 }
       );
     }
-    
+
     console.log(`Solution updated successfully for ID: ${id}`, { title, slug });
-    
-    return NextResponse.json({ 
-      success: true, 
+
+    return NextResponse.json({
+      success: true,
       message: "Solution updated successfully",
-      data: updatedSolution 
+      data: updatedSolution
     });
   } catch (error: any) {
     console.error("Failed to update solution:", error);
@@ -93,22 +95,22 @@ export async function DELETE(request: Request, { params }: { params: Promise<{ i
 
     // Use dbService to delete the solution from the database
     const pool = getDbPool();
-    
+
     const query = `DELETE FROM solutions WHERE id = ?`;
-    
+
     const [result] = await pool.execute(query, [Number(id)]);
-    
+
     if ((result as any).affectedRows === 0) {
       return NextResponse.json(
         { success: false, message: "Solution not found" },
         { status: 404 }
       );
     }
-    
+
     console.log(`Solution deleted successfully for ID: ${id}`);
-    
-    return NextResponse.json({ 
-      success: true, 
+
+    return NextResponse.json({
+      success: true,
       message: "Solution deleted successfully"
     });
   } catch (error: any) {

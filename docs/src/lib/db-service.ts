@@ -1052,6 +1052,7 @@ export const dbService = {
     summary: string;
     description: string;
     image_url: string;
+    gallery: any[];
     category: string;
     seo_title: string;
     seo_description: string;
@@ -1060,25 +1061,20 @@ export const dbService = {
     created_at: string;
     updated_at: string;
   }>> {
-    const pool = getDbPool();
-    const [rows] = await pool.query(
-      'SELECT * FROM solutions WHERE is_active = TRUE ORDER BY created_at DESC'
-    ) as unknown as [Array<{
-      id: number;
-      title: string;
-      slug: string;
-      summary: string;
-      description: string;
-      image_url: string;
-      category: string;
-      seo_title: string;
-      seo_description: string;
-      seo_keywords: string;
-      is_active: boolean;
-      created_at: string;
-      updated_at: string;
-    }>];
-    return rows || [];
+    try {
+      const pool = getDbPool();
+      const [rows] = await pool.query(
+        'SELECT * FROM solutions WHERE is_active = TRUE ORDER BY created_at DESC'
+      ) as unknown as [Array<any>];
+
+      return (rows || []).map(row => ({
+        ...row,
+        gallery: row.gallery ? (typeof row.gallery === 'string' ? JSON.parse(row.gallery) : row.gallery) : []
+      }));
+    } catch (error) {
+      console.warn('Database error fetching solutions:', error);
+      return [];
+    }
   },
 
   // Get a specific solution by slug
@@ -1089,6 +1085,7 @@ export const dbService = {
     summary: string;
     description: string;
     image_url: string;
+    gallery: any[];
     category: string;
     seo_title: string;
     seo_description: string;
@@ -1107,6 +1104,7 @@ export const dbService = {
           summary: "Comprehensive solar energy systems for residential and commercial use.",
           description: "Our solar energy solutions provide clean, renewable power with maximum efficiency.",
           image_url: "/images/solar-energy.jpg",
+          gallery: [],
           category: "renewable",
           seo_title: "Solar Energy Solutions",
           seo_description: "Professional solar energy systems for homes and businesses.",
@@ -1122,6 +1120,7 @@ export const dbService = {
           summary: "Advanced wind power generation systems.",
           description: "Harness the power of wind for clean, sustainable energy.",
           image_url: "/images/wind-power.jpg",
+          gallery: [],
           category: "renewable",
           seo_title: "Wind Power Systems",
           seo_description: "Efficient wind power systems for large-scale energy generation.",
@@ -1140,59 +1139,19 @@ export const dbService = {
       const [rows] = await pool.query(
         'SELECT * FROM solutions WHERE slug = ? AND is_active = TRUE',
         [slug]
-      ) as unknown as [Array<{
-        id: number;
-        title: string;
-        slug: string;
-        summary: string;
-        description: string;
-        image_url: string;
-        category: string;
-        seo_title: string;
-        seo_description: string;
-        seo_keywords: string;
-        is_active: boolean;
-        created_at: string;
-        updated_at: string;
-      }>];
+      ) as unknown as [Array<any>];
 
-      return rows && rows.length > 0 ? rows[0] : null;
+      if (rows && rows.length > 0) {
+        const row = rows[0];
+        return {
+          ...row,
+          gallery: row.gallery ? (typeof row.gallery === 'string' ? JSON.parse(row.gallery) : row.gallery) : []
+        };
+      }
+      return null;
     } catch (error) {
       console.warn('Database error fetching solution by slug, using mock data:', error);
-      const solutions = [
-        {
-          id: 1,
-          title: "Solar Energy Solutions",
-          slug: "solar-energy",
-          summary: "Comprehensive solar energy systems for residential and commercial use.",
-          description: "Our solar energy solutions provide clean, renewable power with maximum efficiency.",
-          image_url: "/images/solar-energy.jpg",
-          category: "renewable",
-          seo_title: "Solar Energy Solutions",
-          seo_description: "Professional solar energy systems for homes and businesses.",
-          seo_keywords: "solar, energy, renewable",
-          is_active: true,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString()
-        },
-        {
-          id: 2,
-          title: "Wind Power Systems",
-          slug: "wind-power",
-          summary: "Advanced wind power generation systems.",
-          description: "Harness the power of wind for clean, sustainable energy.",
-          image_url: "/images/wind-power.jpg",
-          category: "renewable",
-          seo_title: "Wind Power Systems",
-          seo_description: "Efficient wind power systems for large-scale energy generation.",
-          seo_keywords: "wind, power, renewable",
-          is_active: true,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString()
-        }
-      ];
-      const solution = solutions.find(s => s.slug === slug && s.is_active);
-      return solution || null;
+      return null;
     }
   },
 
@@ -1204,6 +1163,7 @@ export const dbService = {
     summary: string;
     description: string;
     image_url: string;
+    gallery: any[];
     category: string;
     seo_title: string;
     seo_description: string;
@@ -1214,40 +1174,7 @@ export const dbService = {
   } | null> {
     // Use mock data when not using database or when database is not available
     if (!USE_DATABASE) {
-      const solutions = [
-        {
-          id: 1,
-          title: "Solar Energy Solutions",
-          slug: "solar-energy",
-          summary: "Comprehensive solar energy systems for residential and commercial use.",
-          description: "Our solar energy solutions provide clean, renewable power with maximum efficiency.",
-          image_url: "/images/solar-energy.jpg",
-          category: "renewable",
-          seo_title: "Solar Energy Solutions",
-          seo_description: "Professional solar energy systems for homes and businesses.",
-          seo_keywords: "solar, energy, renewable",
-          is_active: true,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString()
-        },
-        {
-          id: 2,
-          title: "Wind Power Systems",
-          slug: "wind-power",
-          summary: "Advanced wind power generation systems.",
-          description: "Harness the power of wind for clean, sustainable energy.",
-          image_url: "/images/wind-power.jpg",
-          category: "renewable",
-          seo_title: "Wind Power Systems",
-          seo_description: "Efficient wind power systems for large-scale energy generation.",
-          seo_keywords: "wind, power, renewable",
-          is_active: true,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString()
-        }
-      ];
-      const solution = solutions.find(s => s.id === id);
-      return solution || null;
+      return null;
     }
 
     try {
@@ -1255,59 +1182,19 @@ export const dbService = {
       const [rows] = await pool.query(
         'SELECT * FROM solutions WHERE id = ?',
         [id]
-      ) as unknown as [Array<{
-        id: number;
-        title: string;
-        slug: string;
-        summary: string;
-        description: string;
-        image_url: string;
-        category: string;
-        seo_title: string;
-        seo_description: string;
-        seo_keywords: string;
-        is_active: boolean;
-        created_at: string;
-        updated_at: string;
-      }>];
+      ) as unknown as [Array<any>];
 
-      return rows && rows.length > 0 ? rows[0] : null;
+      if (rows && rows.length > 0) {
+        const row = rows[0];
+        return {
+          ...row,
+          gallery: row.gallery ? (typeof row.gallery === 'string' ? JSON.parse(row.gallery) : row.gallery) : []
+        };
+      }
+      return null;
     } catch (error) {
-      console.warn('Database error fetching solution by ID, using mock data:', error);
-      const solutions = [
-        {
-          id: 1,
-          title: "Solar Energy Solutions",
-          slug: "solar-energy",
-          summary: "Comprehensive solar energy systems for residential and commercial use.",
-          description: "Our solar energy solutions provide clean, renewable power with maximum efficiency.",
-          image_url: "/images/solar-energy.jpg",
-          category: "renewable",
-          seo_title: "Solar Energy Solutions",
-          seo_description: "Professional solar energy systems for homes and businesses.",
-          seo_keywords: "solar, energy, renewable",
-          is_active: true,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString()
-        },
-        {
-          id: 2,
-          title: "Wind Power Systems",
-          slug: "wind-power",
-          summary: "Advanced wind power generation systems.",
-          description: "Harness the power of wind for clean, sustainable energy.",
-          image_url: "/images/wind-power.jpg",
-          category: "renewable",
-          seo_title: "Wind Power Systems",
-          seo_description: "Efficient wind power systems for large-scale energy generation.",
-          seo_keywords: "wind, power, renewable",
-          is_active: true,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString()
-        }
-      ];
-      const solution = solutions.find(s => s.id === id);
-      return solution || null;
+      console.warn('Database error fetching solution by ID:', error);
+      return null;
     }
   },
 
