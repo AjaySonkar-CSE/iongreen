@@ -59,7 +59,7 @@ export async function POST(request: Request) {
   let body: any = {};
   try {
     body = await request.json();
-    const { name, slug, description, features, specifications, applications, benefits, image_url, category, is_active, is_featured } = body;
+    const { name, slug, description, features, specifications, applications, benefits, image_url, category, gallery, is_active, is_featured } = body;
 
     if (!name || !slug) {
       return NextResponse.json(
@@ -71,7 +71,9 @@ export async function POST(request: Request) {
     // Use dbService to insert the product into the database
     const pool = getDbPool();
 
-    const query = `INSERT INTO products (name, slug, description, features, specifications, applications, benefits, image_url, category, is_active, is_featured) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    const query = `INSERT INTO products (name, slug, description, features, specifications, applications, benefits, image_url, category, gallery, is_active, is_featured) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+    const galleryJson = gallery ? JSON.stringify(gallery) : '[]';
 
     const [result] = await pool.execute(query, [
       name, slug, description,
@@ -79,20 +81,19 @@ export async function POST(request: Request) {
       specifications ? JSON.stringify(specifications) : null,
       applications ? JSON.stringify(applications) : null,
       benefits ? JSON.stringify(benefits) : null,
-      image_url, category,
+      image_url, category, galleryJson,
       is_active ? 1 : 0,
       is_featured ? 1 : 0
     ]);
 
-    // Fetch the newly created product
-    const newProduct = await dbService.getProductById(Number((result as any).insertId));
+    const insertId = (result as any).insertId;
 
-    console.log("Product created successfully:", { id: (result as any).insertId, name, slug });
+    console.log("Product created successfully:", { id: insertId, name, slug });
 
     return NextResponse.json({
       success: true,
       message: "Product created successfully",
-      data: newProduct,
+      data: { id: insertId, ...body },
     });
   } catch (error: any) {
     console.error("Failed to create product:", error);

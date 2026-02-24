@@ -123,6 +123,7 @@ export async function initializeDatabase() {
       specifications JSON,
       applications JSON,
       benefits JSON,
+      gallery JSON,
       is_featured BOOLEAN DEFAULT false,
       is_active BOOLEAN DEFAULT true,
       price DECIMAL(10,2),

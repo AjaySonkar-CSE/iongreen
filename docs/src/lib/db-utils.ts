@@ -117,12 +117,30 @@ export async function initializeDatabase() {
       description TEXT,
       image_url VARCHAR(512),
       category VARCHAR(100),
+      features JSON,
+      specifications JSON,
+      applications JSON,
+      benefits JSON,
+      gallery JSON,
       is_featured BOOLEAN DEFAULT false,
       is_active BOOLEAN DEFAULT true,
+      price DECIMAL(10,2),
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
   `);
+
+  // Ensure gallery column exists on existing products table
+  try {
+    const [columns] = await pool.query('DESCRIBE products');
+    const colNames = (columns as any[]).map((c: any) => c.Field);
+    if (!colNames.includes('gallery')) {
+      await pool.query('ALTER TABLE products ADD COLUMN gallery JSON DEFAULT NULL AFTER benefits');
+      console.log('Added gallery column to products table');
+    }
+  } catch (e) {
+    // Table doesn't exist yet or other error, ignore
+  }
 
   // news
   await pool.query(`
@@ -307,7 +325,7 @@ export async function ensureProductApplicationsTable() {
       FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
   `);
-  
+
   const [columns] = await pool.query('DESCRIBE product_applications');
   const colNames = (columns as any[]).map((c: any) => c.Field);
   if (!colNames.includes('icon_url')) {
