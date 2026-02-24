@@ -16,7 +16,7 @@ import { AnimatedSection } from "@/components/ui/animated-section";
 import { AnimatedContentWrapper } from "@/components/client/animated-content-wrapper";
 
 export default async function HomePage() {
-  const heroSlides = await dbService.getHeroSlides();
+  const heroSlides = await dbService.getHeroSlidesByPage('home');
 
   return (
     <div className="relative bg-transparent">

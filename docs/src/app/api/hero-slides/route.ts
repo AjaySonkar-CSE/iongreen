@@ -14,15 +14,26 @@ export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const all = searchParams.get("all") === "true";
+    const page = searchParams.get("page");
 
     let query = "SELECT * FROM hero_slides";
     const params: any[] = [];
+    const conditions: string[] = [];
 
     if (!all) {
-      query += " WHERE is_active = TRUE";
+      conditions.push("is_active = TRUE");
     }
 
-    query += " ORDER BY position ASC, created_at DESC";
+    if (page) {
+      conditions.push("category = ?");
+      params.push(page);
+    }
+
+    if (conditions.length > 0) {
+      query += " WHERE " + conditions.join(" AND ");
+    }
+
+    query += " ORDER BY category ASC, position ASC, created_at DESC";
 
     const [rows] = await pool.query(query, params);
 

@@ -5,12 +5,18 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { PageHeroSlider } from "@/components/page-hero-slider";
+import { dbService } from "@/lib/db-service";
 
 import { AnimatedContentWrapper } from "@/components/client/animated-content-wrapper";
 
-export default function ContactPage() {
-  // Hero slider slides for contact page
-  const heroSlides = [
+export const revalidate = 60;
+
+export default async function ContactPage() {
+  // Fetch hero slides from DB
+  const dbSlides = await dbService.getHeroSlidesByPage("contact");
+
+  // Default fallback slides
+  const fallbackSlides = [
     {
       id: 1,
       title: "Get in Touch",
@@ -36,6 +42,18 @@ export default function ContactPage() {
       image: "/Img/image9.png"
     }
   ];
+
+  // Use DB slides if available, otherwise fallback
+  const heroSlides = dbSlides.length > 0
+    ? dbSlides.map((s) => ({
+      id: s.id,
+      title: s.title,
+      description: s.description || "",
+      ctaLabel: s.cta_label || "",
+      ctaHref: s.cta_href || "",
+      image: s.image_url
+    }))
+    : fallbackSlides;
 
   return (
     <div className="min-h-screen bg-transparent">

@@ -186,12 +186,19 @@ export default function HeroSlideForm({ initialData, isEditing = false }: HeroSl
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-700">Category</label>
-                <input
+                <label className="text-sm font-medium text-gray-700">Page</label>
+                <select
                   {...register("category")}
-                  className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
-                  placeholder="e.g. Energy Storage"
-                />
+                  className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500 bg-white"
+                >
+                  <option value="">Select Page</option>
+                  <option value="home">🏠 Home</option>
+                  <option value="products">📦 Products</option>
+                  <option value="solutions">💡 Solutions</option>
+                  <option value="about">ℹ️ About</option>
+                  <option value="contact">📞 Contact</option>
+                  <option value="news">📰 News</option>
+                </select>
               </div>
 
               <div className="space-y-2">

@@ -161,7 +161,7 @@ export function Hero({
   const displayTitle = title || pageHeadings[page]?.title;
   const displayDescription = description || pageHeadings[page]?.description;
 
-  // Hardcoded hero slides
+  // Hardcoded hero slides (fallback)
   const hardcodedSlides = [
     {
       id: 1,
@@ -197,7 +197,8 @@ export function Hero({
     },
   ];
 
-  const carouselSlides = hardcodedSlides.map(slide => ({
+  // Use DB slides if provided and non-empty, otherwise fallback to hardcoded
+  const carouselSlides = (externalSlides && externalSlides.length > 0 ? externalSlides : hardcodedSlides).map(slide => ({
     id: slide.id,
     title: slide.title,
     description: slide.description,

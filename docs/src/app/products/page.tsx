@@ -15,16 +15,11 @@ export default async function ProductsPage() {
   const siteContent = getSiteContent();
   const featuredProducts = await dbService.getProducts(undefined, 2, true);
 
-  // Hero slider slides for products page
-  const heroSlides = [
-    // {
-    //   id: 1,
-    //   title: "Advanced Energy Storage Solutions",
-    //   description: "Discover our comprehensive range of battery energy storage systems, from residential solutions to utility-scale installations. Built with cutting-edge LiFePO₄ technology for maximum safety and efficiency.",
-    //   ctaLabel: "Explore Products",
-    //   ctaHref: "#product-categories",
-    //   image: "/Enery storage System.jpeg"
-    // },
+  // Fetch hero slides from DB
+  const dbSlides = await dbService.getHeroSlidesByPage("products");
+
+  // Default fallback slides
+  const fallbackSlides = [
     {
       id: 1,
       title: "Residential & Commercial ESS",
@@ -42,6 +37,18 @@ export default async function ProductsPage() {
       image: "/Img/image2.png"
     }
   ];
+
+  // Use DB slides if available, otherwise fallback
+  const heroSlides = dbSlides.length > 0
+    ? dbSlides.map((s) => ({
+      id: s.id,
+      title: s.title,
+      description: s.description || "",
+      ctaLabel: s.cta_label || "",
+      ctaHref: s.cta_href || "",
+      image: s.image_url
+    }))
+    : fallbackSlides;
 
   return (
     <div className="min-h-screen bg-transparent">

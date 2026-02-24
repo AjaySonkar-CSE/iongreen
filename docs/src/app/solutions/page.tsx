@@ -13,8 +13,11 @@ export const revalidate = 60; // Revalidate at most every 60 seconds
 export default async function SolutionsPage() {
   const solutions = await dbService.getSolutions();
 
-  // Hero slider slides for solutions page
-  const heroSlides = [
+  // Fetch hero slides from DB
+  const dbSlides = await dbService.getHeroSlidesByPage("solutions");
+
+  // Default fallback slides
+  const fallbackSlides = [
     {
       id: 1,
       title: "Comprehensive Energy Solutions",
@@ -30,16 +33,20 @@ export default async function SolutionsPage() {
       ctaLabel: "View Solutions",
       ctaHref: "#solution-categories",
       image: "/Img/image2.png"
-    },
-    // {
-    //   id: 3,
-    //   title: "Utility Scale & Microgrids",
-    //   description: "Large-scale energy storage for utilities and independent microgrid systems. Enabling renewable integration and grid stability with advanced BESS technology.",
-    //   ctaLabel: "Get Consultation",
-    //   ctaHref: "/contact",
-    //   image: "/Img/image3.png"
-    // }
+    }
   ];
+
+  // Use DB slides if available, otherwise fallback
+  const heroSlides = dbSlides.length > 0
+    ? dbSlides.map((s) => ({
+      id: s.id,
+      title: s.title,
+      description: s.description || "",
+      ctaLabel: s.cta_label || "",
+      ctaHref: s.cta_href || "",
+      image: s.image_url
+    }))
+    : fallbackSlides;
 
   return (
     <div className="min-h-screen bg-transparent">

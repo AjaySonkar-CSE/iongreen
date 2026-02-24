@@ -8,6 +8,8 @@ import { PageHeroSlider } from "@/components/page-hero-slider";
 
 import { AnimatedContentWrapper } from "@/components/client/animated-content-wrapper";
 
+export const revalidate = 60;
+
 export default async function NewsPage() {
   // Fetch news data on the server side
   const dbNews = await dbService.getNews(6);
@@ -20,8 +22,11 @@ export default async function NewsPage() {
     image: item.image_url
   }));
 
-  // Hero slider slides for news page
-  const heroSlides = [
+  // Fetch hero slides from DB
+  const dbSlides = await dbService.getHeroSlidesByPage("news");
+
+  // Default fallback slides
+  const fallbackSlides = [
     {
       id: 1,
       title: "Company News & Events",
@@ -47,6 +52,18 @@ export default async function NewsPage() {
       image: "/Img/image6.png"
     }
   ];
+
+  // Use DB slides if available, otherwise fallback
+  const heroSlides = dbSlides.length > 0
+    ? dbSlides.map((s) => ({
+      id: s.id,
+      title: s.title,
+      description: s.description || "",
+      ctaLabel: s.cta_label || "",
+      ctaHref: s.cta_href || "",
+      image: s.image_url
+    }))
+    : fallbackSlides;
 
   return (
     <div className="min-h-screen bg-transparent">

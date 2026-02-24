@@ -503,6 +503,45 @@ export const dbService = {
     }
   },
 
+  // Hero Slides by Page
+  async getHeroSlidesByPage(page: string): Promise<Array<{
+    id: number;
+    title: string;
+    description: string;
+    cta_label: string;
+    cta_href: string;
+    image_url: string;
+    category: string;
+    position: number;
+    is_active: boolean;
+  }>> {
+    if (!USE_DATABASE) {
+      return [];
+    }
+
+    try {
+      const pool = getDbPool();
+      const [rows] = await pool.query(
+        'SELECT * FROM hero_slides WHERE is_active = TRUE AND category = ? ORDER BY position ASC, created_at DESC',
+        [page]
+      ) as unknown as [Array<{
+        id: number;
+        title: string;
+        description: string;
+        cta_label: string;
+        cta_href: string;
+        image_url: string;
+        category: string;
+        position: number;
+        is_active: boolean;
+      }>];
+      return rows || [];
+    } catch (error) {
+      console.error('Database error fetching hero slides by page:', error);
+      return [];
+    }
+  },
+
   async upsertProductSpecification(data: {
     product_id: number;
     title: string;
