@@ -554,13 +554,12 @@ export default async function SolutionPage(props: SolutionPageProps) {
 
             {/* Hero Image */}
             <ScrollAnimate animation="slideInRightSmooth" delay={300}>
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-gray-100">
+              <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-gray-100 aspect-[16/9]">
                 <Image
                   src={heroImage}
                   alt={solutionData.title}
-                  width={1200}
-                  height={800}
-                  className="w-full h-auto object-contain max-h-[70vh]"
+                  fill
+                  className="object-cover"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
                 />
                 <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/20 to-transparent pointer-events-none"></div>
@@ -598,13 +597,12 @@ export default async function SolutionPage(props: SolutionPageProps) {
                           <ScrollAnimate animation={index % 2 === 0 ? "slideInLeftSmooth" : "slideInRightSmooth"} delay={300}>
                             <div className="group relative">
                               <div className={`absolute -inset-4 ${color.bg} rounded-3xl blur-2xl opacity-60 group-hover:opacity-100 transition-all duration-700 ${index % 2 === 0 ? '-rotate-1' : 'rotate-1'}`}></div>
-                              <div className="relative rounded-2xl overflow-hidden shadow-2xl border-2 border-white/50 bg-white">
+                              <div className="relative rounded-2xl overflow-hidden shadow-2xl border-2 border-white/50 bg-white aspect-[4/3]">
                                 <Image
                                   src={galleryItem.image_url}
                                   alt={section.heading}
-                                  width={800}
-                                  height={600}
-                                  className="w-full h-auto object-contain transition-transform duration-700 group-hover:scale-[1.02]"
+                                  fill
+                                  className="object-cover transition-transform duration-700 group-hover:scale-[1.02]"
                                   sizes="(max-width: 1024px) 100vw, 50vw"
                                 />
                               </div>
@@ -680,13 +678,12 @@ export default async function SolutionPage(props: SolutionPageProps) {
                         <ScrollAnimate animation={index % 2 === 0 ? "slideInLeftSmooth" : "slideInRightSmooth"} delay={300}>
                           <div className="group relative">
                             <div className={`absolute -inset-4 bg-green-500/10 rounded-3xl blur-2xl group-hover:bg-green-500/20 transition-all duration-700`}></div>
-                            <div className="relative rounded-2xl overflow-hidden shadow-2xl border-2 border-white/50 bg-white">
+                            <div className="relative rounded-2xl overflow-hidden shadow-2xl border-2 border-white/50 bg-white aspect-[4/3]">
                               <Image
                                 src={item.image_url}
                                 alt={item.description || `Highlight ${index + 1}`}
-                                width={800}
-                                height={600}
-                                className="w-full h-auto object-contain transition-transform duration-700 group-hover:scale-[1.02]"
+                                fill
+                                className="object-cover transition-transform duration-700 group-hover:scale-[1.02]"
                                 sizes="(max-width: 1024px) 100vw, 50vw"
                               />
                             </div>

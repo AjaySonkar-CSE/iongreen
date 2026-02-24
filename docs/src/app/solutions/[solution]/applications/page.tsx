@@ -139,14 +139,14 @@ export default async function ApplicationsPage(props: ApplicationsPageProps) {
           </div>
         </div>
       </div>
-      
+
       <div className="max-w-6xl mx-auto px-4 py-16">
         <div className="prose max-w-none">
           <h2 className="text-3xl font-bold mb-6">{details.pageTitle}</h2>
           <p className="text-lg text-gray-600 mb-2">{details.pageSubtitle}</p>
-          
+
           <p className="text-lg text-gray-700 mb-8">{details.detailedDescription}</p>
-          
+
           <div className="grid md:grid-cols-2 gap-8 mt-12">
             <div>
               <h3 className="text-2xl font-semibold mb-6">Primary Application Areas</h3>
@@ -161,18 +161,18 @@ export default async function ApplicationsPage(props: ApplicationsPageProps) {
                 ))}
               </ul>
             </div>
-            
+
             <div className="relative h-80 bg-gray-100 rounded-xl overflow-hidden">
               <Image
                 src="/1/ion2.png"
                 alt="Energy Storage Applications"
                 fill
-                className="object-contain p-4"
+                className="object-cover"
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
             </div>
           </div>
-          
+
           <div className="mt-16 bg-blue-50 p-8 rounded-xl">
             <h3 className="text-2xl font-semibold mb-4">Implementation Benefits</h3>
             <p className="text-gray-700 mb-4">
@@ -233,7 +233,7 @@ export default async function ApplicationsPage(props: ApplicationsPageProps) {
               </div>
             </div>
           </div>
-          
+
           <div className="mt-16">
             <a
               href={`/solutions/${solution}`}
