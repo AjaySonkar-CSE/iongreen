@@ -12,7 +12,7 @@ interface ProductCategory {
   description: string;
   image_url: string;
   category: string;
-  features: string[];
+  features: any[];
   is_active: boolean;
 }
 
@@ -142,12 +142,12 @@ export function SolarEastProductShowcase() {
                     </p>
 
                     <div className="flex flex-wrap gap-1 mb-3">
-                      {category.features.map((feature, index) => (
+                      {category.features.map((feature: any, index: number) => (
                         <span
                           key={index}
                           className="inline-flex items-center px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full"
                         >
-                          {feature}
+                          {typeof feature === 'string' ? feature : (feature.title || feature.name || '')}
                         </span>
                       ))}
                     </div>

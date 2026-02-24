@@ -451,12 +451,15 @@ export default async function ProductCategoryPage(props: ProductPageProps) {
 
     let keyFeatures = productKeyFeatures[productKey];
 
+    let dbGallery: any[] = [];
+
     // If we have a database product, populate details from it
     if (dbProduct) {
       const dbFeatures = parseJsonField(dbProduct.features, []);
       const dbSpecifications = parseJsonField(dbProduct.specifications, []);
       const dbApplications = parseJsonField(dbProduct.applications, []);
       const dbBenefits = parseJsonField(dbProduct.benefits, []);
+      dbGallery = parseJsonField(dbProduct.gallery, []);
 
       if (dbFeatures && dbFeatures.length > 0) {
         const firstItem = dbFeatures[0];
@@ -752,10 +755,10 @@ export default async function ProductCategoryPage(props: ProductPageProps) {
                   <div className="bg-white p-6 rounded-lg shadow-sm mb-6">
                     <h4 className="text-lg font-semibold text-slate-900 mb-3">Key Features:</h4>
                     <ul className="space-y-2 text-slate-600">
-                      {product.features.map((feature, index) => (
+                      {product.features.map((feature: any, index: number) => (
                         <li key={index} className="flex items-start">
                           <span className="mr-2 text-green-600">✓</span>
-                          <span>{feature}</span>
+                          <span>{typeof feature === 'string' ? feature : (feature.title || (feature as any).name || '')}</span>
                         </li>
                       ))}
                     </ul>
@@ -900,6 +903,56 @@ export default async function ProductCategoryPage(props: ProductPageProps) {
               </div>
             </section>
           </ScrollAnimate>
+
+          {/* Product Gallery Section */}
+          {dbProduct && dbGallery && dbGallery.length > 0 && (
+            <ScrollAnimate animation="fadeInUpElegant" delay={2100}>
+              <section className="py-20 bg-slate-50 border-t border-slate-100">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                  <div className="text-center mb-16">
+                    <span className="text-green-600 font-bold tracking-widest uppercase text-sm mb-3 block">Gallery</span>
+                    <h2 className="text-4xl font-bold text-slate-900">Product Showcase</h2>
+                    <div className="w-20 h-1 bg-green-500 mx-auto mt-4 rounded-full"></div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {dbGallery.map((item: any, index: number) => (
+                      <ScrollAnimate
+                        key={index}
+                        animation="scaleInBounce"
+                        delay={2200 + (index * 100)}
+                      >
+                        <div className="group relative bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-slate-100">
+                          <div className="aspect-[4/3] relative overflow-hidden">
+                            <Image
+                              src={item.image_url}
+                              alt={item.title || `${product.title} gallery image ${index + 1}`}
+                              fill
+                              className="object-cover transition-transform duration-700 group-hover:scale-110"
+                              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+                            {/* Hover content */}
+                            <div className="absolute inset-x-0 bottom-0 p-6 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                              <h4 className="text-white font-bold text-lg mb-1">{item.title}</h4>
+                              <p className="text-white/80 text-sm line-clamp-2">{item.description}</p>
+                            </div>
+                          </div>
+
+                          {/* Static content (visible when not hovered) */}
+                          <div className="p-5 border-t border-slate-50 group-hover:opacity-0 transition-opacity duration-300">
+                            <h4 className="text-slate-900 font-semibold truncate">{item.title || `Feature ${index + 1}`}</h4>
+                            <p className="text-slate-500 text-xs mt-1 truncate">{item.description || 'View details'}</p>
+                          </div>
+                        </div>
+                      </ScrollAnimate>
+                    ))}
+                  </div>
+                </div>
+              </section>
+            </ScrollAnimate>
+          )}
 
           {/* Call to Action Section */}
           <ScrollAnimate animation="scaleInBounce" delay={2200}>

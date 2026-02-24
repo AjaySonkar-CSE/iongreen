@@ -147,6 +147,7 @@ export const dbService = {
     benefits: any;
     is_featured: boolean;
     is_active: boolean;
+    gallery?: any;
     created_at?: string;
     updated_at?: string;
   }>> {
@@ -168,6 +169,7 @@ export const dbService = {
     benefits: any;
     is_featured: boolean;
     is_active: boolean;
+    gallery?: any;
     created_at?: string;
     updated_at?: string;
   }>> {
@@ -189,6 +191,7 @@ export const dbService = {
     benefits: any;
     is_featured: boolean;
     is_active: boolean;
+    gallery?: any;
     created_at?: string;
     updated_at?: string;
   }>> {
@@ -247,6 +250,7 @@ export const dbService = {
         benefits: any;
         is_featured: boolean;
         is_active: boolean;
+        gallery?: any;
         created_at: string;
         updated_at: string;
       }>];
@@ -256,7 +260,8 @@ export const dbService = {
         features: row.features ? JSON.parse(row.features) : [],
         specifications: row.specifications ? JSON.parse(row.specifications) : {},
         applications: row.applications ? JSON.parse(row.applications) : [],
-        benefits: row.benefits ? JSON.parse(row.benefits) : []
+        benefits: row.benefits ? JSON.parse(row.benefits) : [],
+        gallery: row.gallery ? JSON.parse(row.gallery) : []
       }));
     } catch (error) {
       console.warn('Database error, using mock data instead:', error);
@@ -289,6 +294,7 @@ export const dbService = {
     benefits: any;
     is_featured: boolean;
     is_active: boolean;
+    gallery?: any;
     brochure_url?: string;
   } | null> {
     // Use mock data when not using database or when database is not available
@@ -319,6 +325,7 @@ export const dbService = {
         benefits: any;
         is_featured: boolean;
         is_active: boolean;
+        gallery?: any;
         brochure_url?: string;
       }>];
       return rows && rows.length > 0 ? rows[0] : null;
@@ -347,6 +354,7 @@ export const dbService = {
     benefits: any;
     is_featured: boolean;
     is_active: boolean;
+    gallery?: any;
     brochure_url?: string;
   } | null> {
     // Use mock data when not using database or when database is not available
@@ -377,6 +385,7 @@ export const dbService = {
         benefits: any;
         is_featured: boolean;
         is_active: boolean;
+        gallery?: any;
         brochure_url?: string;
       }>];
       return rows && rows.length > 0 ? rows[0] : null;

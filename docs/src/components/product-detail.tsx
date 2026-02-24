@@ -42,11 +42,11 @@ export function ProductDetail({
               priority
             />
           </div>
-          
+
           <div className="prose max-w-none">
             <h2 className="text-2xl font-semibold mb-4">Overview</h2>
             <p className="text-gray-700 mb-6">{description}</p>
-            
+
             <h2 className="text-2xl font-semibold mb-4">Key Features</h2>
             <ul className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-8">
               {features.map((feature, index) => (
@@ -64,7 +64,7 @@ export function ProductDetail({
                       d="M5 13l4 4L19 7"
                     />
                   </svg>
-                  <span>{feature}</span>
+                  <span>{typeof feature === 'string' ? feature : (feature.title || (feature as any).name || '')}</span>
                 </li>
               ))}
             </ul>
