@@ -618,13 +618,11 @@ export default async function ProductCategoryPage(props: ProductPageProps) {
               <section className="py-12 bg-white">
                 <div className="max-w-6xl mx-auto px-4 md:px-6">
                   <div className="flex flex-col gap-8">
-                    <div className="relative w-full h-80 rounded-xl overflow-hidden shadow">
-                      <Image
+                    <div className="relative w-full rounded-xl overflow-hidden shadow bg-white">
+                      <img
                         src={(product as any).image || details.specImage || pickDeterministicImage(productKey)}
                         alt={`${product.title} System`}
-                        fill
-                        className="object-cover"
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        className="w-full h-auto"
                       />
                     </div>
                     <div className="w-full">
@@ -734,13 +732,11 @@ export default async function ProductCategoryPage(props: ProductPageProps) {
               <div className="flex flex-col gap-8">
                 {/* Top - ION Green Related Image */}
                 <div className="w-full flex items-center justify-center">
-                  <div className="relative w-full h-96 rounded-xl overflow-hidden shadow-lg">
-                    <Image
+                  <div className="relative w-full rounded-xl overflow-hidden shadow-lg bg-white">
+                    <img
                       src={(product as any).image || details.specImage || pickDeterministicImage(productKey)}
                       alt={product.title}
-                      fill
-                      className="object-contain"
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      className="w-full h-auto"
                     />
                   </div>
                 </div>
@@ -789,14 +785,11 @@ export default async function ProductCategoryPage(props: ProductPageProps) {
                   </ScrollAnimate>
                 )}
                 <ScrollAnimate animation="scaleInBounce" delay={1500}>
-                  <div className="relative mx-auto mb-8 h-64 w-full max-w-3xl overflow-hidden rounded-xl">
-                    <Image
+                  <div className="relative mx-auto mb-8 w-full max-w-3xl overflow-hidden rounded-xl bg-white">
+                    <img
                       src={specData?.image_url || details.specImage}
                       alt={`${product.title} Technical Specifications`}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      priority
+                      className="w-full h-auto"
                     />
                   </div>
                 </ScrollAnimate>
@@ -923,13 +916,11 @@ export default async function ProductCategoryPage(props: ProductPageProps) {
                         delay={2200 + (index * 100)}
                       >
                         <div className="group relative bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-slate-100">
-                          <div className="aspect-[4/3] relative overflow-hidden">
-                            <Image
+                          <div className="relative overflow-hidden">
+                            <img
                               src={item.image_url}
                               alt={item.title || `${product.title} gallery image ${index + 1}`}
-                              fill
-                              className="object-cover transition-transform duration-700 group-hover:scale-110"
-                              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                              className="w-full h-auto transition-transform duration-700 group-hover:scale-105"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 

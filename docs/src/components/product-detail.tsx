@@ -33,13 +33,11 @@ export function ProductDetail({
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
         <div>
-          <div className="relative h-96 w-full rounded-lg overflow-hidden mb-6">
-            <Image
+          <div className="relative w-full rounded-lg overflow-hidden mb-6 bg-white shadow-sm">
+            <img
               src={image}
               alt={title}
-              fill
-              className="object-cover"
-              priority
+              className="w-full h-auto"
             />
           </div>
 
