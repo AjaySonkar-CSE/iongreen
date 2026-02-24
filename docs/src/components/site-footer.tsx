@@ -98,7 +98,7 @@ export function SiteFooter() {
                   alt="ION Green Logo"
                   width={180}
                   height={70}
-                  className="brightness-0 invert h-10 w-auto object-contain"
+                  className="h-10 w-auto object-contain"
                 />
               </Link>
               <p className="text-white/60 text-sm leading-relaxed mb-4">
