@@ -27,6 +27,7 @@ interface SolutionFormData {
   description: string;
   image_url: string;
   gallery: GalleryItem[];
+  sections: { heading: string; content: string }[];
   is_active: boolean;
 }
 
@@ -63,15 +64,27 @@ export function SolutionForm({ solutionId, initialData }: SolutionFormProps) {
     name: "gallery",
   });
 
+  const { fields: sectionFields, append: appendSection, remove: removeSection, move: moveSection } = useFieldArray({
+    control,
+    name: "sections",
+  });
+
   const imageUrl = watch("image_url");
   const description = watch("description");
   const galleryItems = watch("gallery");
 
   useEffect(() => {
     if (initialData) {
+      // Parse description into sections for the structured editor
+      const parsedSections = parseDescSections(initialData.description || "").map(s => ({
+        heading: s.heading,
+        content: s.items.join('\n')
+      }));
+
       // Ensure gallery items have title field
       const data = {
         ...initialData,
+        sections: parsedSections,
         gallery: (initialData.gallery || []).map((g: any) => ({
           image_url: g.image_url || "",
           title: g.title || "",
@@ -125,10 +138,24 @@ export function SolutionForm({ solutionId, initialData }: SolutionFormProps) {
       const url = isEditing ? `/api/solutions/${solutionId}` : "/api/solutions";
       const method = isEditing ? "PUT" : "POST";
 
+      // Reconstruct description from structured sections
+      const description = (data.sections || [])
+        .filter(s => s.heading.trim())
+        .map(s => {
+          const heading = s.heading.trim().replace(/:$/, '');
+          return `${heading}:\n${s.content}`;
+        })
+        .join('\n\n');
+
+      const payload = {
+        ...data,
+        description
+      };
+
       const res = await fetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify(payload),
       });
 
       const result = await res.json();
@@ -150,11 +177,10 @@ export function SolutionForm({ solutionId, initialData }: SolutionFormProps) {
     }
   };
 
-  // Add a new description section heading
-  const addDescriptionSection = (heading: string) => {
-    const current = description || '';
-    const newSection = current ? `\n\n${heading}:\n` : `${heading}:\n`;
-    setValue('description', current + newSection);
+  // Add a new description section
+  const handleAddSection = (heading: string = "") => {
+    appendSection({ heading, content: "" });
+    setActiveTab('description');
   };
 
   // Quick-add templates for description
@@ -226,8 +252,8 @@ export function SolutionForm({ solutionId, initialData }: SolutionFormProps) {
               type="button"
               onClick={() => setActiveTab(tab.key)}
               className={`flex items-center gap-2 px-6 py-3.5 text-sm font-medium border-b-2 transition-colors ${activeTab === tab.key
-                  ? 'text-green-600 border-green-600 bg-green-50/50'
-                  : 'text-gray-500 border-transparent hover:text-gray-700 hover:bg-gray-50'
+                ? 'text-green-600 border-green-600 bg-green-50/50'
+                : 'text-gray-500 border-transparent hover:text-gray-700 hover:bg-gray-50'
                 }`}
             >
               <tab.icon className="h-4 w-4" />
@@ -325,19 +351,26 @@ export function SolutionForm({ solutionId, initialData }: SolutionFormProps) {
                   <button
                     key={tmpl}
                     type="button"
-                    onClick={() => addDescriptionSection(tmpl)}
+                    onClick={() => handleAddSection(tmpl)}
                     className="px-3 py-1 text-xs font-medium text-green-700 bg-green-50 border border-green-200 rounded-full hover:bg-green-100 transition-colors"
                   >
                     + {tmpl}
                   </button>
                 ))}
+                <button
+                  type="button"
+                  onClick={() => handleAddSection()}
+                  className="px-3 py-1 text-xs font-medium text-slate-700 bg-slate-50 border border-slate-200 rounded-full hover:bg-slate-100 transition-colors"
+                >
+                  + Custom Section
+                </button>
               </div>
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {/* Editor */}
-                <div className="space-y-2">
+                {/* Structured Editor */}
+                <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <label className="text-sm font-medium text-gray-700">Description Editor</label>
+                    <label className="text-sm font-medium text-gray-700">Solution Sections</label>
                     <button
                       type="button"
                       onClick={() => setPreviewMode(!previewMode)}
@@ -347,47 +380,78 @@ export function SolutionForm({ solutionId, initialData }: SolutionFormProps) {
                       {previewMode ? 'Hide Preview' : 'Show Preview'}
                     </button>
                   </div>
-                  <textarea
-                    {...register("description")}
-                    rows={24}
-                    className="w-full rounded-lg border border-gray-300 px-4 py-3 font-mono text-sm leading-relaxed focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500 resize-y"
-                    placeholder={`Write solution description with sections.
 
-Format:
-Section Heading:
-Item 1
-Item 2
-- Bullet item
-- Another bullet
+                  <div className="space-y-4 max-h-[700px] overflow-y-auto pr-2 custom-scrollbar">
+                    {sectionFields.map((field, index) => (
+                      <div key={field.id} className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm space-y-3 group relative hover:border-green-300 transition-colors">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <span className="flex items-center justify-center w-6 h-6 rounded-full bg-green-100 text-green-700 text-xs font-bold">
+                              {index + 1}
+                            </span>
+                            <input
+                              {...register(`sections.${index}.heading` as const)}
+                              className="font-bold text-gray-800 border-none p-0 focus:ring-0 placeholder:text-gray-300 italic bg-transparent"
+                              placeholder="Enter Section Heading..."
+                            />
+                          </div>
+                          <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                            {index > 0 && (
+                              <button type="button" onClick={() => moveSection(index, index - 1)} className="p-1 hover:bg-gray-100 rounded text-gray-400"><ChevronUp className="h-4 w-4" /></button>
+                            )}
+                            {index < sectionFields.length - 1 && (
+                              <button type="button" onClick={() => moveSection(index, index + 1)} className="p-1 hover:bg-gray-100 rounded text-gray-400"><ChevronDown className="h-4 w-4" /></button>
+                            )}
+                            <button
+                              type="button"
+                              onClick={() => removeSection(index)}
+                              className="p-1.5 text-red-400 hover:text-red-600 hover:bg-red-50 rounded"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </button>
+                          </div>
+                        </div>
 
-Another Section:
-Description text here
-- Feature 1
-- Feature 2`}
-                  />
-                  <p className="text-xs text-gray-400">
-                    Lines ending with <code className="bg-gray-100 px-1 rounded">:</code> become section headings.
-                    Lines starting with <code className="bg-gray-100 px-1 rounded">-</code> become bullet points.
-                    Other lines become paragraph text.
+                        <textarea
+                          {...register(`sections.${index}.content` as const)}
+                          rows={4}
+                          className="w-full rounded-lg border border-gray-100 bg-slate-50/50 px-3 py-2 text-sm focus:bg-white focus:border-green-500 transition-all outline-none resize-none"
+                          placeholder="Enter section points (start with - for bullets)..."
+                        />
+                      </div>
+                    ))}
+
+                    {sectionFields.length === 0 && (
+                      <div className="text-center py-12 border-2 border-dashed border-gray-100 rounded-xl text-gray-400">
+                        <Plus className="h-8 w-8 mx-auto mb-2 opacity-20" />
+                        <p className="text-sm">No sections yet. Use Quick Add or Add Custom Section.</p>
+                      </div>
+                    )}
+                  </div>
+
+                  <p className="text-[10px] text-gray-400 uppercase tracking-widest font-bold pt-2">
+                    Tip: EACH SECTION MAPS TO A GALLERY IMAGE IN ORDER
                   </p>
                 </div>
 
                 {/* Preview */}
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-gray-700">
-                    Highlights Preview ({descSections.length} sections detected)
+                    Highlights Preview ({sectionFields.length} sections detected)
                   </label>
-                  <div className="border border-gray-200 rounded-lg p-4 space-y-4 max-h-[600px] overflow-y-auto bg-gray-50">
-                    {descSections.length === 0 ? (
+                  <div className="border border-gray-200 rounded-lg p-4 space-y-4 max-h-[700px] overflow-y-auto bg-gray-50">
+                    {sectionFields.length === 0 ? (
                       <div className="text-center py-12 text-gray-400 text-sm">
                         <FileText className="h-8 w-8 mx-auto mb-2 opacity-40" />
-                        <p>Start typing to see highlights preview</p>
+                        <p>No highlights to preview</p>
                       </div>
                     ) : (
-                      descSections.map((section, si) => {
+                      sectionFields.map((section, si) => {
                         const colors = ['green', 'blue', 'amber', 'purple', 'rose', 'teal'];
                         const color = colors[si % colors.length];
                         const galleryImage = galleryItems?.[si]?.image_url;
+                        const watchSection = watch(`sections.${si}`);
+                        const items = watchSection?.content?.split('\n').filter(Boolean) || [];
 
                         return (
                           <div key={si} className={`bg-white border-l-4 border-${color}-500 rounded-lg p-4 shadow-sm`}>
@@ -405,7 +469,7 @@ Description text here
                                   <span className={`inline-flex w-5 h-5 rounded-full bg-${color}-500 text-white items-center justify-center text-xs font-bold`}>
                                     {si + 1}
                                   </span>
-                                  <h4 className="font-bold text-sm text-gray-800">{section.heading}</h4>
+                                  <h4 className="font-bold text-sm text-gray-800">{watchSection?.heading || `Section ${si + 1}`}</h4>
                                   {galleryImage && (
                                     <span className="text-xs text-green-600 bg-green-50 px-2 py-0.5 rounded-full">
                                       Has Image
@@ -413,17 +477,18 @@ Description text here
                                   )}
                                 </div>
                                 <ul className="space-y-1">
-                                  {section.items.slice(0, 5).map((item, ii) => (
+                                  {items.slice(0, 5).map((item, ii) => (
                                     <li key={ii} className="text-xs text-gray-600 flex items-start gap-1.5">
                                       <span className="text-green-500 mt-0.5">✓</span>
-                                      {item}
+                                      {item.replace(/^[•\-*]\s*/, '').trim()}
                                     </li>
                                   ))}
-                                  {section.items.length > 5 && (
+                                  {items.length > 5 && (
                                     <li className="text-xs text-gray-400 italic">
-                                      +{section.items.length - 5} more items...
+                                      +{items.length - 5} more items...
                                     </li>
                                   )}
+                                  {items.length === 0 && <li className="text-xs text-gray-300 italic">No points added</li>}
                                 </ul>
                               </div>
                             </div>
@@ -454,11 +519,11 @@ Description text here
                 <div>
                   <p className="text-sm text-gray-500">
                     {fields.length} gallery image{fields.length !== 1 ? 's' : ''} •
-                    {descSections.length} highlight section{descSections.length !== 1 ? 's' : ''} detected
+                    {sectionFields.length} highlight section{sectionFields.length !== 1 ? 's' : ''} detected
                   </p>
-                  {fields.length < descSections.length && (
+                  {fields.length < sectionFields.length && (
                     <p className="text-xs text-amber-600 mt-1">
-                      ⚠ You have {descSections.length - fields.length} highlight section(s) without images. Add more gallery images to cover all highlights.
+                      ⚠ You have {sectionFields.length - fields.length} highlight section(s) without images. Add more gallery images to cover all highlights.
                     </p>
                   )}
                 </div>
@@ -508,9 +573,9 @@ Description text here
                             <span className="font-medium text-sm text-gray-800 truncate">
                               {watch(`gallery.${index}.title`) || `Gallery Image ${index + 1}`}
                             </span>
-                            {matchedSection && (
+                            {sectionFields[index] && (
                               <span className="text-xs text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full flex-shrink-0">
-                                → {matchedSection.heading}
+                                → {watch(`sections.${index}.heading`) || `Highlight ${index + 1}`}
                               </span>
                             )}
                           </div>
@@ -595,13 +660,13 @@ Description text here
                               </div>
 
                               {/* Mapped highlight section info */}
-                              {matchedSection && (
+                              {sectionFields[index] && (
                                 <div className="bg-green-50 border border-green-200 rounded-lg p-3">
                                   <p className="text-xs text-green-700">
-                                    <strong>Mapped to Highlight #{index + 1}:</strong> "{matchedSection.heading}"
+                                    <strong>Mapped to Highlight #{index + 1}:</strong> "{watch(`sections.${index}.heading`) || `Section ${index + 1}`}"
                                     <br />
                                     <span className="text-green-600">
-                                      This image will appear next to the "{matchedSection.heading}" section on the solution page.
+                                      This image will appear next to the "{watch(`sections.${index}.heading`) || `Section ${index + 1}`}" section on the solution page.
                                     </span>
                                   </p>
                                 </div>
