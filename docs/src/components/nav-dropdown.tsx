@@ -13,6 +13,13 @@ interface NavItem {
   description?: string;
   image?: string;
   items?: NavItem[];
+  featured?: {
+    title: string;
+    image: string;
+    overlayText: string;
+    description: string;
+    ctaLabel: string;
+  };
 }
 
 interface NavDropdownProps {
@@ -177,25 +184,25 @@ export function NavDropdown({ item, isActive, isScrolled }: NavDropdownProps) {
                 </div>
 
                 {/* Featured / Sidebar Area for Mega Menu */}
-                {isMega && (
+                {isMega && item.featured && (
                   <div className="w-72 bg-slate-50/50 border-l border-slate-100 p-6 flex flex-col justify-between">
                     <div>
                       <h5 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">
-                        Featured Technology
+                        {item.featured.title}
                       </h5>
                       <div className="relative aspect-[4/3] rounded-xl overflow-hidden mb-4 shadow-lg border border-white">
                         <Image
-                          src={item.label === "Products" ? "/pro2.jpg" : "/data1.jpg.jpg"}
+                          src={item.featured.image}
                           alt="Featured"
                           fill
                           className="object-cover"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end p-4">
-                          <p className="text-white text-[10px] font-bold">Leading Innovation in BESS</p>
+                          <p className="text-white text-[10px] font-bold">{item.featured.overlayText}</p>
                         </div>
                       </div>
                       <p className="text-[11px] text-slate-500 leading-relaxed mb-4">
-                        Discover how our latest {item.label.toLowerCase()} are shaping the future of sustainable energy storage worldwide.
+                        {item.featured.description}
                       </p>
                     </div>
 
@@ -203,7 +210,7 @@ export function NavDropdown({ item, isActive, isScrolled }: NavDropdownProps) {
                       href={item.href}
                       className="group/btn flex items-center justify-between p-3 rounded-lg bg-green-600 text-white text-xs font-bold no-underline hover:bg-green-700 transition-all shadow-md hover:shadow-green-200"
                     >
-                      <span>Explore All {item.label}</span>
+                      <span>{item.featured.ctaLabel}</span>
                       <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
                     </Link>
                   </div>

@@ -4,6 +4,13 @@ export type NavItem = {
   description?: string;
   image?: string;
   items?: Omit<NavItem, 'items'>[];
+  featured?: {
+    title: string;
+    image: string;
+    overlayText: string;
+    description: string;
+    ctaLabel: string;
+  };
 };
 
 export type StatItem = {
@@ -152,7 +159,14 @@ export const siteContent: SiteContent = {
           href: "/products",
           description: "Complete range of energy storage solutions"
         }
-      ]
+      ],
+      featured: {
+        title: "Featured Technology",
+        image: "/pro2.jpg",
+        overlayText: "Leading Innovation in BESS",
+        description: "Discover how our latest products are shaping the future of sustainable energy storage worldwide.",
+        ctaLabel: "Explore All Products"
+      }
     },
     {
       label: "Solutions",
@@ -167,7 +181,14 @@ export const siteContent: SiteContent = {
         { label: "Telecom Industry", href: "/solutions/telecom-industry" },
         { label: "Data Centre Solutions", href: "/solutions/data-centre-solutions" },
         { label: "Battery Backup", href: "/solutions/battery-backup" }
-      ]
+      ],
+      featured: {
+        title: "Industry Focus",
+        image: "/data1.jpg.jpg",
+        overlayText: "Powering Tomorrow",
+        description: "Our solutions are engineered to meet the most demanding energy challenges of the modern era.",
+        ctaLabel: "All Solutions"
+      }
     },
     { label: "About", href: "/about" },
     { label: "Lab Equipment", href: "/lab-equipment" },
