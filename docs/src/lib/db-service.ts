@@ -633,22 +633,30 @@ export const dbService = {
   },
 
   // Lab Equipment
-  async getLabEquipment(): Promise<Array<{
+  async getLabEquipment(activeOnly = true): Promise<Array<{
     id: number;
     name: string;
     slug: string;
     description: string;
     image_url: string;
+    category: string;
+    is_active: boolean;
   }>> {
     const pool = getDbPool();
-    const [rows] = await pool.query(
-      'SELECT id, name, slug, description, image_url FROM lab_equipment WHERE is_active = TRUE'
-    ) as unknown as [Array<{
+    let query = 'SELECT * FROM lab_equipment';
+    if (activeOnly) {
+      query += ' WHERE is_active = TRUE';
+    }
+    query += ' ORDER BY created_at DESC';
+
+    const [rows] = await pool.query(query) as unknown as [Array<{
       id: number;
       name: string;
       slug: string;
       description: string;
       image_url: string;
+      category: string;
+      is_active: boolean;
     }>];
     return rows || [];
   },
@@ -659,6 +667,8 @@ export const dbService = {
     slug: string;
     description: string;
     image_url: string;
+    category: string;
+    is_active: boolean;
   } | null> {
     // Use mock data when not using database or when database is not available
     if (!USE_DATABASE) {
@@ -668,14 +678,18 @@ export const dbService = {
           name: "Battery Testing Equipment",
           slug: "battery-testing",
           description: "Advanced equipment for testing battery performance and safety.",
-          image_url: "/images/lab-equipment/battery-testing.jpg"
+          image_url: "/images/lab-equipment/battery-testing.jpg",
+          category: "Testing",
+          is_active: true
         },
         {
           id: 2,
           name: "Solar Panel Analyzer",
           slug: "solar-analyzer",
           description: "Professional equipment for analyzing solar panel efficiency.",
-          image_url: "/images/lab-equipment/solar-analyzer.jpg"
+          image_url: "/images/lab-equipment/solar-analyzer.jpg",
+          category: "Analysis",
+          is_active: true
         }
       ];
       const item = equipment.find(e => e.slug === slug);
@@ -685,7 +699,7 @@ export const dbService = {
     try {
       const pool = getDbPool();
       const [rows] = await pool.query(
-        'SELECT id, name, slug, description, image_url FROM lab_equipment WHERE slug = ? AND is_active = TRUE LIMIT 1',
+        'SELECT * FROM lab_equipment WHERE slug = ? AND is_active = TRUE LIMIT 1',
         [slug]
       ) as unknown as [Array<{
         id: number;
@@ -693,6 +707,8 @@ export const dbService = {
         slug: string;
         description: string;
         image_url: string;
+        category: string;
+        is_active: boolean;
       }>];
       return rows && rows.length > 0 ? rows[0] : null;
     } catch (error) {
@@ -703,14 +719,18 @@ export const dbService = {
           name: "Battery Testing Equipment",
           slug: "battery-testing",
           description: "Advanced equipment for testing battery performance and safety.",
-          image_url: "/images/lab-equipment/battery-testing.jpg"
+          image_url: "/images/lab-equipment/battery-testing.jpg",
+          category: "Testing",
+          is_active: true
         },
         {
           id: 2,
           name: "Solar Panel Analyzer",
           slug: "solar-analyzer",
           description: "Professional equipment for analyzing solar panel efficiency.",
-          image_url: "/images/lab-equipment/solar-analyzer.jpg"
+          image_url: "/images/lab-equipment/solar-analyzer.jpg",
+          category: "Analysis",
+          is_active: true
         }
       ];
       const item = equipment.find(e => e.slug === slug);
@@ -725,6 +745,8 @@ export const dbService = {
     slug: string;
     description: string;
     image_url: string;
+    category: string;
+    is_active: boolean;
   } | null> {
     // Use mock data when not using database or when database is not available
     if (!USE_DATABASE) {
@@ -734,14 +756,18 @@ export const dbService = {
           name: "Battery Testing Equipment",
           slug: "battery-testing",
           description: "Advanced equipment for testing battery performance and safety.",
-          image_url: "/images/lab-equipment/battery-testing.jpg"
+          image_url: "/images/lab-equipment/battery-testing.jpg",
+          category: "Testing",
+          is_active: true
         },
         {
           id: 2,
           name: "Solar Panel Analyzer",
           slug: "solar-analyzer",
           description: "Professional equipment for analyzing solar panel efficiency.",
-          image_url: "/images/lab-equipment/solar-analyzer.jpg"
+          image_url: "/images/lab-equipment/solar-analyzer.jpg",
+          category: "Analysis",
+          is_active: true
         }
       ];
       const item = equipment.find(e => e.id === id);
@@ -751,7 +777,7 @@ export const dbService = {
     try {
       const pool = getDbPool();
       const [rows] = await pool.query(
-        'SELECT id, name, slug, description, image_url FROM lab_equipment WHERE id = ? LIMIT 1',
+        'SELECT * FROM lab_equipment WHERE id = ? LIMIT 1',
         [id]
       ) as unknown as [Array<{
         id: number;
@@ -759,6 +785,8 @@ export const dbService = {
         slug: string;
         description: string;
         image_url: string;
+        category: string;
+        is_active: boolean;
       }>];
       return rows && rows.length > 0 ? rows[0] : null;
     } catch (error) {
@@ -769,14 +797,18 @@ export const dbService = {
           name: "Battery Testing Equipment",
           slug: "battery-testing",
           description: "Advanced equipment for testing battery performance and safety.",
-          image_url: "/images/lab-equipment/battery-testing.jpg"
+          image_url: "/images/lab-equipment/battery-testing.jpg",
+          category: "Testing",
+          is_active: true
         },
         {
           id: 2,
           name: "Solar Panel Analyzer",
           slug: "solar-analyzer",
           description: "Professional equipment for analyzing solar panel efficiency.",
-          image_url: "/images/lab-equipment/solar-analyzer.jpg"
+          image_url: "/images/lab-equipment/solar-analyzer.jpg",
+          category: "Analysis",
+          is_active: true
         }
       ];
       const item = equipment.find(e => e.id === id);

@@ -13,13 +13,12 @@ export async function GET(request: Request) {
     let equipment;
 
     if (all) {
-      // For now, just use the dbService as it's more reliable when DB is unavailable
-      // The dbService will handle fallback to mock data internally
-      equipment = await dbService.getLabEquipment(); // Get all available lab equipment
+      // Get all available lab equipment (active and inactive)
+      equipment = await dbService.getLabEquipment(false);
       console.log('Retrieved lab equipment (all param=true):', equipment.length);
     } else {
       // Get only active lab equipment
-      equipment = await dbService.getLabEquipment(); // Get available lab equipment
+      equipment = await dbService.getLabEquipment(true);
     }
 
     return NextResponse.json({ success: true, data: equipment || [] });
@@ -40,13 +39,8 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  let pool;
-  let connection;
   try {
-    pool = getDbPool();
-
-    // Test connection first
-    connection = await pool.getConnection();
+    const pool = getDbPool();
 
     const body = await request.json();
     const { name, slug, description, image_url, category, is_active } = body;
@@ -58,19 +52,33 @@ export async function POST(request: Request) {
       );
     }
 
-    const [result] = await pool.query(
+    const [result] = await pool.execute(
       `INSERT INTO lab_equipment (name, slug, description, image_url, category, is_active) 
        VALUES (?, ?, ?, ?, ?, ?)`,
-      [name, slug, description, image_url, category, is_active]
+      [name, slug, description || null, image_url || null, category || null, is_active ? 1 : 0]
     );
+
+    const insertId = (result as any).insertId;
 
     return NextResponse.json({
       success: true,
       message: "Lab equipment created successfully",
-      data: { id: (result as any).insertId, ...body },
+      data: { id: insertId, ...body },
     });
   } catch (error: any) {
     console.error("Failed to create lab equipment:", error);
+
+    // Handle duplicate entry error (MySQL error code 1062)
+    if (error.code === 'ER_DUP_ENTRY' || error.errno === 1062) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Equipment with this slug already exists. Please use a different slug.",
+          error: "Duplicate slug"
+        },
+        { status: 400 }
+      );
+    }
 
     return NextResponse.json(
       {
@@ -81,7 +89,5 @@ export async function POST(request: Request) {
       },
       { status: 500 }
     );
-  } finally {
-    if (connection) connection.release();
   }
 }

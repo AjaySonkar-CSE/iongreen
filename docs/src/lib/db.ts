@@ -406,6 +406,17 @@ export async function migrateExistingTables() {
       await pool.query('ALTER TABLE news ADD COLUMN is_active BOOLEAN DEFAULT true AFTER is_published');
     }
 
+    // Check and add missing columns to lab_equipment table
+    const [labColumns] = await pool.query('DESCRIBE lab_equipment');
+    const labColNames = (labColumns as any[]).map((c: any) => c.Field);
+
+    if (!labColNames.includes('category')) {
+      await pool.query('ALTER TABLE lab_equipment ADD COLUMN category VARCHAR(100) AFTER image_url');
+    }
+    if (!labColNames.includes('is_active')) {
+      await pool.query('ALTER TABLE lab_equipment ADD COLUMN is_active BOOLEAN DEFAULT true AFTER category');
+    }
+
     console.log("Database migration completed successfully");
   } catch (error) {
     console.error("Migration error:", error);

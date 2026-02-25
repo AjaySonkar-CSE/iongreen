@@ -16,11 +16,10 @@ interface LabEquipment {
 
 export default async function LabEquipmentPage() {
   // Use static data from the client component to ensure images match the home page
-  const equipmentItems: LabEquipment[] = [];
-  const error: string | null = null;
+  let equipmentItems: LabEquipment[] = [];
+  let error: string | null = null;
 
-  /* 
-  // Commented out DB fetch to use static data with correct images
+  // Use real data from the database
   try {
     // Fetch lab equipment directly from the database
     equipmentItems = await dbService.getLabEquipment();
@@ -28,7 +27,6 @@ export default async function LabEquipmentPage() {
     console.error("Failed to fetch lab equipment:", err);
     error = "Failed to load lab equipment. Please try again later.";
   }
-  */
 
   return <LabEquipmentClient equipmentItems={equipmentItems} error={error} />;
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { toast } from 'sonner';
 import { Upload, X, Image as ImageIcon } from 'lucide-react';
 import Image from 'next/image';
@@ -17,12 +17,17 @@ export function ImageUpload({ value, onChange, label = "Image", placeholder = "h
   const [previewUrl, setPreviewUrl] = useState(value);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // Synchronize internal preview state with prop value when it changes
+  useEffect(() => {
+    setPreviewUrl(value);
+  }, [value]);
+
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
     setIsUploading(true);
-    
+
     try {
       const formData = new FormData();
       formData.append('file', file);
@@ -70,7 +75,7 @@ export function ImageUpload({ value, onChange, label = "Image", placeholder = "h
     <div className="space-y-4">
       <div className="space-y-2">
         <label className="text-sm font-medium text-gray-700">{label}</label>
-        
+
         {/* URL Input */}
         <div className="flex gap-2">
           <input
