@@ -421,16 +421,19 @@ export function LabEquipmentClient({ equipmentItems = [], error }: LabEquipmentC
                   >
                     <Link
                       href={`/lab-equipment/${item.slug}`}
-                      className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:border-green-200 block h-64 md:h-96"
+                      className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-200 hover:border-green-400 block h-64 md:h-80 bg-white"
                     >
                       {/* Full-size image background */}
-                      <div className="absolute inset-0">
-                        <Image
-                          src={item.image_url}
-                          alt={item.name}
-                          fill
-                          className="object-cover group-hover:scale-110 transition-transform duration-500"
-                        />
+                      <div className="absolute inset-0 p-4 flex items-center justify-center">
+                        <div className="relative w-full h-full">
+                          <Image
+                            src={item.image_url}
+                            alt={item.name}
+                            fill
+                            className="object-contain group-hover:scale-105 transition-transform duration-500"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          />
+                        </div>
                       </div>
 
                       {/* Dark overlay */}

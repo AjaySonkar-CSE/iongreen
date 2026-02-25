@@ -26,6 +26,7 @@ interface LabEquipmentFormData {
 export function LabEquipmentForm({ equipmentId, initialData }: LabEquipmentFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [categories, setCategories] = useState<string[]>([]);
   const isEditing = !!equipmentId;
 
   const {
@@ -53,6 +54,22 @@ export function LabEquipmentForm({ equipmentId, initialData }: LabEquipmentFormP
       reset(initialData);
     }
   }, [initialData, reset]);
+
+  // Fetch unique categories for suggestions
+  useEffect(() => {
+    async function fetchCategories() {
+      try {
+        const res = await fetch("/api/lab-equipment/categories");
+        const data = await res.json();
+        if (data.success) {
+          setCategories(data.data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch categories:", error);
+      }
+    }
+    fetchCategories();
+  }, []);
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!isEditing) {
@@ -143,7 +160,7 @@ export function LabEquipmentForm({ equipmentId, initialData }: LabEquipmentFormP
           {/* Main Info */}
           <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm space-y-6">
             <h2 className="text-lg font-semibold text-gray-900">Equipment Details</h2>
-            
+
             <div className="grid gap-6">
               <div className="space-y-2">
                 <label className="text-sm font-medium text-gray-700">
@@ -181,9 +198,15 @@ export function LabEquipmentForm({ equipmentId, initialData }: LabEquipmentFormP
                 <label className="text-sm font-medium text-gray-700">Category</label>
                 <input
                   {...register("category")}
+                  list="category-list"
                   className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
                   placeholder="e.g. Microscopes, Centrifuges"
                 />
+                <datalist id="category-list">
+                  {categories.map((cat) => (
+                    <option key={cat} value={cat} />
+                  ))}
+                </datalist>
               </div>
 
               <div className="space-y-2">
@@ -203,7 +226,7 @@ export function LabEquipmentForm({ equipmentId, initialData }: LabEquipmentFormP
           {/* Status */}
           <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm space-y-6">
             <h2 className="text-lg font-semibold text-gray-900">Visibility</h2>
-            
+
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <label className="text-sm font-medium text-gray-700">Status</label>
@@ -222,7 +245,7 @@ export function LabEquipmentForm({ equipmentId, initialData }: LabEquipmentFormP
           {/* Media */}
           <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm space-y-6">
             <h2 className="text-lg font-semibold text-gray-900">Media</h2>
-            
+
             <ImageUpload
               value={imageUrl || ""}
               onChange={(value) => setValue("image_url", value)}

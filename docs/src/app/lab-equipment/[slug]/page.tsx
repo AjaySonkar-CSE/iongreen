@@ -40,12 +40,12 @@ export default async function LabEquipmentDetailPage(props: LabEquipmentPageProp
           </nav>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-            <div className="relative h-[300px] md:h-[500px] w-full rounded-2xl overflow-hidden shadow-2xl border border-gray-100">
+            <div className="relative h-[300px] md:h-[500px] w-full rounded-2xl overflow-hidden shadow-2xl border border-gray-100 bg-white p-4">
               <Image
                 src={item.image_url || "/image2.png"}
                 alt={item.name}
                 fill
-                className="object-cover"
+                className="object-contain"
                 sizes="(max-width: 1024px) 100vw, 50vw"
                 priority
               />

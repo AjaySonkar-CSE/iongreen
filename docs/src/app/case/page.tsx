@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 interface CaseStudy {
   id: number;
   title: string;
+  slug: string;
   region: string;
   summary: string;
   impact: string[];
@@ -29,6 +30,7 @@ export default async function CasePage() {
     {
       id: 1,
       title: "Commercial Energy Storage System",
+      slug: "commercial-energy-storage",
       region: "North America",
       summary: "Deployed a 2MWh energy storage system for a commercial complex, reducing peak demand charges by 40%.",
       impact: [
@@ -44,6 +46,7 @@ export default async function CasePage() {
     {
       id: 2,
       title: "Industrial Microgrid Project",
+      slug: "industrial-microgrid",
       region: "Europe",
       summary: "Implemented a 5MWh microgrid solution for an industrial facility, ensuring 24/7 power availability.",
       impact: [
@@ -59,6 +62,7 @@ export default async function CasePage() {
     {
       id: 3,
       title: "Residential Community Storage",
+      slug: "residential-community-storage",
       region: "Asia",
       summary: "Deployed community energy storage for a residential complex, enabling energy sharing and cost savings.",
       impact: [
@@ -117,10 +121,10 @@ export default async function CasePage() {
 
 
         {/* ION Green Case Title Section */}
-        <section className="py-12 bg-white">
+        <section className="pt-12 pb-4 bg-white">
           <div className="mx-auto max-w-6xl px-4 md:px-6">
             <ScrollAnimate animation="smoothReveal" delay={400}>
-              <h2 className="text-3xl font-bold text-center text-green-700 mb-4">
+              <h2 className="text-4xl font-bold text-center text-green-700 mb-2">
                 ION Green Case Studies
               </h2>
             </ScrollAnimate>
@@ -128,7 +132,7 @@ export default async function CasePage() {
         </section>
 
         {/* Vertical Layout - Content First, Image Below */}
-        <section className="py-16 bg-slate-50">
+        <section className="py-8 bg-slate-50">
           <div className="mx-auto max-w-6xl px-4 md:px-6">
             <div className="flex flex-col gap-8">
               {/* ION Green Related Content */}
@@ -179,7 +183,7 @@ export default async function CasePage() {
               {/* Image Below Content */}
               <div className="w-full flex items-center justify-center">
                 <ScrollAnimate animation="scaleInBounce" delay={1000}>
-                  <div className="relative w-full h-96 rounded-xl overflow-hidden shadow-lg">
+                  <div className="relative w-full h-48 md:h-64 rounded-xl overflow-hidden">
                     <Image
                       src="/3/title2.png"
                       alt="ION Green Case Study"
@@ -194,69 +198,76 @@ export default async function CasePage() {
           </div>
         </section>
 
-        <section id="case-studies" className="bg-white py-20">
+        <section id="case-studies" className="bg-white py-12">
           <div className="mx-auto max-w-6xl px-4 md:px-6">
             <div className="grid gap-8 md:grid-cols-3">
               {caseStudies.map((study, index) => (
-                <ScrollAnimate
+                <Link
                   key={study.id || study.title}
-                  animation="scaleInBounce"
-                  delay={200 + (index * 100)}
-                  className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:border-green-200 block h-96"
+                  href={`/case/${study.slug}`}
+                  className="block"
                 >
-                  {/* Full-size image background */}
-                  <div className="absolute inset-0">
-                    <Image
-                      src={study.image_url || `/case${study.id}.jpg`}
-                      alt={study.title}
-                      fill
-                      className="object-cover group-hover:scale-110 transition-transform duration-500"
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      priority
-                    />
-                  </div>
-
-                  {/* Region badge */}
-                  <span className="absolute top-4 left-4 bg-green-600 text-white text-xs font-medium px-2.5 py-1 rounded-full z-10">
-                    {study.region}
-                  </span>
-
-                  {/* Dark overlay */}
-                  <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-
-                  {/* Content overlay - appears on hover */}
-                  <div className="absolute inset-0 flex flex-col justify-end p-6 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0">
-                    <div className="bg-white/95 backdrop-blur-sm rounded-xl p-4">
-                      <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-green-600 transition-colors duration-300">
-                        {study.title}
-                      </h3>
-                      <p className="text-gray-700 text-sm mb-3 line-clamp-3">
-                        {study.summary}
-                      </p>
-
-                      {study.impact && study.impact.length > 0 && (
-                        <div className="mb-3">
-                          <div className="text-sm font-medium text-green-600 mb-1">Key Impacts:</div>
-                          <ul className="space-y-1">
-                            {study.impact.slice(0, 2).map((bullet, bulletIndex) => (
-                              <li key={`${study.id}-impact-${bulletIndex}`} className="text-xs text-gray-600 flex items-start gap-1">
-                                <span className="text-green-500 mt-1">•</span>
-                                <span>{bullet}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      )}
-
-                      <div className="flex items-center text-green-600 font-medium group-hover:text-green-700 transition-colors duration-300">
-                        <span>View Case Study</span>
-                        <svg className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                        </svg>
+                  <ScrollAnimate
+                    animation="scaleInBounce"
+                    delay={200 + (index * 100)}
+                    className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:border-green-200 block h-96"
+                  >
+                    {/* Full-size image background */}
+                    <div className="absolute inset-0 p-4 flex items-center justify-center bg-white">
+                      <div className="relative w-full h-full">
+                        <Image
+                          src={study.image_url || `/case${study.id}.jpg`}
+                          alt={study.title}
+                          fill
+                          className="object-contain group-hover:scale-105 transition-transform duration-500"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          priority
+                        />
                       </div>
                     </div>
-                  </div>
-                </ScrollAnimate>
+
+                    {/* Region badge */}
+                    <span className="absolute top-4 left-4 bg-green-600 text-white text-xs font-medium px-2.5 py-1 rounded-full z-10">
+                      {study.region}
+                    </span>
+
+                    {/* Dark overlay */}
+                    <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+                    {/* Content overlay - appears on hover */}
+                    <div className="absolute inset-0 flex flex-col justify-end p-6 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0">
+                      <div className="bg-white/95 backdrop-blur-sm rounded-xl p-4">
+                        <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-green-600 transition-colors duration-300">
+                          {study.title}
+                        </h3>
+                        <p className="text-gray-700 text-sm mb-3 line-clamp-3">
+                          {study.summary}
+                        </p>
+
+                        {study.impact && study.impact.length > 0 && (
+                          <div className="mb-3">
+                            <div className="text-sm font-medium text-green-600 mb-1">Key Impacts:</div>
+                            <ul className="space-y-1">
+                              {study.impact.slice(0, 2).map((bullet, bulletIndex) => (
+                                <li key={`${study.id}-impact-${bulletIndex}`} className="text-xs text-gray-600 flex items-start gap-1">
+                                  <span className="text-green-500 mt-1">•</span>
+                                  <span>{bullet}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+
+                        <div className="flex items-center text-green-600 font-medium group-hover:text-green-700 transition-colors duration-300">
+                          <span>View Case Study</span>
+                          <svg className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+                  </ScrollAnimate>
+                </Link>
               ))}
             </div>
           </div>

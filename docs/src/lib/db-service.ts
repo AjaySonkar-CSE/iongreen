@@ -738,6 +738,20 @@ export const dbService = {
     }
   },
 
+  // Get all unique lab equipment categories
+  async getLabEquipmentCategories(): Promise<string[]> {
+    try {
+      const pool = getDbPool();
+      const [rows] = await pool.query(
+        'SELECT DISTINCT category FROM lab_equipment WHERE category IS NOT NULL AND category != ""'
+      ) as unknown as [Array<{ category: string }>];
+      return rows.map(r => r.category);
+    } catch (error) {
+      console.warn('Database error fetching lab equipment categories:', error);
+      return ["Testing", "Analysis", "Storage", "Power Electronics"];
+    }
+  },
+
   // Get a specific lab equipment item by ID
   async getLabEquipmentById(id: number): Promise<{
     id: number;
@@ -1278,6 +1292,35 @@ export const dbService = {
     }
   },
 
+  async getCaseStudyBySlug(slug: string): Promise<{
+    id: number;
+    title: string;
+    slug: string;
+    client_name: string;
+    location: string;
+    industry: string;
+    challenge: string;
+    solution: string;
+    results: string;
+    image_url: string;
+    is_featured: boolean;
+    created_at: string;
+    updated_at: string;
+  } | null> {
+    try {
+      const pool = getDbPool();
+      const [rows] = await pool.query(
+        'SELECT * FROM case_studies WHERE slug = ? AND is_active = TRUE LIMIT 1',
+        [slug]
+      ) as unknown as [Array<any>];
+
+      return rows && rows.length > 0 ? rows[0] : null;
+    } catch (error) {
+      console.warn('Database error fetching case study by slug:', error);
+      return null;
+    }
+  },
+
   // Case Studies
   async getCaseStudies(): Promise<Array<{
     id: number;
@@ -1317,6 +1360,7 @@ export const dbService = {
     const caseStudies = rows.map(caseStudy => ({
       id: caseStudy.id,
       title: caseStudy.title,
+      slug: caseStudy.slug,
       region: caseStudy.location,
       summary: caseStudy.challenge.substring(0, 150) + (caseStudy.challenge.length > 150 ? '...' : ''),
       impact: [

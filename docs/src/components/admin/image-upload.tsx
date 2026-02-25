@@ -133,12 +133,12 @@ export function ImageUpload({ value, onChange, label = "Image", placeholder = "h
 
       {/* Image Preview */}
       {previewUrl && (
-        <div className="relative aspect-square w-full max-w-xs overflow-hidden rounded-lg bg-gray-100 border border-gray-200">
+        <div className="relative aspect-square w-full max-w-xs overflow-hidden rounded-lg bg-white border border-gray-200 p-4">
           <Image
             src={previewUrl}
             alt="Preview"
             fill
-            className="object-cover"
+            className="object-contain"
             onError={() => {
               // Handle broken image links gracefully
               setPreviewUrl('');
