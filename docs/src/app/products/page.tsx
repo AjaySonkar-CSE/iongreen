@@ -97,49 +97,8 @@ export default async function ProductsPage() {
           </div>
         </section>
 
-        {/* Test Image Section */}
-        <section className="py-12 bg-gray-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-2xl font-bold mb-6">Test Background Image</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="p-4 bg-white rounded-lg shadow">
-                <p className="mb-2">Direct Image:</p>
-                <div className="h-32 relative">
-                  <Image
-                    src="/3/green3.png"
-                    alt="Test Background"
-                    fill
-                    className="object-contain"
-                  />
-                </div>
-              </div>
-              <div className="p-4 bg-white rounded-lg shadow">
-                <p className="mb-2">CSS Background:</p>
-                <div
-                  className="h-32 w-full bg-cover bg-center"
-                  style={{
-                    backgroundImage: 'url(/3/green3.png)',
-                    backgroundSize: 'contain',
-                    backgroundRepeat: 'no-repeat',
-                    backgroundPosition: 'center'
-                  }}
-                ></div>
-              </div>
-              <div className="p-4 bg-white rounded-lg shadow">
-                <p className="mb-2">Debug Info:</p>
-                <p className="text-sm">Path: /3/green3.png</p>
-                <p className="text-sm mt-2">
-                  {siteContent.products[2].backgroundImage === "/3/green3.png"
-                    ? "✅ Path matches"
-                    : "❌ Path mismatch"}
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
         {/* Product Categories Section */}
-        <section id="product-categories" className="py-24 bg-gray-50">
+        <section id="product-categories" className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <ScrollAnimate animation="fadeInUpElegant" delay={200}>
               <div className="text-center mb-16">
@@ -222,142 +181,198 @@ export default async function ProductsPage() {
         <section className="py-24 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <ScrollAnimate animation="fadeInUpElegant" delay={200}>
-              <div className="text-center mb-16">
-                <h2 className="text-4xl font-bold text-gray-900 mb-6">
+              <div className="text-center mb-16 px-4">
+                <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
                   Featured Solutions
                 </h2>
-                <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                <div className="w-24 h-1.5 bg-green-500 mx-auto mb-8 rounded-full"></div>
+                <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
                   Our flagship products represent the pinnacle of energy storage technology,
-                  delivering unparalleled performance, safety, and reliability.
+                  delivering unparalleled performance, safety, and reliability for global energy independent.
                 </p>
               </div>
             </ScrollAnimate>
 
             {featuredProducts.length > 0 ? (
               featuredProducts.map((product, index) => (
-                <div key={product.id} className={`grid lg:grid-cols-2 gap-12 items-center ${index < featuredProducts.length - 1 ? 'mb-20' : ''}`}>
+                <div key={product.id} className={`grid lg:grid-cols-2 gap-16 items-center ${index < featuredProducts.length - 1 ? 'mb-24' : ''}`}>
                   <ScrollAnimate animation="slideInLeftSmooth" delay={300 + (index * 100)}>
-                    <div className={index % 2 === 1 ? "lg:order-2" : ""}>
-                      <h3 className="text-3xl font-bold text-gray-900 mb-6">
+                    <div className={`space-y-6 ${index % 2 === 1 ? "lg:order-2" : ""}`}>
+                      <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-green-50 text-green-700 text-sm font-bold tracking-wider uppercase">
+                        {product.category || "Premium Solution"}
+                      </div>
+                      <h3 className="text-3xl md:text-4xl font-extrabold text-gray-900">
                         {product.name}
                       </h3>
-                      <p className="text-lg text-gray-600 mb-6 leading-relaxed">
+                      <p className="text-lg text-gray-600 leading-relaxed max-w-xl">
                         {product.description}
                       </p>
-                      <div className="grid grid-cols-2 gap-4 mb-8">
-                        <div className="bg-green-50 p-4 rounded-lg">
-                          <div className="text-xl font-bold text-green-600">High Efficiency</div>
-                          <div className="text-sm text-gray-600">Performance</div>
+                      <div className="grid grid-cols-2 gap-6">
+                        <div className="flex items-start gap-4">
+                          <div className="mt-1 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
+                            <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
+                          </div>
+                          <div>
+                            <div className="font-bold text-gray-900">Efficiency</div>
+                            <div className="text-sm text-gray-500">Optimized Performance</div>
+                          </div>
                         </div>
-                        <div className="bg-green-50 p-4 rounded-lg">
-                          <div className="text-xl font-bold text-green-600">Smart Control</div>
-                          <div className="text-sm text-gray-600">Technology</div>
+                        <div className="flex items-start gap-4">
+                          <div className="mt-1 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
+                            <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                          </div>
+                          <div>
+                            <div className="font-bold text-gray-900">Smart UI</div>
+                            <div className="text-sm text-gray-500">Real-time Monitoring</div>
+                          </div>
                         </div>
                       </div>
-                      <Button asChild size="lg" className="bg-green-600 hover:bg-green-700">
-                        <Link href={`/products/${product.category}`}>
-                          View Details
-                        </Link>
-                      </Button>
+                      <div className="pt-4">
+                        <Button asChild size="lg" className="bg-green-600 hover:bg-green-700 h-14 px-10 rounded-xl text-lg font-bold text-white shadow-lg shadow-green-600/20">
+                          <Link href={`/products/${product.category}`}>
+                            Explore Product
+                          </Link>
+                        </Button>
+                      </div>
                     </div>
                   </ScrollAnimate>
 
                   <ScrollAnimate animation="slideInRightSmooth" delay={400 + (index * 100)}>
-                    <div className={`relative h-96 ${index % 2 === 1 ? "lg:order-1" : ""}`}>
-                      <Image
-                        src={product.image_url || "/pro2.jpg"}
-                        alt={product.name}
-                        fill
-                        className="object-cover rounded-2xl shadow-xl"
-                      />
+                    <div className={`relative group ${index % 2 === 1 ? "lg:order-1" : ""}`}>
+                      <div className="absolute -inset-4 bg-green-500/5 rounded-[2.5rem] blur-2xl group-hover:bg-green-500/10 transition-colors"></div>
+                      <div className="relative h-[400px] md:h-[500px] rounded-[2rem] overflow-hidden shadow-2xl border-8 border-white">
+                        <Image
+                          src={product.image_url || "/pro2.jpg"}
+                          alt={product.name}
+                          fill
+                          className="object-cover group-hover:scale-105 transition-transform duration-700"
+                        />
+                      </div>
                     </div>
                   </ScrollAnimate>
                 </div>
               ))
             ) : (
               <>
-                <div className="grid lg:grid-cols-2 gap-12 items-center mb-20">
+                <div className="grid lg:grid-cols-2 gap-16 items-center mb-24">
                   <ScrollAnimate animation="slideInLeftSmooth" delay={300}>
-                    <div>
-                      <h3 className="text-3xl font-bold text-gray-900 mb-6">
+                    <div className="space-y-6">
+                      <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-green-50 text-green-700 text-sm font-bold tracking-wider uppercase">
+                        Utility Scale
+                      </div>
+                      <h3 className="text-3xl md:text-4xl font-extrabold text-gray-900">
                         Energy Storage System
                       </h3>
-                      <p className="text-lg text-gray-600 mb-6 leading-relaxed">
+                      <p className="text-lg text-gray-600 leading-relaxed">
                         Modular cabinet and containerized systems for industrial parks, hospitals,
                         data centers, and municipal infrastructure. Featuring air-cooled & liquid-cooled
                         options with peak shaving and load shifting capabilities.
                       </p>
-                      <div className="grid grid-cols-2 gap-4 mb-8">
-                        <div className="bg-green-50 p-4 rounded-lg">
-                          <div className="text-2xl font-bold text-green-600">100kWh</div>
-                          <div className="text-sm text-gray-600">Minimum Capacity</div>
+                      <div className="grid grid-cols-2 gap-6">
+                        <div className="flex items-start gap-4">
+                          <div className="mt-1 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
+                            <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
+                          </div>
+                          <div>
+                            <div className="font-bold text-gray-900">100kWh+</div>
+                            <div className="text-sm text-gray-500">Starting Capacity</div>
+                          </div>
                         </div>
-                        <div className="bg-green-50 p-4 rounded-lg">
-                          <div className="text-2xl font-bold text-green-600">5.015MWh</div>
-                          <div className="text-sm text-gray-600">Maximum Capacity</div>
+                        <div className="flex items-start gap-4">
+                          <div className="mt-1 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
+                            <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                          </div>
+                          <div>
+                            <div className="font-bold text-gray-900">Advanced BMS</div>
+                            <div className="text-sm text-gray-500">Intelligent Control</div>
+                          </div>
                         </div>
                       </div>
-                      <Button asChild size="lg" className="bg-green-600 hover:bg-green-700">
-                        <Link href="/products/energy-storage-system">
-                          View Details
-                        </Link>
-                      </Button>
+                      <div className="pt-4">
+                        <Button asChild size="lg" className="bg-green-600 hover:bg-green-700 h-14 px-10 rounded-xl text-lg font-bold text-white shadow-lg shadow-green-600/20">
+                          <Link href="/products/energy-storage-system">
+                            Explore Solution
+                          </Link>
+                        </Button>
+                      </div>
                     </div>
                   </ScrollAnimate>
 
                   <ScrollAnimate animation="slideInRightSmooth" delay={400}>
-                    <div className="relative h-96">
-                      <Image
-                        src="/pro2.jpg"
-                        alt="Energy Storage System"
-                        fill
-                        className="object-cover rounded-2xl shadow-xl"
-                      />
+                    <div className="relative group">
+                      <div className="absolute -inset-4 bg-green-500/5 rounded-[2.5rem] blur-2xl group-hover:bg-green-500/10 transition-colors"></div>
+                      <div className="relative h-[400px] md:h-[500px] rounded-[2rem] overflow-hidden shadow-2xl border-8 border-white">
+                        <Image
+                          src="/pro2.jpg"
+                          alt="Energy Storage System"
+                          fill
+                          className="object-cover group-hover:scale-105 transition-transform duration-700"
+                        />
+                      </div>
                     </div>
                   </ScrollAnimate>
                 </div>
 
-                <div className="grid lg:grid-cols-2 gap-12 items-center">
+                <div className="grid lg:grid-cols-2 gap-16 items-center">
                   <ScrollAnimate animation="slideInLeftSmooth" delay={500}>
-                    <div className="relative h-96 lg:order-2">
-                      <Image
-                        src="/pro1.jpg"
-                        alt="Hydrogen Pules"
-                        fill
-                        className="object-cover rounded-2xl shadow-xl"
-                      />
+                    <div className="relative group lg:order-2">
+                      <div className="absolute -inset-4 bg-blue-500/5 rounded-[2.5rem] blur-2xl group-hover:bg-blue-500/10 transition-colors"></div>
+                      <div className="relative h-[400px] md:h-[500px] rounded-[2rem] overflow-hidden shadow-2xl border-8 border-white">
+                        <Image
+                          src="/pro1.jpg"
+                          alt="Hydrogen Pules"
+                          fill
+                          className="object-cover group-hover:scale-105 transition-transform duration-700"
+                        />
+                      </div>
                     </div>
                   </ScrollAnimate>
 
                   <ScrollAnimate animation="slideInRightSmooth" delay={600}>
-                    <div className="lg:order-1">
-                      <h3 className="text-3xl font-bold text-gray-900 mb-6">
-                        Hydrogen Pules
+                    <div className="space-y-6 lg:order-1">
+                      <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-blue-50 text-blue-700 text-sm font-bold tracking-wider uppercase">
+                        Residential All-in-One
+                      </div>
+                      <h3 className="text-3xl md:text-4xl font-extrabold text-gray-900">
+                        Hydrogen Pules Series
                       </h3>
-                      <p className="text-lg text-gray-600 mb-6 leading-relaxed">
+                      <p className="text-lg text-gray-600 leading-relaxed">
                         Wall-mounted, stack-mounted, and all-in-one ESS for homes and small businesses
                         with hybrid inverter options. Featuring seamless solar integration and backup power capabilities.
                       </p>
-                      <div className="grid grid-cols-2 gap-4 mb-8">
-                        <div className="bg-blue-50 p-4 rounded-lg">
-                          <div className="text-2xl font-bold text-blue-600">5kWh</div>
-                          <div className="text-sm text-gray-600">Minimum Capacity</div>
+                      <div className="grid grid-cols-2 gap-6">
+                        <div className="flex items-start gap-4">
+                          <div className="mt-1 w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
+                            <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
+                          </div>
+                          <div>
+                            <div className="font-bold text-gray-900">Home Ready</div>
+                            <div className="text-sm text-gray-500">Plug & Play</div>
+                          </div>
                         </div>
-                        <div className="bg-blue-50 p-4 rounded-lg">
-                          <div className="text-2xl font-bold text-blue-600">35kWh</div>
-                          <div className="text-sm text-gray-600">Maximum Capacity</div>
+                        <div className="flex items-start gap-4">
+                          <div className="mt-1 w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
+                            <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                          </div>
+                          <div>
+                            <div className="font-bold text-gray-900">High Density</div>
+                            <div className="text-sm text-gray-500">LFP Technology</div>
+                          </div>
                         </div>
                       </div>
-                      <Button asChild size="lg" className="bg-blue-600 hover:bg-blue-700">
-                        <Link href="/products/hydrogen-pules">
-                          View Details
-                        </Link>
-                      </Button>
+                      <div className="pt-4">
+                        <Button asChild size="lg" className="bg-blue-600 hover:bg-blue-700 h-14 px-10 rounded-xl text-lg font-bold text-white shadow-lg shadow-blue-600/20">
+                          <Link href="/products/hydrogen-pules">
+                            View Product Line
+                          </Link>
+                        </Button>
+                      </div>
                     </div>
                   </ScrollAnimate>
                 </div>
               </>
-            )}
+            )
+            }
           </div>
         </section>
 
