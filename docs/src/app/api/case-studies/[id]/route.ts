@@ -80,8 +80,8 @@ export async function DELETE(request: Request, { params }: { params: Promise<{ i
       );
     }
 
-    // Soft delete
-    await pool.query('UPDATE case_studies SET is_active = FALSE WHERE id = ?', [Number(id)]);
+    // Hard delete
+    await pool.query('DELETE FROM case_studies WHERE id = ?', [Number(id)]);
 
     return NextResponse.json({ success: true, message: "Case study deleted successfully" });
   } catch (error: any) {

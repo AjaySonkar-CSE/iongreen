@@ -11,14 +11,15 @@ import { AnimatedContentWrapper } from "@/components/client/animated-content-wra
 export const revalidate = 60;
 
 export default async function NewsPage() {
-  // Fetch news data on the server side
-  const dbNews = await dbService.getNews(6);
+  // Fetch up to 100 active news items on the server side instead of strictly 6
+  const dbNews = await dbService.getNews(100);
 
   // Transform database news to match NewsItem interface
   const news = dbNews.map(item => ({
     title: item.title,
     date: item.publish_date,
     summary: item.summary,
+    content: item.content,
     image: item.image_url
   }));
 

@@ -10,6 +10,7 @@ interface NewsItem {
   title: string;
   date: string | Date;
   summary: string;
+  content?: string;
   image: string;
 }
 
@@ -37,7 +38,7 @@ function NewsFeedClient({ initialNews }: { initialNews: NewsItem[] }) {
       title: item.title,
       image: imageUrl,
       description: item.summary,
-      detailedContent: item.summary // or empty
+      detailedContent: item.content || item.summary // fallback to summary if no content
     });
     setIsModalOpen(true);
   };
@@ -55,59 +56,55 @@ function NewsFeedClient({ initialNews }: { initialNews: NewsItem[] }) {
     <>
       <div className="mt-16 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
         {initialNews.map((item: NewsItem, index: number) => {
-          // Use ION GREEN images in sequence
-          const imageUrl = newsImages[index % newsImages.length];
+          // Use item image, fallback to ION GREEN images in sequence
+          const imageUrl = item.image || newsImages[index % newsImages.length];
           const publishLabel = item.date;
 
           return (
             <article
               key={item.title}
-              className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 block h-96 cursor-pointer"
+              className="group flex flex-col overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 cursor-pointer bg-white h-full"
               onClick={() => openModal(item)}
             >
-              {/* Full-size image background */}
-              <div className="absolute inset-0">
+              {/* Image Container - Adjusted to fit image beautifully */}
+              <div className="relative w-full aspect-[4/3] md:aspect-[3/2] xl:aspect-[4/3] bg-gray-50 flex items-center justify-center p-4">
                 <Image
                   src={imageUrl}
                   alt={item.title}
                   fill
-                  className="object-cover group-hover:scale-110 transition-transform duration-500"
+                  className="object-contain p-2 group-hover:scale-105 transition-transform duration-500"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
               </div>
 
-              {/* Dark overlay */}
-              <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              {/* Text Content - Positioned below the image natively */}
+              <div className="p-6 flex flex-col flex-grow bg-white border-t border-gray-50">
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="inline-flex items-center px-2.5 py-1 bg-green-100 text-green-800 text-xs font-bold rounded-full uppercase tracking-wider">
+                    News
+                  </span>
+                  <span className="text-sm text-gray-500 font-medium whitespace-nowrap">
+                    {publishLabel instanceof Date ? publishLabel.toLocaleDateString('en-US', {
+                      year: 'numeric',
+                      month: 'short',
+                      day: 'numeric'
+                    }) : publishLabel}
+                  </span>
+                </div>
 
-              {/* Content overlay - appears on hover */}
-              <div className="absolute inset-0 flex flex-col justify-end p-6 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0">
-                <div className="bg-white/95 backdrop-blur-sm rounded-xl p-4">
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="inline-flex items-center px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">
-                      News
-                    </span>
-                    <span className="text-xs text-gray-500">
-                      {publishLabel instanceof Date ? publishLabel.toLocaleDateString('en-US', {
-                        year: 'numeric',
-                        month: 'short',
-                        day: 'numeric'
-                      }) : publishLabel}
-                    </span>
-                  </div>
+                <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-3 group-hover:text-green-600 transition-colors line-clamp-2">
+                  {item.title}
+                </h3>
 
-                  <h3 className="text-lg font-bold text-gray-900 mb-2">
-                    {item.title}
-                  </h3>
-                  <p className="text-gray-700 text-sm mb-3 line-clamp-2">
-                    {item.summary}
-                  </p>
+                <p className="text-gray-600 mb-6 line-clamp-3 leading-relaxed flex-grow">
+                  {item.summary}
+                </p>
 
-                  <div className="flex items-center text-green-600 font-medium group-hover:text-green-700 transition-colors duration-300">
-                    <span>Read More</span>
-                    <svg className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </div>
+                <div className="flex items-center text-green-600 font-bold group-hover:text-green-700 transition-colors duration-300 mt-auto">
+                  <span>Read Article</span>
+                  <svg className="ml-2 w-5 h-5 group-hover:translate-x-1.5 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+                  </svg>
                 </div>
               </div>
             </article>

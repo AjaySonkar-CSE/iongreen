@@ -908,7 +908,7 @@ export const dbService = {
 
       // Add active filter only if activeOnly is true
       if (activeOnly) {
-        query += ' WHERE is_published = TRUE';
+        query += ' WHERE is_active = TRUE';
       } else {
         query += ' WHERE 1=1'; // Always true condition to allow adding other filters
       }
@@ -1003,7 +1003,7 @@ export const dbService = {
     try {
       const pool = getDbPool();
       const [rows] = await pool.query(
-        'SELECT * FROM news WHERE slug = ? AND is_published = TRUE LIMIT 1',
+        'SELECT * FROM news WHERE slug = ? AND is_active = TRUE LIMIT 1',
         [slug]
       ) as unknown as [Array<{
         id: number;
