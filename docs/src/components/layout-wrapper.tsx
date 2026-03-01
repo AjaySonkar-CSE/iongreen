@@ -28,7 +28,7 @@ export function LayoutWrapper({
       <SmoothScrollProvider>
         <ParallaxWrapper>
           <SiteHeader initialNavbarData={initialNavbarData} />
-          <main>
+          <main key={pathname}>
             {children}
             <SiteFooter />
           </main>
