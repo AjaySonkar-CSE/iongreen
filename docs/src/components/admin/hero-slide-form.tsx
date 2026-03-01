@@ -198,6 +198,9 @@ export default function HeroSlideForm({ initialData, isEditing = false }: HeroSl
                   <option value="about">ℹ️ About</option>
                   <option value="contact">📞 Contact</option>
                   <option value="news">📰 News</option>
+                  <option value="lab-equipment">🔬 Lab Equipment</option>
+                  <option value="support">🛠️ Support</option>
+                  <option value="case">📊 Case Studies</option>
                 </select>
               </div>
 

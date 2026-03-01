@@ -5,25 +5,35 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Hero } from "@/components/hero";
+import { dbService } from "@/lib/db-service";
 
 import { AnimatedContentWrapper } from "@/components/client/animated-content-wrapper";
 
-export default function SupportPage() {
+export default async function SupportPage() {
+  const heroSlides = await dbService.getHeroSlidesByPage('support');
+
   return (
     <div className="min-h-screen bg-transparent text-white">
-      <Hero page="support">
+      <Hero page="support" slides={heroSlides}>
         <div className="text-center">
           <ScrollAnimate animation="fadeInUpElegant" delay={200}>
-            <h1 className="text-5xl lg:text-7xl font-bold mb-6">
-              ION-GREEN
-              <span className="text-green-400 block mt-2">Support Center</span>
-            </h1>
+            {heroSlides && heroSlides.length > 0 ? (
+              <h1 className="text-5xl lg:text-7xl font-bold mb-6 whitespace-pre-wrap">
+                {heroSlides[0].title}
+              </h1>
+            ) : (
+              <h1 className="text-5xl lg:text-7xl font-bold mb-6">
+                ION-GREEN
+                <span className="text-green-400 block mt-2">Support Center</span>
+              </h1>
+            )}
           </ScrollAnimate>
 
           <ScrollAnimate animation="fadeInUpElegant" delay={400}>
             <p className="text-xl text-gray-300 mb-10 max-w-3xl mx-auto leading-relaxed">
-              Your trusted partner for energy storage solutions. Access product manuals, technical specifications,
-              and 24/7 expert support for all ION-GREEN systems.
+              {heroSlides && heroSlides.length > 0 ? heroSlides[0].description : (
+                "Your trusted partner for energy storage solutions. Access product manuals, technical specifications, and 24/7 expert support for all ION-GREEN systems."
+              )}
             </p>
           </ScrollAnimate>
 
@@ -34,8 +44,8 @@ export default function SupportPage() {
                 size="lg"
                 className="bg-green-600 hover:bg-green-500 text-white px-10 py-5 text-lg font-bold rounded-full transition-all shadow-lg hover:shadow-green-500/30"
               >
-                <Link href="#support-resources">
-                  View Resources
+                <Link href={heroSlides && heroSlides.length > 0 && heroSlides[0].cta_href ? heroSlides[0].cta_href : "#support-resources"}>
+                  {heroSlides && heroSlides.length > 0 && heroSlides[0].cta_label ? heroSlides[0].cta_label : "View Resources"}
                 </Link>
               </Button>
               <Button

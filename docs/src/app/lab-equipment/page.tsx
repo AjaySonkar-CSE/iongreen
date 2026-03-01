@@ -18,15 +18,17 @@ export default async function LabEquipmentPage() {
   // Use static data from the client component to ensure images match the home page
   let equipmentItems: LabEquipment[] = [];
   let error: string | null = null;
+  let heroSlides: any[] = [];
 
   // Use real data from the database
   try {
     // Fetch lab equipment directly from the database
     equipmentItems = await dbService.getLabEquipment();
+    heroSlides = await dbService.getHeroSlidesByPage('lab-equipment');
   } catch (err) {
     console.error("Failed to fetch lab equipment:", err);
     error = "Failed to load lab equipment. Please try again later.";
   }
 
-  return <LabEquipmentClient equipmentItems={equipmentItems} error={error} />;
+  return <LabEquipmentClient equipmentItems={equipmentItems} heroSlides={heroSlides} error={error} />;
 }

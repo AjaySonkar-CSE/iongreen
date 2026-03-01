@@ -24,6 +24,7 @@ import { AnimatedContentWrapper } from "@/components/client/animated-content-wra
 export default async function CasePage() {
   let caseStudies: CaseStudy[] = [];
   let isLoading = false;
+  const heroSlides = await dbService.getHeroSlidesByPage('case');
 
   // Default case studies
   const defaultCaseStudies: CaseStudy[] = [
@@ -102,18 +103,40 @@ export default async function CasePage() {
 
   return (
     <div className="min-h-screen bg-transparent">
-      <Hero page="case">
+      <Hero page="case" slides={heroSlides}>
         <div className="text-center">
           <ScrollAnimate animation="fadeInUpElegant" delay={200}>
-            <h1 className="text-4xl font-bold text-white sm:text-5xl md:text-6xl">
-              Case & Project Highlights
-            </h1>
+            {heroSlides && heroSlides.length > 0 ? (
+              <h1 className="text-4xl font-bold text-white sm:text-5xl md:text-6xl whitespace-pre-wrap">
+                {heroSlides[0].title}
+              </h1>
+            ) : (
+              <h1 className="text-4xl font-bold text-white sm:text-5xl md:text-6xl">
+                Case & Project Highlights
+              </h1>
+            )}
           </ScrollAnimate>
           <ScrollAnimate animation="fadeInUpElegant" delay={300}>
             <p className="mx-auto mt-6 max-w-3xl text-lg text-white/90 md:text-xl">
-              Discover how ION Green deployments stabilize energy costs, integrate renewables, and deliver resilient backup power.
+              {heroSlides && heroSlides.length > 0 ? heroSlides[0].description : (
+                "Discover how ION Green deployments stabilize energy costs, integrate renewables, and deliver resilient backup power."
+              )}
             </p>
           </ScrollAnimate>
+
+          {heroSlides && heroSlides.length > 0 && heroSlides[0].cta_label && (
+            <ScrollAnimate animation="scaleInBounce" delay={400} className="mt-8">
+              <Button
+                asChild
+                size="lg"
+                className="bg-green-600 hover:bg-green-500 text-white px-8 py-6 text-lg font-bold rounded-full transition-all shadow-lg hover:shadow-green-500/30"
+              >
+                <Link href={heroSlides[0].cta_href || "#"}>
+                  {heroSlides[0].cta_label}
+                </Link>
+              </Button>
+            </ScrollAnimate>
+          )}
         </div>
       </Hero>
 

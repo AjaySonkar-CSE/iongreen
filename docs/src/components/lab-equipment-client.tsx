@@ -194,6 +194,7 @@ interface LabEquipmentClientProps {
     description: string;
     image_url: string;
   }>;
+  heroSlides?: any[];
   error: string | null;
 }
 
@@ -291,7 +292,7 @@ const labEquipmentItems = [
   }
 ];
 
-export function LabEquipmentClient({ equipmentItems = [], error }: LabEquipmentClientProps) {
+export function LabEquipmentClient({ equipmentItems = [], heroSlides = [], error }: LabEquipmentClientProps) {
   // If there's an error, show it
   if (error) {
     return (
@@ -309,7 +310,7 @@ export function LabEquipmentClient({ equipmentItems = [], error }: LabEquipmentC
 
   return (
     <div className="min-h-screen bg-transparent">
-      <Hero page="lab-equipment">
+      <Hero page="lab-equipment" slides={heroSlides}>
         <div className="text-center">
           <ScrollAnimate animation="fadeInUpElegant" delay={200}>
             <h1 className="text-5xl lg:text-7xl font-bold mb-6">

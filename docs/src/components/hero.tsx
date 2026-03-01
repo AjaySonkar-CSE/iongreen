@@ -158,8 +158,8 @@ export function Hero({
   const isHomePage = page === 'home';
 
   // Resolve title and description
-  const displayTitle = title || pageHeadings[page]?.title;
-  const displayDescription = description || pageHeadings[page]?.description;
+  const displayTitle = title || (externalSlides && externalSlides.length > 0 ? externalSlides[0].title : pageHeadings[page]?.title);
+  const displayDescription = description || (externalSlides && externalSlides.length > 0 ? externalSlides[0].description : pageHeadings[page]?.description);
 
   // Hardcoded hero slides (fallback)
   const hardcodedSlides = [
@@ -220,19 +220,18 @@ export function Hero({
           <HeroCarousel slides={carouselSlides} categories={productCategories} />
         ) : (
           <div className="absolute inset-0">
-            {(sectionBackgrounds[page] || sectionBackgrounds[page.toLowerCase()]) && (
-              <div className="absolute inset-0">
-                <Image
-                  src={sectionBackgrounds[page] || sectionBackgrounds[page.toLowerCase()]}
-                  alt={page}
-                  fill
-                  className="object-cover"
-                  priority
-                />
-                <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-black/80" />
-                <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-transparent" />
-              </div>
-            )}
+            {/* Always render an image, either from dynamic slides or static background */}
+            <div className="absolute inset-0">
+              <Image
+                src={externalSlides && externalSlides.length > 0 ? externalSlides[0].image_url : (sectionBackgrounds[page] || sectionBackgrounds[page?.toLowerCase()] || '/lab2.jpg')}
+                alt={page}
+                fill
+                className="object-cover"
+                priority
+              />
+              <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-black/80" />
+              <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-transparent" />
+            </div>
 
             {/* Standard Hero Content for Other Pages */}
             <div className="relative z-10 mx-auto max-w-7xl px-4 flex flex-col items-center justify-center text-center h-full pt-20">
