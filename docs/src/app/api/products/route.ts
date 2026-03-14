@@ -59,7 +59,7 @@ export async function POST(request: Request) {
   let body: any = {};
   try {
     body = await request.json();
-    const { name, slug, description, features, specifications, applications, benefits, image_url, category, gallery, is_active, is_featured } = body;
+    const { name, slug, description, features, specifications, applications, benefits, image_url, category, gallery, is_active, is_featured, spec_image } = body;
 
     if (!name || !slug) {
       return NextResponse.json(
@@ -87,6 +87,14 @@ export async function POST(request: Request) {
     ]);
 
     const insertId = (result as any).insertId;
+
+    if (spec_image && insertId) {
+      await dbService.upsertProductSpecification({
+        product_id: insertId,
+        title: 'Technical Specifications',
+        image_url: spec_image
+      });
+    }
 
     console.log("Product created successfully:", { id: insertId, name, slug });
 

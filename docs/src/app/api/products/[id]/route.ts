@@ -23,6 +23,12 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
       );
     }
 
+    // Also get the spec image
+    const spec = await dbService.getProductSpecification(Number(id));
+    if (spec && spec.image_url) {
+      (product as any).spec_image = spec.image_url;
+    }
+
     return NextResponse.json({ success: true, data: product });
   } catch (error: any) {
     console.error("Failed to fetch product:", error);
@@ -37,7 +43,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
   try {
     const { id } = await params;
     const body = await request.json();
-    const { name, slug, description, features, specifications, applications, benefits, image_url, category, gallery, is_active, is_featured } = body;
+    const { name, slug, description, features, specifications, applications, benefits, image_url, category, gallery, is_active, is_featured, spec_image } = body;
 
     if (!id || isNaN(Number(id))) {
       return NextResponse.json(
@@ -64,6 +70,15 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
       is_featured ? 1 : 0,
       Number(id)
     ]);
+
+    // Handle Spec Image
+    if (spec_image !== undefined) {
+      await dbService.upsertProductSpecification({
+        product_id: Number(id),
+        title: 'Technical Specifications',
+        image_url: spec_image || null
+      });
+    }
 
     console.log(`Product updated successfully for ID: ${id}`, { name, slug });
 

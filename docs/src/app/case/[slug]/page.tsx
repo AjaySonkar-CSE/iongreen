@@ -64,7 +64,7 @@ export default async function CaseStudyDetailPage(props: CaseStudyPageProps) {
             <Hero
                 page="case"
                 title={item.title}
-                description={item.region ? `Region: ${item.region}` : "Success Stories & Case Studies"}
+                description={(item as any).region ? `Region: ${(item as any).region}` : "Success Stories & Case Studies"}
             />
 
             <AnimatedContentWrapper>
@@ -93,11 +93,11 @@ export default async function CaseStudyDetailPage(props: CaseStudyPageProps) {
                         <div className="space-y-8">
                             <div>
                                 <span className="inline-block px-3 py-1 rounded-full bg-green-50 text-green-700 text-sm font-semibold mb-4">
-                                    {item.region}
+                                    {(item as any).region}
                                 </span>
                                 <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">Project Overview</h2>
                                 <p className="text-xl text-gray-600 mb-8 italic">
-                                    "{item.summary}"
+                                    "{(item as any).summary}"
                                 </p>
 
                                 <div className="space-y-6">

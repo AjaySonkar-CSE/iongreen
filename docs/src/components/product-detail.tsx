@@ -62,7 +62,7 @@ export function ProductDetail({
                       d="M5 13l4 4L19 7"
                     />
                   </svg>
-                  <span>{typeof feature === 'string' ? feature : (feature.title || (feature as any).name || '')}</span>
+                  <span>{typeof feature === 'string' ? feature : ((feature as any).title || (feature as any).name || '')}</span>
                 </li>
               ))}
             </ul>

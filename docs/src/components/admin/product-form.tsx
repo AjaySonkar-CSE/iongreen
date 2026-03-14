@@ -23,15 +23,18 @@ interface GalleryItem {
 interface FeatureItem {
   title: string;
   description: string;
+  icon?: string;
 }
 
 interface SpecItem {
   label: string;
   value: string;
+  icon?: string;
 }
 
 interface SimpleItem {
   text: string;
+  icon?: string;
 }
 
 interface ProductFormData {
@@ -47,6 +50,8 @@ interface ProductFormData {
   gallery: GalleryItem[];
   is_active: boolean;
   is_featured: boolean;
+  spec_image: string;
+  spec_images: { url: string }[];
 }
 
 const CATEGORIES = [
@@ -88,12 +93,15 @@ export function ProductForm({ productId, initialData }: ProductFormProps) {
       gallery: [],
       is_active: true,
       is_featured: false,
+      spec_image: "",
+      spec_images: [],
     },
   });
 
   // Field arrays for dynamic lists
   const { fields: featureFields, append: appendFeature, remove: removeFeature } = useFieldArray({ control, name: "features" });
   const { fields: specFields, append: appendSpec, remove: removeSpec } = useFieldArray({ control, name: "specifications" });
+  const { fields: specImageFields, append: appendSpecImage, remove: removeSpecImage } = useFieldArray({ control, name: "spec_images" });
   const { fields: appFields, append: appendApp, remove: removeApp } = useFieldArray({ control, name: "applications" });
   const { fields: benefitFields, append: appendBenefit, remove: removeBenefit } = useFieldArray({ control, name: "benefits" });
   const { fields: galleryFields, append: appendGallery, remove: removeGallery, move: moveGallery } = useFieldArray({ control, name: "gallery" });
@@ -109,8 +117,8 @@ export function ProductForm({ productId, initialData }: ProductFormProps) {
           const f = typeof initialData.features === 'string' ? JSON.parse(initialData.features) : initialData.features;
           if (Array.isArray(f)) {
             features = f.map((item: any) => {
-              if (typeof item === 'string') return { title: item, description: '' };
-              return { title: item.title || '', description: item.description || '' };
+              if (typeof item === 'string') return { title: item, description: '', icon: '' };
+              return { title: item.title || '', description: item.description || '', icon: item.icon || '' };
             });
           }
         } catch { features = []; }
@@ -118,14 +126,22 @@ export function ProductForm({ productId, initialData }: ProductFormProps) {
 
       // Parse specifications
       let specifications: SpecItem[] = [];
+      let spec_images: { url: string }[] = [];
       if (initialData.specifications) {
         try {
           const s = typeof initialData.specifications === 'string' ? JSON.parse(initialData.specifications) : initialData.specifications;
           if (Array.isArray(s)) {
-            specifications = s.map((item: any) => ({ label: item.label || '', value: item.value || '' }));
+            specifications = s.map((item: any) => ({ label: item.label || '', value: item.value || '', icon: item.icon || '' }));
           } else if (typeof s === 'object' && s !== null) {
-            // Handle object format like { range: "100kWh" }
-            specifications = Object.entries(s).map(([key, val]) => ({ label: key, value: String(val) }));
+            if (s.items && Array.isArray(s.items)) {
+              specifications = s.items.map((item: any) => ({ label: item.label || '', value: item.value || '', icon: item.icon || '' }));
+              if (s.images && Array.isArray(s.images)) {
+                spec_images = s.images.map((url: string) => ({ url }));
+              }
+            } else {
+              // Handle object format like { range: "100kWh" }
+              specifications = Object.entries(s).map(([key, val]) => ({ label: key, value: String(val) }));
+            }
           }
         } catch { specifications = []; }
       }
@@ -136,7 +152,7 @@ export function ProductForm({ productId, initialData }: ProductFormProps) {
         try {
           const a = typeof initialData.applications === 'string' ? JSON.parse(initialData.applications) : initialData.applications;
           if (Array.isArray(a)) {
-            applications = a.map((item: any) => ({ text: typeof item === 'string' ? item : (item.text || '') }));
+            applications = a.map((item: any) => ({ text: typeof item === 'string' ? item : (item.text || ''), icon: item.icon || '' }));
           }
         } catch { applications = []; }
       }
@@ -147,7 +163,7 @@ export function ProductForm({ productId, initialData }: ProductFormProps) {
         try {
           const b = typeof initialData.benefits === 'string' ? JSON.parse(initialData.benefits) : initialData.benefits;
           if (Array.isArray(b)) {
-            benefits = b.map((item: any) => ({ text: typeof item === 'string' ? item : (item.text || '') }));
+            benefits = b.map((item: any) => ({ text: typeof item === 'string' ? item : (item.text || ''), icon: item.icon || '' }));
           }
         } catch { benefits = []; }
       }
@@ -178,6 +194,8 @@ export function ProductForm({ productId, initialData }: ProductFormProps) {
         applications,
         benefits,
         gallery,
+        spec_image: initialData.spec_image || '',
+        spec_images,
       });
     }
   }, [initialData, reset]);
@@ -205,20 +223,26 @@ export function ProductForm({ productId, initialData }: ProductFormProps) {
         is_active: data.is_active,
         is_featured: data.is_featured,
         gallery: data.gallery,
-        // Features: array of { title, description }
+        // Features: array of { title, description, icon }
         features: data.features.filter(f => f.title.trim()).map(f => ({
           title: f.title.trim(),
-          description: f.description.trim()
+          description: f.description.trim(),
+          icon: f.icon || ''
         })),
-        // Specifications: array of { label, value }
-        specifications: data.specifications.filter(s => s.label.trim()).map(s => ({
-          label: s.label.trim(),
-          value: s.value.trim()
-        })),
-        // Applications: array of strings
-        applications: data.applications.filter(a => a.text.trim()).map(a => a.text.trim()),
-        // Benefits: array of strings
-        benefits: data.benefits.filter(b => b.text.trim()).map(b => b.text.trim()),
+        // Specifications: object with items and images
+        specifications: {
+          items: data.specifications.filter(s => s.label.trim()).map(s => ({
+            label: s.label.trim(),
+            value: s.value.trim(),
+            icon: s.icon || ''
+          })),
+          images: data.spec_images.map(img => img.url).filter(url => url.trim() !== '')
+        },
+        // Applications: array
+        applications: data.applications.filter(a => a.text.trim()).map(a => ({ text: a.text.trim(), icon: a.icon || '' })),
+        // Benefits: array
+        benefits: data.benefits.filter(b => b.text.trim()).map(b => ({ text: b.text.trim(), icon: b.icon || '' })),
+        spec_image: data.spec_image,
       };
 
       const url = isEditing ? `/api/products/${productId}` : "/api/products";
@@ -451,17 +475,30 @@ export function ProductForm({ productId, initialData }: ProductFormProps) {
                   {featureFields.map((field, index) => (
                     <div key={field.id} className="flex gap-3 items-start bg-gray-50 rounded-lg p-3 border border-gray-100">
                       <span className="flex-shrink-0 w-6 h-6 rounded-full bg-green-500 text-white flex items-center justify-center text-xs font-bold mt-1">{index + 1}</span>
-                      <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-3">
-                        <input
-                          {...register(`features.${index}.title` as const)}
-                          className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
-                          placeholder="Feature title"
-                        />
-                        <input
-                          {...register(`features.${index}.description` as const)}
-                          className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
-                          placeholder="Feature description"
-                        />
+                      <div className="flex-1 space-y-3">
+                        <div className="space-y-2">
+                          <input
+                            {...register(`features.${index}.title` as const)}
+                            className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
+                            placeholder="Feature title"
+                          />
+                          <textarea
+                            {...register(`features.${index}.description` as const)}
+                            className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500 resize-y"
+                            placeholder="Feature description (multi-line supported)"
+                            rows={3}
+                          />
+                        </div>
+                        <div className="flex gap-2 items-start pt-2 border-t border-gray-100">
+                          <div className="flex-1 w-full">
+                            <ImageUpload
+                              value={watch(`features.${index}.icon`) || ""}
+                              onChange={(value) => setValue(`features.${index}.icon` as const, value)}
+                              label={`Feature ${index + 1} Image (Optional)`}
+                              placeholder="Upload or paste image URL"
+                            />
+                          </div>
+                        </div>
                       </div>
                       <button
                         type="button"
@@ -504,17 +541,30 @@ export function ProductForm({ productId, initialData }: ProductFormProps) {
                   {specFields.map((field, index) => (
                     <div key={field.id} className="flex gap-3 items-start bg-blue-50/30 rounded-lg p-3 border border-blue-100">
                       <span className="flex-shrink-0 w-6 h-6 rounded-full bg-blue-500 text-white flex items-center justify-center text-xs font-bold mt-1">{index + 1}</span>
-                      <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-3">
-                        <input
-                          {...register(`specifications.${index}.label` as const)}
-                          className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
-                          placeholder="e.g. Capacity, Voltage, Weight"
-                        />
-                        <input
-                          {...register(`specifications.${index}.value` as const)}
-                          className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
-                          placeholder="e.g. 100kWh, 48V, 25kg"
-                        />
+                      <div className="flex-1 space-y-3">
+                        <div className="space-y-2">
+                          <input
+                            {...register(`specifications.${index}.label` as const)}
+                            className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
+                            placeholder="e.g. Capacity, Voltage, Weight"
+                          />
+                          <textarea
+                            {...register(`specifications.${index}.value` as const)}
+                            className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500 resize-y"
+                            placeholder="e.g. 100kWh, 48V, 25kg (multi-line supported)"
+                            rows={3}
+                          />
+                        </div>
+                        <div className="flex gap-2 items-start pt-2 border-t border-blue-100">
+                          <div className="flex-1 w-full">
+                            <ImageUpload
+                              value={watch(`specifications.${index}.icon`) || ""}
+                              onChange={(value) => setValue(`specifications.${index}.icon` as const, value)}
+                              label={`Specification ${index + 1} Image (Optional)`}
+                              placeholder="Upload or paste image URL"
+                            />
+                          </div>
+                        </div>
                       </div>
                       <button
                         type="button"
@@ -525,6 +575,53 @@ export function ProductForm({ productId, initialData }: ProductFormProps) {
                       </button>
                     </div>
                   ))}
+                </div>
+
+                <div className="mt-8 border border-gray-200 rounded-xl overflow-hidden bg-white shadow-sm">
+                  <div className="bg-gray-50 px-5 py-4 border-b border-gray-200 flex items-center justify-between">
+                    <div>
+                      <h3 className="text-sm font-semibold text-gray-800 uppercase tracking-wider">Technical Specifications Images</h3>
+                      <p className="text-xs text-gray-500 mt-1">Add multiple images to display in the technical specifications section.</p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => appendSpecImage({ url: "" })}
+                      className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-blue-700 bg-blue-100 border border-blue-200 rounded-lg hover:bg-blue-200 transition-colors"
+                    >
+                      <Plus className="h-3.5 w-3.5" />
+                      Add Spec Image
+                    </button>
+                  </div>
+                  
+                  <div className="p-5 space-y-4">
+                    {specImageFields.length === 0 && (
+                      <div className="text-center py-6 border border-dashed border-gray-200 rounded-lg bg-gray-50/50">
+                        <p className="text-sm text-gray-400">No specification images added</p>
+                      </div>
+                    )}
+                    
+                    {specImageFields.map((field, index) => (
+                      <div key={field.id} className="flex gap-4 items-start bg-gray-50 p-4 rounded-lg border border-gray-200">
+                        <span className="flex-shrink-0 w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold">{index + 1}</span>
+                        <div className="flex-1">
+                          <ImageUpload
+                            value={watch(`spec_images.${index}.url`)}
+                            onChange={(value) => setValue(`spec_images.${index}.url` as const, value)}
+                            label={`Spec Image ${index + 1}`}
+                            placeholder="https://... or upload"
+                          />
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => removeSpecImage(index)}
+                          className="flex-shrink-0 p-1.5 text-red-500 hover:text-red-700 hover:bg-red-50 rounded-md transition-colors"
+                          title="Remove Image"
+                        >
+                          <X className="h-4 w-4" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
 
@@ -558,17 +655,30 @@ export function ProductForm({ productId, initialData }: ProductFormProps) {
 
                   <div className="space-y-2">
                     {appFields.map((field, index) => (
-                      <div key={field.id} className="flex gap-2 items-center">
-                        <span className="flex-shrink-0 text-xs text-gray-400 w-5 text-right">{index + 1}.</span>
-                        <input
-                          {...register(`applications.${index}.text` as const)}
-                          className="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
-                          placeholder="e.g. Residential, Industrial, Commercial"
-                        />
+                      <div key={field.id} className="flex gap-2 items-start bg-purple-50/30 rounded-lg p-2 border border-purple-100 mb-2">
+                        <span className="flex-shrink-0 text-xs text-purple-400 w-5 font-bold text-center mt-2">{index + 1}.</span>
+                        <div className="flex-1 space-y-2">
+                          <textarea
+                            {...register(`applications.${index}.text` as const)}
+                            className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500 resize-y"
+                            placeholder="e.g. Residential, Industrial, Commercial (multi-line supported)"
+                            rows={3}
+                          />
+                          <div className="flex gap-2 items-start mt-2 border-t border-purple-100 pt-2">
+                            <div className="flex-1 w-full">
+                              <ImageUpload
+                                value={watch(`applications.${index}.icon`) || ""}
+                                onChange={(value) => setValue(`applications.${index}.icon` as const, value)}
+                                label={`Application ${index + 1} Image`}
+                                placeholder="Upload or paste image URL"
+                              />
+                            </div>
+                          </div>
+                        </div>
                         <button
                           type="button"
                           onClick={() => removeApp(index)}
-                          className="flex-shrink-0 p-1 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-md transition-colors"
+                          className="flex-shrink-0 p-1.5 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-md transition-colors"
                         >
                           <X className="h-4 w-4" />
                         </button>
@@ -602,17 +712,30 @@ export function ProductForm({ productId, initialData }: ProductFormProps) {
 
                   <div className="space-y-2">
                     {benefitFields.map((field, index) => (
-                      <div key={field.id} className="flex gap-2 items-center">
-                        <span className="flex-shrink-0 text-xs text-gray-400 w-5 text-right">{index + 1}.</span>
-                        <input
-                          {...register(`benefits.${index}.text` as const)}
-                          className="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
-                          placeholder="e.g. High efficiency, Low maintenance"
-                        />
+                      <div key={field.id} className="flex gap-2 items-start bg-amber-50/30 rounded-lg p-2 border border-amber-100 mb-2">
+                        <span className="flex-shrink-0 text-xs text-amber-500 w-5 font-bold text-center mt-2">{index + 1}.</span>
+                        <div className="flex-1 space-y-2">
+                          <textarea
+                            {...register(`benefits.${index}.text` as const)}
+                            className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500 resize-y"
+                            placeholder="e.g. High efficiency, Long lifespan, Low maintenance (multi-line supported)"
+                            rows={3}
+                          />
+                          <div className="flex gap-2 items-start mt-2 border-t border-amber-100 pt-2">
+                            <div className="flex-1 w-full">
+                              <ImageUpload
+                                value={watch(`benefits.${index}.icon`) || ""}
+                                onChange={(value) => setValue(`benefits.${index}.icon` as const, value)}
+                                label={`Benefit ${index + 1} Image`}
+                                placeholder="Upload or paste image URL"
+                              />
+                            </div>
+                          </div>
+                        </div>
                         <button
                           type="button"
                           onClick={() => removeBenefit(index)}
-                          className="flex-shrink-0 p-1 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-md transition-colors"
+                          className="flex-shrink-0 p-1.5 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-md transition-colors"
                         >
                           <X className="h-4 w-4" />
                         </button>

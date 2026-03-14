@@ -442,7 +442,13 @@ export default async function ProductCategoryPage(props: ProductPageProps) {
 
     // Get detailed content for this product
     const productKey = category;
-    let details = productDetails[productKey] || {
+    let details: {
+      specifications: any[];
+      applications: any[];
+      benefits: any[];
+      specImage: string;
+      specImages?: string[];
+    } = productDetails[productKey] || {
       specifications: [],
       applications: [],
       benefits: [],
@@ -470,9 +476,12 @@ export default async function ProductCategoryPage(props: ProductPageProps) {
         } else {
           normalizedFeatures = dbFeatures.map((f: any) => ({
             title: f.title || f.label || '',
-            description: f.description || f.value || ''
+            description: f.description || f.value || '',
+            icon: f.icon || null
           }));
         }
+
+        product.features = normalizedFeatures; // Update product features
 
         keyFeatures = {
           title: dbProduct.name,
@@ -481,14 +490,23 @@ export default async function ProductCategoryPage(props: ProductPageProps) {
         };
       }
 
-      if (dbSpecifications && dbSpecifications.length > 0) {
-        if (typeof dbSpecifications[0] === 'string') {
-          details.specifications = dbSpecifications.map((s: string) => {
-            const parts = s.split(':');
-            return { label: parts[0]?.trim() || 'Spec', value: parts[1]?.trim() || '' };
-          });
-        } else {
-          details.specifications = dbSpecifications;
+      if (dbSpecifications) {
+        if (Array.isArray(dbSpecifications)) {
+          if (dbSpecifications.length > 0 && typeof dbSpecifications[0] === 'string') {
+            details.specifications = dbSpecifications.map((s: string) => {
+              const parts = s.split(':');
+              return { label: parts[0]?.trim() || 'Spec', value: parts[1]?.trim() || '' };
+            });
+          } else {
+            details.specifications = dbSpecifications;
+          }
+        } else if (typeof dbSpecifications === 'object' && dbSpecifications !== null) {
+          if (dbSpecifications.items && Array.isArray(dbSpecifications.items)) {
+            details.specifications = dbSpecifications.items;
+            if (dbSpecifications.images && Array.isArray(dbSpecifications.images)) {
+              details.specImages = dbSpecifications.images;
+            }
+          }
         }
       }
 
@@ -522,11 +540,16 @@ export default async function ProductCategoryPage(props: ProductPageProps) {
     let specData: { title?: string; description?: string; image_url?: string } | null = null;
     let appData: { title?: string; description?: string; icon_url?: string } | null = null;
     try {
-      if (dbProducts.length > 0) {
-        const spec = await dbService.getProductSpecification(dbProducts[0].id);
-        const app = await dbService.getProductApplication(dbProducts[0].id);
+      const targetId = dbProduct ? dbProduct.id : (dbProducts.length > 0 ? dbProducts[0].id : null);
+      if (targetId) {
+        const spec = await dbService.getProductSpecification(targetId);
+        const app = await dbService.getProductApplication(targetId);
         specData = spec ? { title: spec.title, description: spec.description || undefined, image_url: spec.image_url || undefined } : null;
         appData = app ? { title: app.title, description: app.description || undefined, icon_url: app.icon_url || undefined } : null;
+
+        if (specData?.image_url) {
+          details.specImage = specData.image_url;
+        }
       }
     } catch (e) {
       console.error('Failed to fetch spec/application:', e);
@@ -566,18 +589,8 @@ export default async function ProductCategoryPage(props: ProductPageProps) {
                     <h2 className="text-2xl font-bold text-green-700 mb-4">ION Green {product.title}</h2>
                   </ScrollAnimate>
                   <ScrollAnimate animation="fadeInUpElegant" delay={600}>
-                    <p className="text-gray-600 mb-3">
+                    <p className="text-gray-600 mb-3 whitespace-pre-line">
                       {product.description}
-                    </p>
-                  </ScrollAnimate>
-                  <ScrollAnimate animation="fadeInUpElegant" delay={700}>
-                    <p className="text-gray-600 mb-3">
-                      ION Green is a leading innovator in energy storage solutions, providing advanced battery energy storage systems that are safe, efficient, and environmentally friendly. Our cutting-edge technology ensures reliable performance and longevity for residential, commercial, and industrial applications.
-                    </p>
-                  </ScrollAnimate>
-                  <ScrollAnimate animation="fadeInUpElegant" delay={800}>
-                    <p className="text-gray-600">
-                      With a global presence in over 100 countries, we continue to drive innovation in sustainable energy solutions. Our dedicated support team is available 24/7 to assist with any technical inquiries, product maintenance, or system optimization needs.
                     </p>
                   </ScrollAnimate>
                 </div>
@@ -585,35 +598,10 @@ export default async function ProductCategoryPage(props: ProductPageProps) {
             </section>
           </ScrollAnimate>
 
-          {/* ION Green Key Features Section */}
-          {productKeyFeatures[productKey] && (
-            <ScrollAnimate animation="fadeInUpElegant" delay={900}>
-              <section className="py-16 bg-slate-50">
-                <div className="max-w-6xl mx-auto px-4 md:px-6">
-                  <ScrollAnimate animation="smoothReveal" delay={1000}>
-                    <h2 className="text-3xl font-bold text-center text-slate-900 mb-12">ION Green Key Features</h2>
-                  </ScrollAnimate>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    {productKeyFeatures[productKey].features.map((feature, index) => (
-                      <ScrollAnimate
-                        key={index}
-                        animation="scaleInBounce"
-                        delay={1100 + (index * 100)}
-                      >
-                        <div className="rounded-xl bg-white p-6 border border-slate-200 shadow-sm">
-                          <h3 className="text-xl font-semibold text-slate-900 mb-2">{feature.title}</h3>
-                          <p className="text-slate-700">{feature.description}</p>
-                        </div>
-                      </ScrollAnimate>
-                    ))}
-                  </div>
-                </div>
-              </section>
-            </ScrollAnimate>
-          )}
+
 
           {/* Use Cases Section */}
-          {productKeyFeatures[productKey] && (
+          {keyFeatures && (keyFeatures.useCases?.length > 0) && (
             <ScrollAnimate animation="fadeInUpElegant" delay={1700}>
               <section className="py-12 bg-white">
                 <div className="max-w-6xl mx-auto px-4 md:px-6">
@@ -630,7 +618,7 @@ export default async function ProductCategoryPage(props: ProductPageProps) {
                         <h3 className="text-2xl font-bold text-slate-900 mb-4">Use Cases</h3>
                       </ScrollAnimate>
                       <ul className="space-y-3 text-slate-700">
-                        {productKeyFeatures[productKey].useCases.map((useCase, index) => (
+                        {keyFeatures.useCases.map((useCase: any, index: number) => (
                           <ScrollAnimate
                             key={index}
                             animation="fadeInUpElegant"
@@ -650,81 +638,9 @@ export default async function ProductCategoryPage(props: ProductPageProps) {
             </ScrollAnimate>
           )}
 
-          {/* Product Cards Section - Show database products if available */}
-          {dbProducts.length > 0 && (
-            <ScrollAnimate animation="slideInLeftSmooth" delay={900}>
-              <section className="py-16 bg-white">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                  <div className="text-center mb-12">
-                    <ScrollAnimate animation="fadeInUpElegant" delay={1000}>
-                      <h2 className="text-3xl font-bold text-slate-900 mb-4">Available Products</h2>
-                    </ScrollAnimate>
-                    <ScrollAnimate animation="fadeInUpElegant" delay={1100}>
-                      <p className="text-lg text-slate-600 max-w-3xl mx-auto">
-                        Explore our {product.title} solutions
-                      </p>
-                    </ScrollAnimate>
-                  </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {dbProducts.map((dbProduct, index) => (
-                      <ScrollAnimate
-                        key={dbProduct.id}
-                        animation="scaleInBounce"
-                        delay={1200 + (index * 100)}
-                        className="overflow-hidden border border-slate-200 rounded-lg hover:shadow-lg transition-shadow"
-                      >
-                        <div className="relative h-48 bg-slate-100">
-                          <Image
-                            src={dbProduct.image_url || pickDeterministicImage(category)}
-                            alt={dbProduct.name}
-                            fill
-                            className="object-cover"
-                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                          />
-                          <span className="absolute top-2 right-2 bg-green-600 hover:bg-green-700 text-white text-xs font-medium px-2.5 py-0.5 rounded-full">
-                            {dbProduct.category}
-                          </span>
-                        </div>
-                        <div className="p-6">
-                          <h3 className="text-xl font-semibold text-slate-900 mb-2">{dbProduct.name}</h3>
-                          <p className="text-slate-600 mb-4 line-clamp-2 h-14">{dbProduct.description}</p>
 
-                          <div className="mt-6 flex gap-3">
-                            <Link
-                              href="/products/ion-green"
-                              className="flex-1 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors text-sm font-medium text-center"
-                            >
-                              View Details
-                            </Link>
-                            <a
-                              href="tel:9202636627"
-                              aria-label="Call now"
-                              className="flex-1 px-4 py-2 bg-white text-green-600 border border-green-600 rounded-md hover:bg-green-50 transition-colors text-sm font-medium text-center"
-                            >
-                              Call Now
-                            </a>
-                          </div>
-                        </div>
-                      </ScrollAnimate>
-                    ))}
-                  </div>
-                </div>
-              </section>
-            </ScrollAnimate>
-          )}
 
-          {/* ION Green Product Title Section */}
-          <section className="py-12 bg-white">
-            <div className="mx-auto max-w-6xl px-4 md:px-6">
-              <h2 className="text-3xl font-bold text-center text-green-700 mb-4">
-                ION Green {product.title}
-              </h2>
-              <p className="text-center text-lg text-gray-600 max-w-3xl mx-auto">
-                Advanced battery energy storage solution engineered for maximum efficiency, safety, and longevity
-              </p>
-            </div>
-          </section>
 
           {/* Product Overview Section */}
           <section className="py-16 bg-slate-50">
@@ -743,22 +659,14 @@ export default async function ProductCategoryPage(props: ProductPageProps) {
 
                 {/* Bottom - Product Content */}
                 <div className="w-full">
+                  {/* Bottom - Product Content 
                   <h3 className="text-2xl font-bold text-slate-900 mb-6">Product Overview</h3>
-                  <p className="text-slate-600 mb-6">
+                  <p className="text-slate-600 mb-6 whitespace-pre-line">
                     {product.description}
                   </p>
+                  */}
 
-                  <div className="bg-white p-6 rounded-lg shadow-sm mb-6">
-                    <h4 className="text-lg font-semibold text-slate-900 mb-3">Key Features:</h4>
-                    <ul className="space-y-2 text-slate-600">
-                      {product.features.map((feature: any, index: number) => (
-                        <li key={index} className="flex items-start">
-                          <span className="mr-2 text-green-600">✓</span>
-                          <span>{typeof feature === 'string' ? feature : (feature.title || (feature as any).name || '')}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+
 
                   {/* Download Datasheet Button */}
                   <div className="mt-6">
@@ -772,6 +680,38 @@ export default async function ProductCategoryPage(props: ProductPageProps) {
             </div>
           </section>
 
+          {/* ION Green Key Features Section - Moved below Overview */}
+          {keyFeatures && (
+            <ScrollAnimate animation="fadeInUpElegant" delay={1200}>
+              <section className="py-16 bg-slate-50">
+                <div className="max-w-6xl mx-auto px-4 md:px-6">
+                  <ScrollAnimate animation="smoothReveal" delay={1250}>
+                    <h2 className="text-3xl font-bold text-center text-slate-900 mb-12">ION Green Key Features</h2>
+                  </ScrollAnimate>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    {keyFeatures.features.map((feature: any, index: number) => (
+                      <ScrollAnimate
+                        key={index}
+                        animation="scaleInBounce"
+                        delay={1300 + (index * 100)}
+                      >
+                        <div className="rounded-xl bg-white p-6 border border-slate-200 shadow-sm flex flex-col h-full">
+                          {feature.icon && (
+                            <div className="w-full h-48 bg-slate-50 mb-4 rounded-lg overflow-hidden flex items-center justify-center p-4">
+                              <img src={feature.icon} alt={feature.title} className="max-w-full max-h-full object-contain" />
+                            </div>
+                          )}
+                          <h3 className="text-xl font-semibold text-slate-900 mb-2">{feature.title}</h3>
+                          <p className="text-slate-700 whitespace-pre-line">{feature.description}</p>
+                        </div>
+                      </ScrollAnimate>
+                    ))}
+                  </div>
+                </div>
+              </section>
+            </ScrollAnimate>
+          )}
+
           {/* Technical Specifications Section */}
           <ScrollAnimate animation="slideInRightSmooth" delay={1300}>
             <section className="py-16 bg-white">
@@ -784,26 +724,49 @@ export default async function ProductCategoryPage(props: ProductPageProps) {
                     <p className="text-center text-lg text-slate-600 mb-8 max-w-3xl mx-auto">{specData.description}</p>
                   </ScrollAnimate>
                 )}
-                <ScrollAnimate animation="scaleInBounce" delay={1500}>
-                  <div className="relative mx-auto mb-8 w-full max-w-3xl overflow-hidden rounded-xl bg-white">
-                    <img
-                      src={specData?.image_url || details.specImage}
-                      alt={`${product.title} Technical Specifications`}
-                      className="w-full h-auto"
-                    />
+                {details.specImages && details.specImages.length > 0 ? (
+                  <div className="flex flex-col gap-6 mb-8">
+                    {details.specImages.map((imgUrl, idx) => (
+                      <ScrollAnimate key={idx} animation="scaleInBounce" delay={1500 + idx * 100}>
+                        <div className="relative mx-auto w-full max-w-5xl overflow-hidden rounded-xl bg-white shadow-sm border border-slate-100">
+                          <img
+                            src={imgUrl}
+                            alt={`${product.title} Technical Specifications ${idx + 1}`}
+                            className="w-full h-auto"
+                          />
+                        </div>
+                      </ScrollAnimate>
+                    ))}
                   </div>
-                </ScrollAnimate>
+                ) : specData?.image_url || (details.specImage && details.specImage !== pickDeterministicImage(productKey)) ? (
+                  <ScrollAnimate animation="scaleInBounce" delay={1500}>
+                    <div className="relative mx-auto mb-8 w-full max-w-5xl overflow-hidden rounded-xl bg-white shadow-sm border border-slate-100">
+                      <img
+                        src={specData?.image_url || details.specImage}
+                        alt={`${product.title} Technical Specifications`}
+                        className="w-full h-auto"
+                      />
+                    </div>
+                  </ScrollAnimate>
+                ) : null}
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                   {details.specifications.map((spec, index) => (
                     <ScrollAnimate
                       key={index}
                       animation="fadeInUpElegant"
                       delay={1550 + (index * 50)}
-                      className="bg-slate-50 p-6 rounded-lg border border-slate-200"
+                      className="group bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col"
                     >
-                      <h4 className="font-semibold text-slate-900 mb-2">{spec.label}</h4>
-                      <p className="text-green-600 font-medium">{spec.value}</p>
+                      {spec.icon && (
+                        <div className="w-full h-64 bg-slate-50 relative border-b border-slate-100 flex items-center justify-center shrink-0 p-6">
+                          <img src={spec.icon} alt={spec.label} className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105" />
+                        </div>
+                      )}
+                      <div className={`p-6 flex-1 flex flex-col items-center text-center justify-center ${spec.icon ? 'bg-slate-50 border-t border-slate-100 shadow-inner' : ''}`}>
+                        <h4 className="text-xl font-bold text-slate-900 mb-2">{spec.label}</h4>
+                        <p className="text-green-600 font-bold text-xl break-words w-full whitespace-pre-line">{spec.value}</p>
+                      </div>
                     </ScrollAnimate>
                   ))}
                 </div>
@@ -824,41 +787,47 @@ export default async function ProductCategoryPage(props: ProductPageProps) {
                   </p>
                 </ScrollAnimate>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {details.applications.map((application, index) => (
-                    <ScrollAnimate
-                      key={index}
-                      animation="scaleInBounce"
-                      delay={1800 + (index * 100)}
-                      className="bg-white p-6 rounded-lg border border-slate-200 shadow-sm"
-                    >
-                      <div className="flex items-center mb-4">
-                        <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center mr-3">
-                          <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                          </svg>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {details.applications.map((application: any, index: number) => {
+                    const isObject = typeof application === 'object' && application !== null;
+                    const text = isObject ? application.text : application;
+                    const iconUrl = isObject ? application.icon : null;
+                    return (
+                      <ScrollAnimate
+                        key={index}
+                        animation="scaleInBounce"
+                        delay={1800 + (index * 100)}
+                        className="group bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col"
+                      >
+                        {iconUrl ? (
+                          <div className="w-full h-64 bg-slate-50 relative overflow-hidden border-b border-slate-100 flex items-center justify-center shrink-0 p-4">
+                            <img src={iconUrl} alt="Application icon" className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105" />
+                          </div>
+                        ) : null}
+
+                        <div className={`flex-1 flex flex-col justify-center ${iconUrl ? 'p-6 items-center text-center' : 'p-6'}`}>
+                          <p className="text-slate-700 text-lg leading-relaxed whitespace-pre-line">{text}</p>
                         </div>
-                        <h4 className="text-lg font-semibold text-slate-900">Application {index + 1}</h4>
-                      </div>
-                      <p className="text-slate-600">{application}</p>
-                    </ScrollAnimate>
-                  ))}
+                      </ScrollAnimate>
+                    )
+                  })}
                   {appData?.title && (
-                    <div className="bg-white p-6 rounded-lg border border-slate-200 shadow-sm">
-                      <div className="flex items-center mb-4">
-                        <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center mr-3 overflow-hidden">
-                          {appData.icon_url ? (
-                            <Image src={appData.icon_url} alt="Application icon" width={24} height={24} />
-                          ) : (
-                            <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                            </svg>
-                          )}
+                    <ScrollAnimate
+                      animation="scaleInBounce"
+                      delay={1800 + (details.applications.length * 100)}
+                      className="group bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col"
+                    >
+                      {appData.icon_url ? (
+                        <div className="w-full h-64 bg-slate-50 relative overflow-hidden border-b border-slate-100 flex items-center justify-center shrink-0 p-4">
+                          <img src={appData.icon_url} alt="Application icon" className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105" />
                         </div>
-                        <h4 className="text-lg font-semibold text-slate-900">{appData.title}</h4>
+                      ) : null}
+
+                      <div className={`flex-1 flex flex-col justify-center ${appData.icon_url ? 'p-6 items-center text-center' : 'p-6'}`}>
+                        {appData.title && <h4 className="text-xl font-bold text-slate-900 mb-2">{appData.title}</h4>}
+                        {appData.description && <p className="text-slate-700 text-lg leading-relaxed whitespace-pre-line">{appData.description}</p>}
                       </div>
-                      <p className="text-slate-600">{appData.description || ''}</p>
-                    </div>
+                    </ScrollAnimate>
                   )}
                 </div>
               </div>
@@ -878,20 +847,29 @@ export default async function ProductCategoryPage(props: ProductPageProps) {
                   </p>
                 </ScrollAnimate>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  {details.benefits.map((benefit, index) => (
-                    <ScrollAnimate
-                      key={index}
-                      animation="fadeInUpElegant"
-                      delay={2100 + (index * 100)}
-                      className="flex items-start p-6 bg-slate-50 rounded-lg border border-slate-200"
-                    >
-                      <div className="flex-shrink-0 w-12 h-12 rounded-full bg-green-100 flex items-center justify-center mr-4">
-                        <span className="text-green-600 font-bold">{index + 1}</span>
-                      </div>
-                      <p className="text-slate-700">{benefit}</p>
-                    </ScrollAnimate>
-                  ))}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {details.benefits.map((benefit: any, index: number) => {
+                    const isObject = typeof benefit === 'object' && benefit !== null;
+                    const text = isObject ? benefit.text : benefit;
+                    const iconUrl = isObject ? benefit.icon : null;
+                    return (
+                      <ScrollAnimate
+                        key={index}
+                        animation="fadeInUpElegant"
+                        delay={2100 + (index * 100)}
+                        className="group bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col"
+                      >
+                        {iconUrl ? (
+                          <div className="w-full h-64 bg-slate-50 relative border-b border-slate-100 flex items-center justify-center shrink-0 p-4">
+                            <img src={iconUrl} alt="Benefit icon" className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105" />
+                          </div>
+                        ) : null}
+                        <div className={`p-8 flex-1 flex flex-col justify-center ${iconUrl ? 'items-center text-center' : ''}`}>
+                          <p className="text-slate-800 font-medium text-xl leading-relaxed whitespace-pre-line">{text}</p>
+                        </div>
+                      </ScrollAnimate>
+                    )
+                  })}
                 </div>
               </div>
             </section>
